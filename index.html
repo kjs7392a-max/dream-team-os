@@ -790,14 +790,9 @@ async function callRailwayCmd(team, content) {
   if (data.primary_response) {
     let reply = data.primary_response;
     if (data.related_teams && data.related_teams.length > 0) {
-      reply += "
-
-" + "─".repeat(20);
+      reply += '\n\n' + '\u2500'.repeat(20);
       data.related_teams.forEach(t => {
-        reply += `
-
-[연관팀: ${t.team}]
-${t.response}`;
+        reply += '\n\n[연관팀: ' + t.team + ']\n' + t.response;
       });
     }
     return reply;
