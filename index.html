@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dr4rest Dream Team OS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e2e8f0;height:100vh;overflow:hidden;display:flex;}
+
+/* 사이드바 */
+.sb{width:175px;background:#0a0f1e;border-right:1px solid #1a2840;display:flex;flex-direction:column;flex-shrink:0;height:100vh;}
+.logo{padding:16px 14px 14px;border-bottom:1px solid #1a2840;}
+.logo-name{font-size:16px;font-weight:700;color:#34d399;letter-spacing:0.03em;}
+.logo-sub{font-size:9px;color:#334155;margin-top:3px;}
+.nav{flex:1;padding:8px 0;overflow-y:auto;}
+.ni{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:12px;color:#64748b;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;}
+.ni.active{color:#60a5fa;background:#0f1e35;border-left-color:#3b82f6;}
+.ni:hover:not(.active){color:#94a3b8;background:#0d1525;}
+.ni-i{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
+.sep{height:1px;background:#1a2840;margin:5px 12px;}
+.bs{padding:10px 14px;border-top:1px solid #1a2840;font-size:10px;color:#334155;}
+.pulse{width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;margin-right:5px;animation:p 2s infinite;}
+@keyframes p{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* 메인 */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100vh;}
+.topbar{padding:10px 16px;border-bottom:1px solid #1a2840;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.tbt{font-size:13px;font-weight:600;color:#e2e8f0;}
+.tbr{display:flex;gap:5px;flex-wrap:wrap;}
+.fb{font-size:9px;padding:3px 8px;border-radius:8px;border:1px solid;}
+.tr{background:#2d0a0a;color:#f87171;border-color:#7f1d1d;}
+.tb2{background:#0f2040;color:#60a5fa;border-color:#1e4070;}
+.tg{background:#052e1c;color:#34d399;border-color:#065f46;}
+.tp{background:#1a1040;color:#a78bfa;border-color:#3b1f8c;}
+.ta{background:#2d1f02;color:#fbbf24;border-color:#78450a;}
+.tk{background:#2d0a1f;color:#f472b6;border-color:#831843;}
+.tt{background:#02201c;color:#2dd4bf;border-color:#0d4a42;}
+.ti{background:#0f1040;color:#818cf8;border-color:#1e1f7a;}
+.to{background:#2d1500;color:#fb923c;border-color:#7c3010;}
+.tgr{background:#1a1f2e;color:#94a3b8;border-color:#2a3548;}
+#railway-status.rl-ok{background:#052e1c!important;color:#34d399!important;border-color:#065f46!important;}
+#railway-status.rl-err{background:#2d0a0a!important;color:#f87171!important;border-color:#7f1d1d!important;}
+#railway-status.rl-checking{background:#2d1f02!important;color:#fbbf24!important;border-color:#78450a!important;}
+.cnt{flex:1;overflow-y:auto;padding:14px 16px;}
+.view{display:none;}.view.active{display:block;}
+.sec-title{font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:12px;}
+.ob{font-size:8px;background:#1c1400;color:#fbbf24;border:1px solid #78450a;padding:1px 5px;border-radius:4px;margin-left:4px;}
+
+/* 지시 센터 — 새 레이아웃 (좌: 컨트롤 1fr / 우: 응답+하네스 2fr) */
+.cmd-layout{display:grid;grid-template-columns:1fr 2fr;gap:12px;height:calc(100vh - 100px);}
+.cmd-left{display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.cmd-left::-webkit-scrollbar{width:3px}
+.cmd-left::-webkit-scrollbar-thumb{background:#1a2840;border-radius:2px}
+
+/* 팀 선택 카드 */
+.cmd-section{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:12px 14px;}
+.cmd-section-label{font-size:9px;color:#475569;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px;}
+.team-selector{display:flex;gap:5px;flex-wrap:wrap;}
+.team-btn{font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid #1a2840;background:#070b16;color:#64748b;cursor:pointer;transition:all .15s;}
+.team-btn.active{border-color:#10b981;background:#0a1f14;color:#34d399;font-weight:600;}
+.team-btn:hover:not(.active){border-color:#2a3548;color:#94a3b8;}
+
+/* 빠른 지시 */
+.quick-list{display:flex;flex-direction:column;gap:5px;}
+.qbtn{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:7px;border:1px solid #1a2840;background:#070b16;color:#64748b;cursor:pointer;transition:all .15s;text-align:left;font-size:11px;}
+.qbtn:hover{border-color:#1e3a5f;background:#0a1222;color:#94a3b8;}
+.qbtn-icon{font-size:13px;flex-shrink:0;}
+.qbtn-arrow{margin-left:auto;color:#1e3a5f;flex-shrink:0;}
+
+/* 입력 */
+.cmd-input{width:100%;background:#070b16;border:1px solid #1a2840;border-radius:8px;padding:10px 12px;font-size:12px;color:#e2e8f0;outline:none;resize:none;font-family:inherit;line-height:1.6;transition:border-color .15s;}
+.cmd-input:focus{border-color:#10b981;}
+.cmd-input::placeholder{color:#334155;}
+.cmd-btn-row{display:flex;gap:7px;margin-top:8px;}
+.cmd-send{background:#10b981;border:none;border-radius:7px;padding:7px 18px;color:#000;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;}
+.cmd-send:hover{background:#34d399;}
+.cmd-send:disabled{background:#1a2840;color:#334155;cursor:not-allowed;}
+.cmd-clear{background:#0a1222;border:1px solid #1a2840;border-radius:7px;padding:7px 14px;color:#64748b;font-size:12px;cursor:pointer;}
+.cmd-clear:hover{color:#94a3b8;border-color:#2a3548;}
+
+/* 우측 — 하네스 + 채팅 세로 분할 */
+.cmd-right{display:flex;flex-direction:column;gap:10px;min-height:0;}
+.harness-panel{background:#0a1222;border:1px solid #1a2840;border-radius:10px;display:flex;flex-direction:column;overflow:hidden;flex:0 0 auto;}
+.harness-header{padding:9px 14px;border-bottom:1px solid #1a2840;font-size:11px;font-weight:600;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;}
+.harness-body{padding:10px 12px;max-height:220px;overflow-y:auto;}
+.harness-status{font-size:9px;padding:2px 7px;border-radius:6px;}
+.h-node{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;border:1px solid #1a2840;margin-bottom:5px;transition:all 0.3s;}
+.h-node.idle{background:#0d1525;border-color:#1a2840;}
+.h-node.running{background:#0f2a0f;border-color:#10b981;box-shadow:0 0 8px #10b98133;}
+.h-node.done{background:#0a1f0a;border-color:#34d39966;}
+.h-node.waiting{background:#1a1200;border-color:#f59e0b66;}
+.h-node.error{background:#1a0a0a;border-color:#ef444466;}
+.h-icon{font-size:13px;flex-shrink:0;width:20px;text-align:center;}
+.h-info{flex:1;}
+.h-name{font-size:10px;font-weight:500;color:#cbd5e1;}
+.h-detail{font-size:9px;color:#475569;margin-top:1px;}
+.h-badge{font-size:9px;padding:2px 6px;border-radius:5px;flex-shrink:0;}
+.h-connector{width:1px;height:10px;background:#1e3a5f;margin:0 auto -2px;}
+.harness-log{padding:6px 12px;border-top:1px solid #1a2840;height:72px;overflow-y:auto;background:#060d1a;}
+.log-line{font-size:9px;color:#334155;font-family:monospace;line-height:1.8;}
+.log-line.active{color:#10b981;}
+.log-line.warn{color:#f59e0b;}
+.log-line.err{color:#ef4444;}
+
+/* 채팅 패널 */
+.chat-panel{background:#0a1222;border:1px solid #1a2840;border-radius:10px;display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;}
+.chat-header{padding:10px 14px;border-bottom:1px solid #1a2840;font-size:11px;font-weight:600;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.chat-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:0;}
+.msg{display:flex;gap:8px;align-items:flex-start;}
+.msg.user{flex-direction:row-reverse;}
+.msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.msg-bubble{max-width:85%;padding:9px 12px;border-radius:10px;font-size:11px;line-height:1.7;}
+.msg.user .msg-bubble{background:#1e3a5f;color:#93c5fd;border-radius:10px 2px 10px 10px;}
+.msg.bot .msg-bubble{background:#0d1525;border:1px solid #1a2840;color:#e2e8f0;border-radius:2px 10px 10px 10px;}
+.msg-team{font-size:9px;color:#475569;margin-bottom:3px;}
+.typing{display:flex;gap:4px;align-items:center;padding:4px 0;}
+.typing span{width:5px;height:5px;border-radius:50%;background:#475569;animation:typing 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typing{0%,60%,100%{opacity:.3;}30%{opacity:1;}}
+.chat-input-wrap{padding:9px 10px;border-top:1px solid #1a2840;display:flex;gap:7px;flex-shrink:0;}
+.chat-input{flex:1;background:#070b16;border:1px solid #1a2840;border-radius:7px;padding:7px 11px;font-size:11px;color:#e2e8f0;outline:none;font-family:inherit;transition:border-color .15s;}
+.chat-input:focus{border-color:#10b981;}
+.chat-input::placeholder{color:#334155;}
+.chat-send{background:#10b981;border:none;border-radius:7px;padding:7px 14px;color:#000;font-size:13px;font-weight:700;cursor:pointer;}
+.chat-send:hover{background:#34d399;}
+.chat-send:disabled{background:#1a2840;color:#334155;}
+
+/* 채팅 스타일은 cmd-right 섹션에 통합 */
+
+/* 조직도 */
+.org-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;}
+.org-ceo{background:#0d1f0d;border:2px solid #10b981;border-radius:12px;padding:10px 32px;text-align:center;}
+.org-line{width:1px;height:16px;background:#2a3548;}
+.org-strategy{background:#0f1040;border:2px solid #6366f1;border-radius:9px;padding:8px 22px;text-align:center;}
+.org-hline{position:relative;width:860px;height:1px;background:#2a3548;}
+.org-drops{position:relative;width:860px;height:16px;}
+.org-teams{display:flex;gap:6px;justify-content:center;}
+.ot{background:#0d1525;border-radius:8px;overflow:hidden;border-top:3px solid;width:102px;}
+.ot-head{padding:7px 6px 5px;text-align:center;border-bottom:1px solid #1a2840;}
+.ot-icon{font-size:14px;margin-bottom:2px;}
+.ot-name{font-size:9px;font-weight:600;color:#e2e8f0;line-height:1.3;}
+.ot-opus{font-size:7px;color:#fbbf24;margin-top:1px;}
+.ot-body{padding:5px 7px;}
+.ot-member{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid #0f1525;}
+.ot-member:last-child{border:none;}
+.ot-role{font-size:8px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62px;}
+.ot-rank{font-size:7px;padding:1px 3px;border-radius:3px;flex-shrink:0;margin-left:2px;}
+
+/* 팀 섹터 */
+.sectors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px;}
+.sector{background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:10px;border-top:2px solid;}
+.sector-title{font-size:11px;font-weight:600;color:#cbd5e1;margin-bottom:7px;}
+.sector-member{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid #111a2a;font-size:10px;}
+.sector-member:last-child{border:none;}
+.sm-role{color:#64748b;}
+.sm-rank{font-size:9px;padding:1px 5px;border-radius:4px;}
+
+/* 파이프라인 */
+.pg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.pc{background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:11px;}
+.pch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.pct{font-size:11px;font-weight:500;color:#cbd5e1;}
+.pcc{font-size:9px;background:#1a3050;color:#60a5fa;padding:1px 6px;border-radius:7px;}
+.ags{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.at{font-size:9px;padding:2px 7px;border-radius:4px;}
+.arr{font-size:9px;color:#334155;}
+
+/* 모니터 */
+.mc-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+.mc{background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:12px;}
+.mc-l{font-size:11px;color:#475569;margin-bottom:5px;}
+.mc-v{font-size:24px;font-weight:600;}
+.mc-s{font-size:9px;color:#334155;margin-top:2px;}
+.lrw{display:flex;flex-direction:column;gap:5px;}
+.lr{display:flex;align-items:center;gap:10px;background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:8px 12px;}
+.lr-d{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.lr-n{font-size:11px;color:#94a3b8;width:150px;flex-shrink:0;}
+.lr-bw{flex:1;height:6px;background:#1a2840;border-radius:3px;overflow:hidden;}
+.lr-b{height:100%;border-radius:3px;}
+.lr-v{font-size:11px;color:#64748b;width:30px;text-align:right;}
+.lr-s{font-size:10px;padding:2px 7px;border-radius:7px;flex-shrink:0;}
+
+/* 시스템 */
+.sg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.sy{background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:12px;}
+.st{font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:9px;}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1a2840;font-size:11px;}
+.sr:last-child{border:none;}
+.sk{color:#475569;}.sv{color:#94a3b8;}.so{color:#10b981;}.sw_{color:#f59e0b;}
+
+/* 간트 */
+.gantt-wrap{overflow-x:auto;}
+.gantt-inner{min-width:620px;}
+.gantt-header{display:flex;padding-left:120px;margin-bottom:4px;border-bottom:1px solid #1a2840;padding-bottom:4px;}
+.gm{flex:1;text-align:center;font-size:10px;color:#475569;}
+.gg{background:#0a1222;border-radius:7px;margin-bottom:3px;}
+.ggt{padding:5px 0 2px 10px;font-size:11px;font-weight:600;color:#94a3b8;}
+.gr{display:flex;align-items:center;padding:2px 0 2px 10px;}
+.gl{width:120px;font-size:9px;color:#475569;flex-shrink:0;}
+.gt{flex:1;position:relative;height:18px;}
+.gb{position:absolute;height:100%;border-radius:3px;overflow:hidden;}
+.gbf{height:100%;}
+.gbt{position:absolute;top:50%;left:4px;transform:translateY(-50%);font-size:8px;white-space:nowrap;}
+
+/* 사용량/프로세스 */
+.ub-r{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.ub-l{font-size:11px;color:#64748b;width:110px;flex-shrink:0;}
+.ub-t{flex:1;height:8px;background:#1a2840;border-radius:4px;overflow:hidden;}
+.ub-f{height:100%;border-radius:4px;}
+.ub-v{font-size:11px;color:#64748b;width:35px;text-align:right;}
+.pl{display:flex;flex-direction:column;gap:6px;}
+.pr{background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:9px;}
+.pr-s{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pr-n{font-size:12px;color:#cbd5e1;flex:1;}
+.pr-i{font-size:10px;color:#475569;}
+.pr-b{display:flex;gap:4px;}
+.mcp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;}
+.mcp-item{background:#060d1a;border:1px solid #1a2840;border-radius:7px;padding:8px 10px;font-size:11px;color:#60a5fa;}
+.mcp-item span{display:block;font-size:9px;color:#334155;margin-top:2px;}
+.memory-pre{font-size:11px;color:#64748b;line-height:1.9;background:#060d1a;padding:14px;border-radius:9px;white-space:pre-wrap;}
+/* 토큰 관리 */
+.token-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;}
+.token-card{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:14px;}
+.token-card.warn{border-color:#f59e0b66;}
+.token-card.danger{border-color:#ef444466;}
+.tc-label{font-size:11px;color:#475569;margin-bottom:5px;}
+.tc-value{font-size:24px;font-weight:600;}
+.tc-sub{font-size:10px;color:#334155;margin-top:3px;}
+.tc-bar{height:6px;background:#1a2840;border-radius:3px;overflow:hidden;margin-top:8px;}
+.tc-fill{height:100%;border-radius:3px;transition:width 0.5s;}
+.limit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.limit-card{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:14px;}
+.limit-title{font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.limit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a2840;}
+.limit-row:last-child{border:none;}
+.limit-label{font-size:11px;color:#64748b;}
+.limit-input{background:#070b16;border:1px solid #1a2840;border-radius:6px;padding:4px 8px;font-size:11px;color:#e2e8f0;width:90px;text-align:right;outline:none;}
+.limit-input:focus{border-color:#3b82f6;}
+.limit-unit{font-size:10px;color:#334155;margin-left:4px;}
+.limit-toggle{width:36px;height:20px;background:#1a2840;border-radius:10px;position:relative;cursor:pointer;border:none;}
+.limit-toggle.on{background:#10b98155;}
+.limit-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#475569;top:3px;left:3px;transition:all 0.2s;}
+.limit-toggle.on::after{background:#10b981;left:19px;}
+.save-btn{background:#3b82f6;border:none;border-radius:8px;padding:8px 20px;color:#fff;font-size:12px;cursor:pointer;font-weight:500;}
+.save-btn:hover{background:#2563eb;}
+.alert-row{display:flex;align-items:center;gap:10px;background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:10px 14px;margin-bottom:6px;}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.alert-text{font-size:11px;flex:1;}
+.alert-time{font-size:10px;color:#334155;}
+.team-token-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a2840;}
+.team-token-row:last-child{border:none;}
+.ttr-name{font-size:11px;color:#94a3b8;width:120px;flex-shrink:0;}
+.ttr-bar{flex:1;height:8px;background:#1a2840;border-radius:4px;overflow:hidden;}
+.ttr-fill{height:100%;border-radius:4px;}
+.ttr-val{font-size:11px;color:#64748b;width:60px;text-align:right;}
+.ttr-limit{font-size:10px;color:#334155;width:70px;text-align:right;}
+</style>
+</head>
+<body>
+
+<!-- 사이드바 -->
+<div class="sb">
+  <div class="logo">
+    <div class="logo-name">🌲 Dr4rest</div>
+    <div class="logo-sub">Dream Team · B2G/B2B/B2C</div>
+  </div>
+  <div class="nav">
+    <div class="ni active" onclick="sw('cmd',this)"><span class="ni-i">🎯</span>지시 센터</div>
+    <div class="sep"></div>
+    <div class="ni" onclick="sw('org',this)"><span class="ni-i">🏢</span>조직도</div>
+    <div class="ni" onclick="sw('pipeline',this)"><span class="ni-i">⊞</span>시스템 개요</div>
+    <div class="ni" onclick="sw('agents',this)"><span class="ni-i">📅</span>간트차트</div>
+    <div class="sep"></div>
+    <div class="ni" onclick="sw('monitor',this)"><span class="ni-i">◉</span>실시간 모니터</div>
+    <div class="ni" onclick="sw('catalog',this)"><span class="ni-i">▦</span>카탈로그</div>
+    <div class="ni" onclick="sw('system',this)"><span class="ni-i">◧</span>시스템</div>
+    <div class="ni" onclick="sw('usage',this)"><span class="ni-i">▲</span>사용량</div>
+    <div class="ni" onclick="sw('process',this)"><span class="ni-i">⊡</span>프로세스</div>
+    <div class="sep"></div>
+    <div class="ni" onclick="sw('mcp',this)"><span class="ni-i">⊕</span>MCP 서비스</div>
+    <div class="ni" onclick="sw('memory',this)"><span class="ni-i">≡</span>메모리 시스템</div>
+    <div class="sep"></div>
+    <div class="ni" onclick="sw('token',this)"><span class="ni-i">🔢</span>토큰 관리</div>
+  </div>
+  <div class="bs"><span class="pulse"></span>온라인 · 45 에이전트</div>
+</div>
+
+<!-- 메인 -->
+<div class="main">
+  <div class="topbar">
+    <div class="tbt" id="tbt">🎯 지시 센터 — Dr4rest 드림팀</div>
+    <div class="tbr">
+      <span class="fb tr">인텔</span><span class="fb tg">앱</span><span class="fb tt">센서</span>
+      <span class="fb to">대응</span><span class="fb tk">병원</span><span class="fb ti">AI</span>
+      <span class="fb tp">인증</span><span class="fb ta">재무</span>
+      <span class="fb tgr" id="railway-status" onclick="checkRailwayHealth()" style="cursor:pointer;margin-left:6px;">◌ Railway...</span>
+    </div>
+  </div>
+  <div class="cnt">
+
+    <!-- 지시 센터 -->
+    <div class="view active" id="view-cmd">
+      <div class="cmd-layout">
+
+        <!-- 좌: 컨트롤 패널 -->
+        <div class="cmd-left">
+
+          <div class="cmd-section">
+            <div class="cmd-section-label">대상 팀</div>
+            <div class="team-selector" id="team-selector">
+              <div class="team-btn active" data-team="전체 드림팀">🌲 전체</div>
+              <div class="team-btn" data-team="사업전략팀">🎯 전략</div>
+              <div class="team-btn" data-team="인텔리전스팀">🔍 인텔</div>
+              <div class="team-btn" data-team="멘탈케어앱팀">📱 앱</div>
+              <div class="team-btn" data-team="센서·IoT팀">📡 센서</div>
+              <div class="team-btn" data-team="대응·연계팀">🚨 대응</div>
+              <div class="team-btn" data-team="병원솔루션팀">🏥 병원</div>
+              <div class="team-btn" data-team="데이터·AI팀">🤖 AI</div>
+              <div class="team-btn" data-team="인증·법무팀">⚖️ 법무</div>
+              <div class="team-btn" data-team="재무팀">💰 재무</div>
+            </div>
+          </div>
+
+          <div class="cmd-section">
+            <div class="cmd-section-label">지시 입력</div>
+            <textarea class="cmd-input" id="cmd-input" rows="4" placeholder="팀에게 지시를 입력하세요...&#10;&#10;예: 오늘 정부사업 공고 브리핑해줘"></textarea>
+            <div class="cmd-btn-row">
+              <button class="cmd-send" id="cmd-send" onclick="sendCmd()">▶ 실행</button>
+              <button class="cmd-clear" onclick="clearChat()">초기화</button>
+            </div>
+          </div>
+
+          <div class="cmd-section">
+            <div class="cmd-section-label">빠른 지시</div>
+            <div class="quick-list">
+              <button class="qbtn" onclick="quickCmd('SH공사 온마음케어 프로젝트 현황 보고해줘')"><span class="qbtn-icon">📊</span>SH공사 프로젝트 현황 보고<span class="qbtn-arrow">→</span></button>
+              <button class="qbtn" onclick="quickCmd('오늘 적합한 정부사업 공고 브리핑해줘')"><span class="qbtn-icon">🔍</span>오늘의 정부사업 브리핑<span class="qbtn-arrow">→</span></button>
+              <button class="qbtn" onclick="quickCmd('격리실 모니터링 시스템 개발 계획 수립해줘')"><span class="qbtn-icon">🏥</span>격리실 시스템 개발 계획<span class="qbtn-arrow">→</span></button>
+              <button class="qbtn" onclick="quickCmd('KCC·KC 인증 준비 현황과 다음 액션 알려줘')"><span class="qbtn-icon">⚖️</span>KCC·KC 인증 준비 현황<span class="qbtn-arrow">→</span></button>
+              <button class="qbtn" onclick="quickCmd('병원 ERP 구축 단계별 개발 계획 세워줘')"><span class="qbtn-icon">🏢</span>병원 ERP 개발 계획 수립<span class="qbtn-arrow">→</span></button>
+              <button class="qbtn" onclick="quickCmd('독거노인 생존감지 시스템 센서 설계 방향 알려줘')"><span class="qbtn-icon">📡</span>생존감지 센서 설계 방향<span class="qbtn-arrow">→</span></button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 우: 하네스 + 채팅 -->
+        <div class="cmd-right">
+
+          <div class="harness-panel">
+            <div class="harness-header">
+              <span>⚡ 하네스 파이프라인</span>
+              <span class="harness-status" id="harness-status" style="background:#1a2840;color:#475569;">대기 중</span>
+            </div>
+            <div class="harness-body" id="harness-body">
+              <div style="text-align:center;padding:16px 10px;color:#334155;font-size:11px;">
+                지시를 입력하면 하네스가 팀별로 자동 실행됩니다
+              </div>
+            </div>
+            <div class="harness-log" id="harness-log">
+              <div class="log-line">[시스템] Dr4rest 하네스 v1.0 대기 중...</div>
+            </div>
+          </div>
+
+          <div class="chat-panel">
+            <div class="chat-header">
+              <span id="chat-team-label">🌲 전체 드림팀 — 대화 기록</span>
+              <button onclick="clearChat()" style="font-size:10px;background:#1a2840;border:none;color:#64748b;padding:3px 8px;border-radius:5px;cursor:pointer;">초기화</button>
+            </div>
+            <div class="chat-body" id="chat-wrap">
+              <div class="msg bot">
+                <div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div>
+                <div>
+                  <div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div>
+                  <div class="msg-bubble">안녕하세요! Dr4rest 드림팀 AI 지시 센터입니다.<br>왼쪽에서 담당 팀을 선택하고 지시를 입력해주세요. 🚀</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-wrap">
+              <input class="chat-input" id="chat-input" placeholder="메시지 입력... (Enter 전송)" onkeydown="if(event.key==='Enter')sendCmd()"/>
+              <button class="chat-send" id="chat-send2" onclick="sendCmd()">▶</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 조직도 -->
+    <div class="view" id="view-org">
+      <div class="sec-title">🏢 조직도 — Dr4rest 드림팀</div>
+      <div class="org-wrap">
+        <div class="org-ceo">
+          <div style="font-size:18px;font-weight:700;color:#34d399;">Dr4rest</div>
+          <div style="font-size:11px;color:#6ee7b7;margin-top:2px;">CEO</div>
+          <div style="font-size:9px;color:#065f46;margin-top:3px;">취약계층 멘탈케어 & 정신병원 솔루션 · B2G/B2B/B2C</div>
+        </div>
+        <div class="org-line"></div>
+        <div class="org-strategy">
+          <div style="font-size:12px;font-weight:600;color:#818cf8;">🎯 사업전략팀<span class="ob">수석만 Opus 4.6</span></div>
+          <div style="font-size:9px;color:#334155;margin-top:3px;">수석 의사결정가 · GO/NO-GO · 팀장~사원(Sonnet)</div>
+        </div>
+        <div class="org-line"></div>
+        <div class="org-hline"></div>
+        <div class="org-drops" id="vdrops"></div>
+      </div>
+      <div class="org-teams" id="org-teams"></div>
+      <div style="display:flex;gap:12px;margin-top:12px;padding:8px 12px;background:#0a1222;border-radius:8px;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:10px;color:#fbbf24;">■ 수석</span>
+        <span style="font-size:10px;color:#60a5fa;">■ 팀장</span>
+        <span style="font-size:10px;color:#34d399;">■ 선임</span>
+        <span style="font-size:10px;color:#a78bfa;">■ 주임</span>
+        <span style="font-size:10px;color:#94a3b8;">■ 사원</span>
+        <span class="ob">수석만 Opus 4.6 = 최종판단시 한정</span>
+        <span style="font-size:9px;color:#334155;">· 총 9개 팀 · 45명</span>
+      </div>
+      <div class="sectors" id="team-sectors"></div>
+    </div>
+
+    <!-- 파이프라인 -->
+    <div class="view" id="view-pipeline">
+      <div class="sec-title">⊞ 시스템 개요 — 파이프라인</div>
+      <div class="pg" id="pipe-list"></div>
+    </div>
+
+    <!-- 간트 -->
+    <div class="view" id="view-agents">
+      <div class="sec-title">📅 에이전트 맵 — 간트차트</div>
+      <div class="gantt-wrap"><div class="gantt-inner" id="gantt-content"></div></div>
+    </div>
+
+    <!-- 모니터 -->
+    <div class="view" id="view-monitor">
+      <div class="sec-title">◉ 실시간 모니터</div>
+      <div class="mc-g">
+        <div class="mc"><div class="mc-l">활성 에이전트</div><div class="mc-v" style="color:#10b981;" id="ma">31</div><div class="mc-s">전체 45개 중</div></div>
+        <div class="mc"><div class="mc-l">처리 중 태스크</div><div class="mc-v" style="color:#60a5fa;" id="mt">18</div><div class="mc-s">실시간</div></div>
+        <div class="mc"><div class="mc-l">오늘 완료</div><div class="mc-v" style="color:#a78bfa;" id="md">87</div><div class="mc-s">태스크</div></div>
+        <div class="mc"><div class="mc-l">평균 응답속도</div><div class="mc-v" style="color:#fbbf24;" id="ms">1.8s</div><div class="mc-s">전체 평균</div></div>
+      </div>
+      <div class="lrw" id="monitor-rows"></div>
+    </div>
+
+    <!-- 카탈로그 -->
+    <div class="view" id="view-catalog">
+      <div class="sec-title">▦ 팀 카탈로그</div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;" id="catalog-grid"></div>
+    </div>
+
+    <!-- 시스템 -->
+    <div class="view" id="view-system">
+      <div class="sec-title">◧ 시스템 정보</div>
+      <div class="sg">
+        <div class="sy"><div class="st">사업 현황</div>
+          <div class="sr"><span class="sk">SH공사 온마음케어</span><span class="sw_">4월 시작</span></div>
+          <div class="sr"><span class="sk">독거노인 생존감지 시스템</span><span class="sw_">5월 예정</span></div>
+          <div class="sr"><span class="sk">정신병원 격리실 모니터링</span><span class="sw_">5월 예정</span></div>
+          <div class="sr"><span class="sk">낙상감지 시스템 (4인실)</span><span class="sw_">5월 예정</span></div>
+          <div class="sr"><span class="sk">병원 ERP</span><span class="sw_">5월 예정</span></div>
+          <div class="sr"><span class="sk">B2C 멘탈케어 앱</span><span class="sv">기획 중</span></div>
+        </div>
+        <div class="sy"><div class="st">AI 모델 운용 원칙</div>
+          <div class="sr"><span class="sk">사업전략팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
+          <div class="sr"><span class="sk">인증·법무팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
+          <div class="sr"><span class="sk">데이터·AI팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
+          <div class="sr"><span class="sk">위 3팀 팀장~사원</span><span class="sv">Sonnet 4.6</span></div>
+          <div class="sr"><span class="sk">나머지 6개팀 전원</span><span class="sv">Sonnet 4.6</span></div>
+        </div>
+        <div class="sy"><div class="st">기술 스택</div>
+          <div class="sr"><span class="sk">센서</span><span class="sv">레이저·바이탈·모션</span></div>
+          <div class="sr"><span class="sk">앱</span><span class="sv">온마음케어 iOS/Android</span></div>
+          <div class="sr"><span class="sk">AI 알고리즘</span><span class="sv">행동위험지수</span></div>
+          <div class="sr"><span class="sk">PRO 방법론</span><span class="so">적용 중 ✓</span></div>
+          <div class="sr"><span class="sk">Superpowers</span><span class="so">설치됨 ✓</span></div>
+          <div class="sr"><span class="sk">드림팀 OS</span><span class="sw_">구축 중</span></div>
+        </div>
+        <div class="sy"><div class="st">인증·규제 현황</div>
+          <div class="sr"><span class="sk">KCC 인증</span><span class="sw_">준비 중</span></div>
+          <div class="sr"><span class="sk">KC 인증</span><span class="sw_">준비 중</span></div>
+          <div class="sr"><span class="sk">의료기기 등급</span><span class="sw_">검토 중</span></div>
+          <div class="sr"><span class="sk">개인정보보호법</span><span class="sw_">설계 반영</span></div>
+          <div class="sr"><span class="sk">의료법 검토</span><span class="sw_">진행 중</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사용량 -->
+    <div class="view" id="view-usage">
+      <div class="sec-title">▲ 사용량 현황</div>
+      <div class="mc-g">
+        <div class="mc"><div class="mc-l">이번 달 토큰</div><div class="mc-v" style="color:#60a5fa;">218K</div><div class="mc-s">Claude Pro 한도 내</div></div>
+        <div class="mc"><div class="mc-l">API 호출 횟수</div><div class="mc-v" style="color:#a78bfa;">512</div><div class="mc-s">오늘 기준</div></div>
+        <div class="mc"><div class="mc-l">Opus 호출</div><div class="mc-v" style="color:#fbbf24;">3회</div><div class="mc-s">수석 최종판단만</div></div>
+        <div class="mc"><div class="mc-l">비용 절감</div><div class="mc-v" style="color:#10b981;">94%</div><div class="mc-s">수동 대비</div></div>
+      </div>
+      <div class="sy"><div class="st">팀별 사용량</div><div id="usage-bars"></div></div>
+    </div>
+
+    <!-- 프로세스 -->
+    <div class="view" id="view-process">
+      <div class="sec-title">⊡ 프로세스 관리</div>
+      <div class="pl" id="proc-list"></div>
+    </div>
+
+    <!-- MCP -->
+    <div class="view" id="view-mcp">
+      <div class="sec-title">⊕ MCP 서비스</div>
+      <div class="sy"><div class="st">연결된 서비스</div>
+        <div class="mcp-grid" id="mcp-grid"></div>
+      </div>
+    </div>
+
+    <!-- 메모리 -->
+    <div class="view" id="view-memory">
+      <div class="sec-title">≡ 메모리 시스템</div>
+      <div class="sy"><div class="st">CLAUDE.md — Dr4rest 핵심 컨텍스트</div>
+        <div class="memory-pre">## 회사명: Dr4rest
+전문 멘탈케어 기업 · B2G / B2B / B2C
+취약계층·독거노인 우울증·정신감정 모니터링
+레이저·바이탈·모션 센서 기반 생존감지 시스템
+골든타임 내 관계기관·연계병원 자동 대응
+
+## 사업 영역
+[B2G/B2C] 온마음케어 앱 + 생존감지 하드웨어
+  - PRO 방법론 기반 행동위험지수 산출
+  - 취약계층 조기발견 → 관계기관 연계
+[B2B] 정신병원 솔루션
+  - 격리실: 바이탈 센서 실시간 모니터링
+  - 일반실(4인): 낙상감지 조기대응
+  - 병원 ERP 통합 시스템
+
+## AI 모델 운용 원칙
+Opus 4.6: 사업전략·인증법무·데이터AI팀 수석만 → 최종판단시에만 호출
+Sonnet 4.6: 위 3팀 팀장~사원 + 나머지 6개팀 전원
+
+## 금지어 (공식문서)
+회사 도메인 직접 노출 금지
+→ "행동위험지수" "PRO방법론" "디지털바이오마커" 사용</div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- 토큰 관리 -->
+    <div class="view" id="view-token">
+      <div class="sec-title">🔢 토큰 관리 — 사용량 모니터링 & 제한 설정</div>
+      <div class="token-grid">
+        <div class="token-card">
+          <div class="tc-label">오늘 총 사용량</div>
+          <div class="tc-value" style="color:#60a5fa;" id="tk-today">218,450</div>
+          <div class="tc-sub">한도 500,000 토큰</div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-today-bar" style="background:#3b82f6;width:43%;"></div></div>
+        </div>
+        <div class="token-card" id="tk-opus-card">
+          <div class="tc-label">Opus 4.6 사용</div>
+          <div class="tc-value" style="color:#fbbf24;" id="tk-opus">12,300</div>
+          <div class="tc-sub">한도 50,000 · 수석 3명만</div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-opus-bar" style="background:#f59e0b;width:24%;"></div></div>
+        </div>
+        <div class="token-card">
+          <div class="tc-label">Sonnet 4.6 사용</div>
+          <div class="tc-value" style="color:#34d399;" id="tk-sonnet">206,150</div>
+          <div class="tc-sub">나머지 42명</div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-sonnet-bar" style="background:#10b981;width:41%;"></div></div>
+        </div>
+        <div class="token-card">
+          <div class="tc-label">이번 달 예상 비용</div>
+          <div class="tc-value" style="color:#a78bfa;" id="tk-cost">₩47,200</div>
+          <div class="tc-sub">Claude Pro 플랜 기준</div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-cost-bar" style="background:#8b5cf6;width:32%;"></div></div>
+        </div>
+      </div>
+
+      <div class="limit-grid">
+        <div class="limit-card">
+          <div class="limit-title">⚙️ 한도 설정 <button class="save-btn" onclick="saveLimits()">저장 적용</button></div>
+          <div class="limit-row"><span class="limit-label">일일 전체 한도</span><div style="display:flex;align-items:center;gap:4px;"><input class="limit-input" id="lim-daily" type="number" value="500000"/><span class="limit-unit">토큰</span></div></div>
+          <div class="limit-row"><span class="limit-label">Opus 일일 한도</span><div style="display:flex;align-items:center;gap:4px;"><input class="limit-input" id="lim-opus" type="number" value="50000"/><span class="limit-unit">토큰</span></div></div>
+          <div class="limit-row"><span class="limit-label">팀별 일일 한도</span><div style="display:flex;align-items:center;gap:4px;"><input class="limit-input" id="lim-team" type="number" value="80000"/><span class="limit-unit">토큰</span></div></div>
+          <div class="limit-row"><span class="limit-label">경고 임계값</span><div style="display:flex;align-items:center;gap:4px;"><input class="limit-input" id="lim-warn" type="number" value="80"/><span class="limit-unit">%</span></div></div>
+          <div class="limit-row"><span class="limit-label">한도 초과 시 자동 차단</span><button class="limit-toggle on" id="toggle-block" onclick="toggleBtn(this)"></button></div>
+          <div class="limit-row"><span class="limit-label">카톡 경고 알림</span><button class="limit-toggle on" id="toggle-kakao" onclick="toggleBtn(this)"></button></div>
+          <div class="limit-row"><span class="limit-label">Opus 수석만 허용 강제</span><button class="limit-toggle on" id="toggle-opus" onclick="toggleBtn(this)"></button></div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-title">🔔 토큰 알림 로그</div>
+          <div id="alert-log" style="display:flex;flex-direction:column;gap:6px;">
+            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#64748b;font-size:11px;">시스템 정상 가동 중</span><span class="alert-time" id="start-time" style="font-size:10px;color:#334155;"></span></div>
+            <div class="alert-row"><div class="alert-dot" style="background:#f59e0b;"></div><span class="alert-text" style="color:#fbbf24;font-size:11px;">데이터·AI팀 수석 Opus 호출 (3회)</span><span class="alert-time" style="font-size:10px;color:#334155;">07:23</span></div>
+            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#64748b;font-size:11px;">인텔리전스팀 브리핑 완료 (12,400 토큰)</span><span class="alert-time" style="font-size:10px;color:#334155;">07:05</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="limit-card">
+        <div class="limit-title">📊 팀별 토큰 사용량</div>
+        <div id="team-token-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const TITLES={cmd:'🎯 지시 센터 — Dr4rest 드림팀',org:'🏢 조직도 — Dr4rest 드림팀',pipeline:'⊞ 시스템 개요 — 파이프라인',agents:'📅 에이전트 맵 — 간트차트',monitor:'◉ 실시간 모니터',catalog:'▦ 팀 카탈로그',system:'◧ 시스템 정보',usage:'▲ 사용량 현황',process:'⊡ 프로세스 관리',mcp:'⊕ MCP 서비스',memory:'≡ 메모리 시스템',token:'🔢 토큰 관리 — 사용량 & 제한 설정'};
+function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');el.classList.add('active');document.getElementById('tbt').textContent=TITLES[id]||'';}
+
+let selectedTeam='전체 드림팀';
+document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.team-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTeam=btn.dataset.team;document.getElementById('chat-team-label').textContent=btn.textContent+' — 대화 기록';});});
+
+function quickCmd(text){document.getElementById('cmd-input').value=text;sendCmd();}
+function clearChat(){const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
+
+const TCOLORS={'전체 드림팀':'#34d399','사업전략팀':'#818cf8','인텔리전스팀':'#f87171','멘탈케어앱팀':'#34d399','센서·IoT팀':'#2dd4bf','대응·연계팀':'#fb923c','병원솔루션팀':'#f472b6','데이터·AI팀':'#818cf8','인증·법무팀':'#a78bfa','재무팀':'#fbbf24'};
+const TICONS={'전체 드림팀':'🌲','사업전략팀':'🎯','인텔리전스팀':'🔍','멘탈케어앱팀':'📱','센서·IoT팀':'📡','대응·연계팀':'🚨','병원솔루션팀':'🏥','데이터·AI팀':'🤖','인증·법무팀':'⚖️','재무팀':'💰'};
+
+function addMsg(role,text,team){
+  const wrap=document.getElementById('chat-wrap');
+  const div=document.createElement('div');div.className=`msg ${role}`;
+  if(role==='user'){div.innerHTML=`<div class="msg-avatar" style="background:#1e3a5f;">👤</div><div class="msg-bubble">${text}</div>`;}
+  else{const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div></div>`;}
+  wrap.appendChild(div);div.scrollIntoView({behavior:'smooth',block:'end'});return div;
+}
+function addTyping(team){
+  const wrap=document.getElementById('chat-wrap');const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';
+  const div=document.createElement('div');div.className='msg bot';div.id='typing-indicator';
+  div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 응답 중...</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  wrap.appendChild(div);div.scrollIntoView({behavior:'smooth',block:'end'});return div;
+}
+
+// 하네스 파이프라인 정의
+const HARNESS_PIPELINES = {
+  '전체 드림팀': [
+    {icon:'🔍',name:'인텔리전스팀',detail:'공고·정보 수집 및 분석',color:'#ef4444'},
+    {icon:'📌',name:'기획조정팀',detail:'사업 전략 수립 및 기획',color:'#3b82f6'},
+    {icon:'💻',name:'개발팀',detail:'Superpowers 기반 개발',color:'#10b981'},
+    {icon:'✅',name:'검증팀',detail:'QA·보안·성능 검증',color:'#14b8a6'},
+    {icon:'⚖️',name:'인증·법무팀',detail:'규제·리스크 검토',color:'#a78bfa',opus:true},
+    {icon:'🎯',name:'사업전략팀',detail:'최종 GO/NO-GO 판단',color:'#818cf8',opus:true},
+  ],
+  '사업전략팀': [
+    {icon:'🔍',name:'인텔리전스팀',detail:'사업 공고 수집·적합도 평가',color:'#ef4444'},
+    {icon:'💰',name:'재무팀',detail:'예산·수익 모델 분석',color:'#f59e0b'},
+    {icon:'⚖️',name:'인증·법무팀',detail:'법적 리스크 검토',color:'#a78bfa',opus:true},
+    {icon:'🎯',name:'사업전략팀 수석',detail:'Opus 4.6 최종 GO/NO-GO',color:'#818cf8',opus:true},
+  ],
+  '인텔리전스팀': [
+    {icon:'🔍',name:'공고 수집',detail:'나라장터·복지부 크롤링',color:'#ef4444'},
+    {icon:'🎯',name:'조건 필터링',detail:'Dr4rest 적합도 매칭',color:'#ef4444'},
+    {icon:'📊',name:'적합도 평가',detail:'AI 스코어링',color:'#ef4444'},
+    {icon:'📋',name:'브리핑 작성',detail:'보고서 자동 생성',color:'#ef4444'},
+    {icon:'📱',name:'카톡 알림 발송',detail:'담당자 모닝 브리핑',color:'#ef4444'},
+  ],
+  '병원솔루션팀': [
+    {icon:'🏥',name:'격리실 센서 수집',detail:'mmWave 바이탈 데이터',color:'#f472b6'},
+    {icon:'📊',name:'바이탈 분석',detail:'이상징후 AI 판단',color:'#f472b6'},
+    {icon:'🛏️',name:'낙상감지 AI',detail:'4인실 모션 분석',color:'#f472b6'},
+    {icon:'🚨',name:'알림 발송',detail:'간호사·의료진 즉각 대응',color:'#f472b6'},
+    {icon:'🏢',name:'ERP 연동',detail:'재무·원무·약국 자동화',color:'#f472b6'},
+  ],
+  '데이터·AI팀': [
+    {icon:'📥',name:'데이터 수집',detail:'센서·앱 로그 수집',color:'#818cf8'},
+    {icon:'🔧',name:'RAG 파이프라인',detail:'벡터DB 검색·증강',color:'#818cf8'},
+    {icon:'🤖',name:'위험지수 모델',detail:'행동위험지수 산출',color:'#818cf8'},
+    {icon:'🧠',name:'조기발견 AI',detail:'우울증 패턴 분석',color:'#818cf8'},
+    {icon:'🔶',name:'수석 최종 판단',detail:'Opus 4.6 최종 승인',color:'#818cf8',opus:true},
+  ],
+  '멘탈케어앱팀': [
+    {icon:'👤',name:'사용자 입력 수신',detail:'PRO 설문·행동 데이터',color:'#10b981'},
+    {icon:'📋',name:'PRO 평가',detail:'정신건강 척도 분석',color:'#10b981'},
+    {icon:'📊',name:'행동위험지수 산출',detail:'AI 위험도 계산',color:'#10b981'},
+    {icon:'🚨',name:'위험도 분류',detail:'저·중·고위험 판단',color:'#10b981'},
+    {icon:'📱',name:'관계기관 연계',detail:'골든타임 대응 발동',color:'#10b981'},
+  ],
+};
+
+function getHarnessPipeline(team) {
+  return HARNESS_PIPELINES[team] || HARNESS_PIPELINES['전체 드림팀'];
+}
+
+function addLog(msg, type='normal') {
+  const log = document.getElementById('harness-log');
+  const time = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const div = document.createElement('div');
+  div.className = `log-line ${type}`;
+  div.textContent = `[${time}] ${msg}`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+function setHarnessStatus(text, color) {
+  const el = document.getElementById('harness-status');
+  el.textContent = text;
+  el.style.background = color + '22';
+  el.style.color = color;
+  el.style.border = `1px solid ${color}44`;
+}
+
+function renderHarnessNodes(nodes, activeIdx = -1, doneIdxs = []) {
+  const body = document.getElementById('harness-body');
+  body.innerHTML = '';
+  nodes.forEach((n, i) => {
+    if (i > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'h-connector';
+      body.appendChild(conn);
+    }
+    const div = document.createElement('div');
+    let cls = 'idle';
+    let badge = '대기';
+    let badgeStyle = 'background:#1a2840;color:#475569;';
+    if (doneIdxs.includes(i)) { cls = 'done'; badge = '완료 ✓'; badgeStyle = `background:#10b98122;color:#10b981;border:1px solid #10b98144;`; }
+    if (i === activeIdx) { cls = 'running'; badge = '실행 중'; badgeStyle = `background:${n.color}22;color:${n.color};border:1px solid ${n.color}44;`; }
+    div.className = `h-node ${cls}`;
+    div.innerHTML = `<div class="h-icon">${n.icon}</div>
+      <div class="h-info">
+        <div class="h-name">${n.name}${n.opus ? ' <span style="font-size:8px;background:#1c1400;color:#fbbf24;border:1px solid #78450a;padding:1px 4px;border-radius:3px;">Opus</span>' : ''}</div>
+        <div class="h-detail">${n.detail}</div>
+      </div>
+      <span class="h-badge" style="${badgeStyle}">${badge}</span>`;
+    body.appendChild(div);
+  });
+}
+
+async function runHarnessAnimation(team, onComplete) {
+  const nodes = getHarnessPipeline(team);
+  const done = [];
+  document.getElementById('harness-log').innerHTML = '';
+  setHarnessStatus('실행 중', '#10b981');
+  addLog(`하네스 파이프라인 시작 — ${team}`, 'active');
+  for (let i = 0; i < nodes.length; i++) {
+    renderHarnessNodes(nodes, i, [...done]);
+    addLog(`${nodes[i].icon} ${nodes[i].name} → 실행 중...`, 'active');
+    await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
+    done.push(i);
+    addLog(`${nodes[i].icon} ${nodes[i].name} → 완료 ✓`);
+    renderHarnessNodes(nodes, -1, [...done]);
+    await new Promise(r => setTimeout(r, 200));
+  }
+  setHarnessStatus('완료', '#34d399');
+  addLog('✅ 하네스 파이프라인 완료 — 결과 전달 중...', 'active');
+  if (onComplete) onComplete();
+}
+
+// ── Railway 설정 ──────────────────────────────────────
+const RAILWAY_URL = 'https://dr4rest-backend-production.up.railway.app';
+
+// Railway 헬스체크
+async function checkRailwayHealth() {
+  const el = document.getElementById('railway-status');
+  el.className = 'fb tgr rl-checking';
+  el.textContent = '◌ 확인 중...';
+  try {
+    const t0 = Date.now();
+    const r = await fetch(`${RAILWAY_URL}/api/v1/health`, { signal: AbortSignal.timeout(5000) });
+    const ms = Date.now() - t0;
+    // 200 OK → 정상 / 404 → 서버는 살아있으나 /health 라우트 없음 → 연결 OK 처리
+    // 5xx → 서버 오류
+    if (r.ok || r.status === 404) {
+      el.className = 'fb tgr rl-ok';
+      el.textContent = r.ok ? `● Railway ${ms}ms` : `● 연결됨 ${ms}ms`;
+    } else {
+      el.className = 'fb tgr rl-err';
+      el.textContent = `● 서버오류 ${r.status}`;
+    }
+  } catch(e) {
+    // fetch 자체 실패 = 진짜 오프라인 (네트워크 끊김, CORS 등)
+    el.className = 'fb tgr rl-err';
+    el.textContent = '● Railway 오프라인';
+  }
+}
+
+// Railway POST 호출 — FastAPI CommandResponse 파싱
+// 응답구조: { primary_team, primary_response, related_teams:[{team,response}], router_reason, slack_sent }
+async function callRailwayCmd(team, content) {
+  const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: content, team }),
+    signal: AbortSignal.timeout(60000)
+  });
+  if (!r.ok) {
+    const errText = await r.text().catch(() => r.statusText);
+    throw new Error(`[${r.status}] ${errText}`);
+  }
+  const data = await r.json();
+  if (data.primary_response) {
+    let reply = data.primary_response;
+    if (data.related_teams && data.related_teams.length > 0) {
+      reply += "
+
+" + "─".repeat(20);
+      data.related_teams.forEach(t => {
+        reply += `
+
+[연관팀: ${t.team}]
+${t.response}`;
+      });
+    }
+    return reply;
+  }
+  return data.result || data.text || data.message || JSON.stringify(data, null, 2);
+}
+
+async function sendCmd(){
+  const input=document.getElementById('cmd-input');
+  const chatInput=document.getElementById('chat-input');
+  const text=(input.value||chatInput.value).trim();
+  if(!text)return;
+  input.value='';chatInput.value='';
+  document.getElementById('cmd-send').disabled=true;
+  document.getElementById('chat-send2').disabled=true;
+  addMsg('user',text);
+
+  const nodes=getHarnessPipeline(selectedTeam);
+  renderHarnessNodes(nodes,0,[]);
+  setHarnessStatus('실행 중','#10b981');
+
+  const typing=addTyping(selectedTeam);
+
+  // Railway 백엔드 호출 + 하네스 애니메이션 병렬 실행
+  // 팀별 Sonnet/Opus 분기는 Railway 서버에서 처리 (API Key 서버 보관)
+  const [reply] = await Promise.all([
+    callRailwayCmd(selectedTeam, text).catch(err => {
+      // 상세 에러 + 상태코드 + 오프라인 안내
+      const isOffline = err.message.includes('Failed to fetch') || err.message.includes('timeout');
+      return isOffline
+        ? `⚠️ Railway 서버에 연결할 수 없습니다.\n\n확인 사항:\n1. Railway 서버 실행 여부 확인\n2. ${RAILWAY_URL}/health 접속 테스트\n3. 네트워크 연결 상태 확인`
+        : `⚠️ 에이전트 오류\n\n${err.message}`;
+    }),
+    runHarnessAnimation(selectedTeam)
+  ]);
+
+  typing.remove();
+  addMsg('bot', reply, selectedTeam);
+  addLog(`💬 ${selectedTeam} 최종 보고 완료`);
+  document.getElementById('cmd-send').disabled=false;
+  document.getElementById('chat-send2').disabled=false;
+}
+
+// 페이지 로드 시 Railway 상태 자동 확인
+window.addEventListener('load', () => setTimeout(checkRailwayHealth, 800));
+document.getElementById('cmd-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCmd();}});
+
+const RC={'수석':'#fbbf24','팀장':'#60a5fa','선임':'#34d399','주임':'#a78bfa','사원':'#94a3b8'};
+const TEAMS=[
+  {icon:'🔍',name:'인텔리전스팀',c:'#ef4444',cls:'tr',opus:false,desc:'정부·지자체 공고 자동수집, AI 필터링, 아침 브리핑',members:[{r:'수석',n:'데이터 분석가'},{r:'팀장',n:'공고수집 팀장'},{r:'선임',n:'조건필터링 선임'},{r:'주임',n:'적합도평가 주임'},{r:'사원',n:'브리핑발송 사원'}]},
+  {icon:'📱',name:'멘탈케어앱팀',c:'#10b981',cls:'tg',opus:false,desc:'온마음케어 앱, PRO 평가, 행동위험지수 UI',members:[{r:'수석',n:'수석 앱 아키텍트'},{r:'팀장',n:'모바일 개발 팀장'},{r:'선임',n:'PRO 모듈 선임'},{r:'주임',n:'UI/UX 주임'},{r:'사원',n:'QA 사원'}]},
+  {icon:'📡',name:'센서·IoT팀',c:'#2dd4bf',cls:'tt',opus:false,desc:'레이저·바이탈·모션 센서, ESP32, mmWave, 하드웨어',members:[{r:'수석',n:'수석 IoT 엔지니어'},{r:'팀장',n:'센서개발 팀장'},{r:'선임',n:'바이탈감지 선임'},{r:'주임',n:'모션분석 주임'},{r:'사원',n:'하드웨어 사원'}]},
+  {icon:'🚨',name:'대응·연계팀',c:'#f97316',cls:'to',opus:false,desc:'골든타임 로직, 관계기관·연계병원 자동 대응',members:[{r:'수석',n:'수석 대응기획가'},{r:'팀장',n:'연계시스템 팀장'},{r:'선임',n:'골든타임 선임'},{r:'주임',n:'기관연계 주임'},{r:'사원',n:'알림발송 사원'}]},
+  {icon:'🏥',name:'병원솔루션팀',c:'#f472b6',cls:'tk',opus:false,desc:'격리실 바이탈 모니터링, 4인실 낙상감지, ERP',members:[{r:'수석',n:'수석 병원솔루션 설계사'},{r:'팀장',n:'병원시스템 팀장'},{r:'선임',n:'격리실모니터 선임'},{r:'주임',n:'낙상감지 주임'},{r:'사원',n:'ERP 개발 사원'}]},
+  {icon:'🤖',name:'데이터·AI팀',c:'#818cf8',cls:'ti',opus:true,desc:'행동위험지수 AI, 우울증 조기발견 모델, 디지털바이오마커, RAG 파이프라인',members:[{r:'수석',n:'수석 AI 연구원'},{r:'팀장',n:'모델개발 팀장'},{r:'선임',n:'위험지수 알고리즘 선임'},{r:'주임',n:'RAG 파이프라인 주임'},{r:'사원',n:'데이터수집 사원'}]},
+  {icon:'⚖️',name:'인증·법무팀',c:'#a78bfa',cls:'tp',opus:true,desc:'KCC·KC 의료기기 인증, 계약·규제 대응, 리스크 평가',members:[{r:'수석',n:'수석 인증전문가'},{r:'팀장',n:'의료기기인증 팀장'},{r:'선임',n:'계약검토 선임'},{r:'주임',n:'리스크평가 주임'},{r:'사원',n:'규제대응 사원'}]},
+  {icon:'💰',name:'재무팀',c:'#f59e0b',cls:'ta',opus:false,desc:'국책사업 예산계획, BEP 분석, 구독형 재무설계',members:[{r:'수석',n:'수석 재무분석가'},{r:'팀장',n:'예산계획 팀장'},{r:'선임',n:'BEP분석 선임'},{r:'주임',n:'수익모델 주임'},{r:'사원',n:'재무보고 사원'}]},
+];
+
+// 조직도
+const vd=document.getElementById('vdrops');
+const pos=[54,160,266,372,478,584,690,796];
+if(vd)pos.forEach(p=>{vd.innerHTML+=`<div style="position:absolute;left:${p}px;top:0;width:1px;height:16px;background:#2a3548;"></div>`;});
+const ot=document.getElementById('org-teams');
+if(ot)TEAMS.forEach(t=>{const d=document.createElement('div');d.className='ot';d.style.borderTopColor=t.c;d.innerHTML=`<div class="ot-head" style="background:${t.c}11;"><div class="ot-icon">${t.icon}</div><div class="ot-name">${t.name}</div>${t.opus?`<div class="ot-opus">수석만 Opus 4.6</div>`:''}</div><div class="ot-body">${t.members.map(m=>`<div class="ot-member"><span class="ot-role">${m.n}</span><span class="ot-rank" style="background:${RC[m.r]}22;color:${RC[m.r]};border:1px solid ${RC[m.r]}44;">${m.r}${t.opus&&m.r==='수석'?' 🔶':''}</span></div>`).join('')}</div>`;ot.appendChild(d);});
+
+// 섹터
+const ts=document.getElementById('team-sectors');
+if(ts)TEAMS.forEach(t=>{ts.innerHTML+=`<div class="sector" style="border-top-color:${t.c};"><div class="sector-title">${t.icon} ${t.name}${t.opus?`<span class="ob">수석만 Opus</span>`:''}</div>${t.members.map(m=>`<div class="sector-member"><span class="sm-role">${m.n}</span><span class="sm-rank" style="background:${RC[m.r]}22;color:${RC[m.r]};border:1px solid ${RC[m.r]}44;">${m.r}${t.opus&&m.r==='수석'?' 🔶':''}</span></div>`).join('')}</div>`;});
+
+// 파이프라인
+const pipes=[
+  {title:'🔍 정부사업 인텔리전스',cls:'tr',count:5,steps:['공고 수집','조건 필터링','적합도 평가','브리핑 작성','카톡 알림']},
+  {title:'📱 멘탈케어 앱',cls:'tg',count:6,steps:['사용자 입력','PRO 평가','행동위험지수','위험도 분류','담당자 알림','관계기관 연계']},
+  {title:'🏠 생존감지',cls:'tt',count:6,steps:['레이저 센서','바이탈 측정','모션 감지','이상 판단','골든타임 발동','연계병원 대응']},
+  {title:'🏥 격리실 모니터링',cls:'to',count:5,steps:['센서 수집','바이탈 체크','이상징후 감지','간호사 알림','즉각 대응']},
+  {title:'🛏️ 낙상감지 (4인실)',cls:'to',count:5,steps:['모션 센서','낙상 판단 AI','위험도 분류','골든타임 발동','의료진 연계']},
+  {title:'🏢 병원 ERP — 재무·총무·원무·약국 자동화',cls:'tk',count:8,steps:['재무팀 자동화','총무팀 자동화','원무팀 자동화','약국 자동화','부서간 연동','데이터 통합','실시간 대시보드','보고서 자동생성']},
+  {title:'💵 재무팀 자동화',cls:'tk',count:5,steps:['수납·청구 자동화','보험청구 처리','미수금 관리','예산 집행 관리','재무 보고서 자동생성']},
+  {title:'🏛️ 총무팀 자동화',cls:'tk',count:5,steps:['인사·급여 처리','물품·재고 관리','시설 유지보수 관리','계약 관리','업무지시 자동화']},
+  {title:'🏥 원무팀 자동화',cls:'tk',count:6,steps:['환자 접수·등록','입퇴원 관리','병동·병실 배정','진료비 계산','보험 적용 처리','퇴원 정산 자동화']},
+  {title:'💊 약국 자동화',cls:'tk',count:5,steps:['처방전 수신','재고 자동 확인','조제 지시 발행','불출 기록 관리','약품 재고 자동발주']},
+  {title:'⚖️ 인증·법무 <span class="ob">수석만Opus</span>',cls:'tp',count:5,steps:['의료기기 분류','KCC·KC 인증','계약서 검토','리스크 평가','최종 규제 판단']},
+  {title:'🎯 B2G 통합 <span class="ob">수석만Opus</span>',cls:'ti',count:8,steps:['공고 수집','전략 수립','프로토타입','센서 검증','인증 검토','예산 분석','GO/NO-GO','제안서 발송']},
+];
+const pl=document.getElementById('pipe-list');
+pipes.forEach(p=>{pl.innerHTML+=`<div class="pc"><div class="pch"><span class="pct">${p.title}</span><span class="pcc">${p.count}</span></div><div class="ags">${p.steps.map((s,i)=>`<span class="at ${p.cls}">${s}</span>${i<p.steps.length-1?'<span class="arr">→</span>':''}`).join('')}</div></div>`;});
+
+// 모니터
+const agts=[{n:'생존감지 센서 수집',c:'#14b8a6',v:95},{n:'행동위험지수 산출',c:'#818cf8',v:82},{n:'멘탈케어 앱 모니터',c:'#10b981',v:78},{n:'격리실 바이탈 체크',c:'#f472b6',v:91},{n:'낙상감지 AI',c:'#fb923c',v:65},{n:'골든타임 대응로직',c:'#f97316',v:88},{n:'정부공고 수집',c:'#ef4444',v:72},{n:'KCC 인증 진행',c:'#a78bfa',v:45}];
+const mr=document.getElementById('monitor-rows');
+agts.forEach(a=>{const on=a.v>60;mr.innerHTML+=`<div class="lr"><div class="lr-d" style="background:${on?a.c:'#334155'};"></div><div class="lr-n">${a.n}</div><div class="lr-bw"><div class="lr-b" style="width:${a.v}%;background:${a.c}55;border-right:2px solid ${a.c};"></div></div><div class="lr-v">${a.v}%</div><span class="lr-s" style="background:${on?a.c+'22':'#1a2840'};color:${on?a.c:'#475569'};">${on?'실행 중':'대기'}</span></div>`;});
+let tk=0;setInterval(()=>{tk++;const ma=document.getElementById('ma'),mt=document.getElementById('mt'),md=document.getElementById('md'),ms=document.getElementById('ms');if(ma)ma.textContent=31+Math.round(Math.sin(tk*.3)*3);if(mt)mt.textContent=18+Math.round(Math.sin(tk*.5)*4);if(md)md.textContent=87+tk;if(ms)ms.textContent=(1.8+Math.sin(tk*.4)*.4).toFixed(1)+'s';},1500);
+
+// 카탈로그
+const cg=document.getElementById('catalog-grid');
+if(cg)TEAMS.forEach(t=>{cg.innerHTML+=`<div style="background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:12px;cursor:pointer;" onmouseover="this.style.borderColor='#2a4060'" onmouseout="this.style.borderColor='#1a2840'"><div style="font-size:18px;margin-bottom:7px;">${t.icon}</div><div style="font-size:12px;font-weight:600;color:#cbd5e1;margin-bottom:3px;">${t.name}${t.opus?`<span class="ob">수석만 Opus</span>`:''}</div><div style="font-size:10px;color:#475569;line-height:1.5;margin-bottom:8px;">${t.desc}</div><div style="display:flex;gap:4px;flex-wrap:wrap;">${t.members.slice(0,2).map(m=>`<span class="at ${t.cls}">${m.n}</span>`).join('')}</div></div>`;});
+
+// 간트
+const gantt=[
+  {t:'📱 멘탈케어앱',tasks:[{n:'PRO 모듈 개발',c:'#10b981',s:0,e:1,p:100},{n:'행동위험지수 UI',c:'#34d399',s:0,e:1,p:100},{n:'앱 출시',c:'#6ee7b7',s:0,e:1,p:100}]},
+  {t:'📡 센서·IoT',tasks:[{n:'바이탈 센서 설계',c:'#14b8a6',s:0,e:2,p:60},{n:'모션감지 개발',c:'#2dd4bf',s:1,e:3,p:20},{n:'하드웨어 통합',c:'#99f6e4',s:3,e:5,p:0}]},
+  {t:'🚨 대응·연계',tasks:[{n:'골든타임 로직',c:'#f97316',s:1,e:3,p:30},{n:'기관 API 연동',c:'#fb923c',s:3,e:5,p:0}]},
+  {t:'🏥 병원솔루션',tasks:[{n:'격리실 모니터링',c:'#f472b6',s:1,e:4,p:20},{n:'낙상감지',c:'#f9a8d4',s:2,e:5,p:0},{n:'ERP',c:'#fbcfe8',s:2,e:6,p:0}]},
+  {t:'🤖 데이터·AI',tasks:[{n:'위험지수 모델',c:'#818cf8',s:0,e:3,p:50},{n:'조기발견 AI',c:'#a5b4fc',s:2,e:5,p:0}]},
+  {t:'⚖️ 인증·법무',tasks:[{n:'KCC·KC 준비',c:'#a78bfa',s:0,e:4,p:30},{n:'의료기기 신고',c:'#c4b5fd',s:4,e:6,p:0}]},
+  {t:'🎯 사업전략',tasks:[{n:'SH공사 납품',c:'#6366f1',s:0,e:2,p:80},{n:'B2B 계약',c:'#818cf8',s:2,e:4,p:0},{n:'B2C 출시',c:'#a5b4fc',s:5,e:7,p:0}]},
+];
+const months=['4월','5월','6월','7월','8월','9월','10월','11월'],C=8;
+const gc=document.getElementById('gantt-content');
+let gh=`<div class="gantt-header">${months.map(m=>`<div class="gm">${m}</div>`).join('')}</div>`;
+gantt.forEach(g=>{gh+=`<div class="gg"><div class="ggt">${g.t}</div>`;g.tasks.forEach(t=>{const l=(t.s/C*100).toFixed(1),w=((t.e-t.s)/C*100).toFixed(1);gh+=`<div class="gr"><div class="gl">${t.n}</div><div class="gt"><div class="gb" style="left:${l}%;width:${w}%;background:${t.c}20;border:1px solid ${t.c}60;"><div class="gbf" style="width:${t.p}%;background:${t.c}60;"></div><div class="gbt" style="color:${t.c};">${t.n}${t.p>0?' '+t.p+'%':''}</div></div></div></div>`;});gh+=`</div>`;});
+gh+=`<div style="display:flex;gap:14px;padding:8px 0;"><span style="font-size:10px;color:#10b981;">■ 완료</span><span style="font-size:10px;color:#f59e0b;">■ 진행중</span><span style="font-size:10px;color:#334155;">■ 예정</span></div>`;
+gc.innerHTML=gh;
+
+// 사용량
+const ubs=[{n:'데이터·AI팀',v:92,c:'#818cf8'},{n:'센서·IoT팀',v:85,c:'#14b8a6'},{n:'멘탈케어앱팀',v:78,c:'#10b981'},{n:'병원솔루션팀',v:72,c:'#f472b6'},{n:'대응·연계팀',v:65,c:'#f97316'},{n:'인증·법무팀',v:55,c:'#a78bfa'},{n:'재무팀',v:42,c:'#f59e0b'},{n:'인텔리전스팀',v:88,c:'#ef4444'}];
+const ub=document.getElementById('usage-bars');
+ubs.forEach(b=>{ub.innerHTML+=`<div class="ub-r"><div class="ub-l">${b.n}</div><div class="ub-t"><div class="ub-f" style="width:${b.v}%;background:${b.c}88;border-right:2px solid ${b.c};"></div></div><div class="ub-v">${b.v}%</div></div>`;});
+
+// 프로세스
+const procs=[{n:'온마음케어 SH공사 납품',s:'실행 중',c:'#10b981',i:'4월 완료 · PRO 모듈·행동위험지수·앱 출시 완료',tags:['tg','tt'],tl:['앱 완료','센서 연동']},{n:'생존감지 시스템 프로토타입',s:'진행 중',c:'#14b8a6',i:'레이저·모션 센서 + 골든타임 로직',tags:['tt','to'],tl:['센서 설계','대응 로직']},{n:'정신병원 격리실 모니터링',s:'대기 중',c:'#f59e0b',i:'5월 시작 · mmWave 바이탈 체크',tags:['tk','tt'],tl:['병원 설계','센서 개발']},{n:'4인실 낙상감지 시스템',s:'대기 중',c:'#f59e0b',i:'5월 시작 · 모션 AI 판단 로직',tags:['tk','ti'],tl:['낙상 AI','대응 연계']},{n:'병원 ERP 구축',s:'준비 중',c:'#3b82f6',i:'5월 시작 · 원무·인사·수납 통합',tags:['tk','ta'],tl:['ERP 설계','예산 검토']},{n:'KCC·KC 의료기기 인증',s:'진행 중',c:'#a78bfa',i:'상시 · 센서 인증 병행',tags:['tp','tp'],tl:['인증 준비','규제 대응']},{n:'정부사업 인텔리전스',s:'실행 중',c:'#ef4444',i:'매일 07:00 · 복지부·NIA·지자체',tags:['tr','ti'],tl:['공고 수집','GO/NO-GO']}];
+const procl=document.getElementById('proc-list');
+procs.forEach(p=>{procl.innerHTML+=`<div class="pr"><div class="pr-s" style="background:${p.c};"></div><div><div class="pr-n">${p.n}</div><div class="pr-i">${p.i}</div></div><div class="pr-b">${p.tl.map((t,i)=>`<span class="at ${p.tags[i]}">${t}</span>`).join('')}</div><span class="at ${p.s==='실행 중'?'tg':p.s==='진행 중'?'tb2':'tgr'}">${p.s}</span></div>`;});
+
+// MCP
+const mcps=['supabase','kakao-notify','나라장터','복지부-api','google-calendar','slack-notify','github','notion','vercel','email-sender','hospital-api','sensor-gateway'];
+const mg=document.getElementById('mcp-grid');
+mcps.forEach(m=>{mg.innerHTML+=`<div class="mcp-item">${m}<span>npx</span></div>`;});
+
+// 토큰 관리
+const TOKEN_TEAMS=[
+  {name:'인텔리전스팀',c:'#ef4444',used:45200,limit:80000,model:'Sonnet'},
+  {name:'데이터·AI팀',c:'#818cf8',used:38100,limit:80000,model:'Sonnet+Opus'},
+  {name:'멘탈케어앱팀',c:'#10b981',used:31400,limit:80000,model:'Sonnet'},
+  {name:'병원솔루션팀',c:'#f472b6',used:28700,limit:80000,model:'Sonnet'},
+  {name:'센서·IoT팀',c:'#2dd4bf',used:22100,limit:80000,model:'Sonnet'},
+  {name:'대응·연계팀',c:'#f97316',used:19800,limit:80000,model:'Sonnet'},
+  {name:'인증·법무팀',c:'#a78bfa',used:17300,limit:80000,model:'Sonnet+Opus'},
+  {name:'재무팀',c:'#f59e0b',used:8900,limit:80000,model:'Sonnet'},
+  {name:'사업전략팀',c:'#6366f1',used:6950,limit:80000,model:'Sonnet+Opus'},
+];
+const ttl=document.getElementById('team-token-list');
+if(ttl){
+  TOKEN_TEAMS.forEach(t=>{
+    const pct=Math.round(t.used/t.limit*100);
+    const warn=pct>=80;
+    ttl.innerHTML+=`<div class="team-token-row">
+      <div class="ttr-name" style="color:${t.c};">${t.name}</div>
+      <div class="ttr-bar"><div class="ttr-fill" style="width:${pct}%;background:${warn?'#ef4444':t.c}88;border-right:2px solid ${warn?'#ef4444':t.c};"></div></div>
+      <div class="ttr-val" style="color:${warn?'#ef4444':'#64748b'};">${(t.used/1000).toFixed(1)}K</div>
+      <div class="ttr-limit">/ ${(t.limit/1000).toFixed(0)}K</div>
+      <div style="font-size:9px;padding:1px 6px;border-radius:5px;background:${t.model.includes('Opus')?'#1c1400':'#1a2840'};color:${t.model.includes('Opus')?'#fbbf24':'#475569'};margin-left:6px;">${t.model}</div>
+    </div>`;
+  });
+}
+
+function toggleBtn(btn){btn.classList.toggle('on');}
+function saveLimits(){
+  const daily=document.getElementById('lim-daily').value;
+  const opus=document.getElementById('lim-opus').value;
+  const log=document.getElementById('alert-log');
+  const now=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  const div=document.createElement('div');
+  div.className='alert-row';
+  div.innerHTML=`<div class="alert-dot" style="background:#3b82f6;"></div><span class="alert-text" style="color:#60a5fa;font-size:11px;">한도 설정 저장 — 전체:${Number(daily).toLocaleString()} / Opus:${Number(opus).toLocaleString()} 토큰</span><span class="alert-time" style="font-size:10px;color:#334155;">${now}</span>`;
+  log.prepend(div);
+}
+document.getElementById('start-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+
+// 토큰 실시간 애니메이션
+let tkTick=0;
+setInterval(()=>{
+  tkTick++;
+  const base=218450+tkTick*12;
+  document.getElementById('tk-today').textContent=base.toLocaleString();
+  document.getElementById('tk-today-bar').style.width=Math.min(base/500000*100,100).toFixed(1)+'%';
+  const opusBase=12300+tkTick*2;
+  document.getElementById('tk-opus').textContent=opusBase.toLocaleString();
+  document.getElementById('tk-opus-bar').style.width=Math.min(opusBase/50000*100,100).toFixed(1)+'%';
+  const sonnetBase=base-opusBase;
+  document.getElementById('tk-sonnet').textContent=sonnetBase.toLocaleString();
+  const cost=Math.round(base*0.22/1000);
+  document.getElementById('tk-cost').textContent='₩'+cost.toLocaleString();
+  if(base/500000>=0.8){
+    document.getElementById('tk-today-bar').style.background='#ef4444';
+  }
+},3000);
+</script>
+</body>
+</html>
