@@ -1109,32 +1109,55 @@ async function checkRailwayHealth() {
   }
 }
 
-// Railway POST 호출 — FastAPI CommandResponse 파싱
-// 응답구조: { primary_team, primary_response, related_teams:[{team,response}], router_reason, slack_sent }
-async function callRailwayCmd(team, content) {
+// SSE 스트리밍 봇 메시지 생성 — 빈 버블 반환 후 청크 append
+function createStreamingBotMsg(team) {
+  const wrap = document.getElementById('chat-wrap');
+  const c = TCOLORS[team] || '#60a5fa', ic = TICONS[team] || '🤖';
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble"></div></div>`;
+  wrap.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return { msgEl: div, bubbleEl: div.querySelector('.msg-bubble') };
+}
+
+// Railway SSE 스트리밍 호출 — /api/v1/command
+// SSE 포맷: data: {"type":"routing",...} | data: 텍스트청크 | data: {"type":"related",...} | data: [DONE]
+async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRelated } = {}) {
   const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: content, team }),
-    signal: AbortSignal.timeout(60000)
+    signal: AbortSignal.timeout(90000)
   });
   if (!r.ok) {
     const errText = await r.text().catch(() => r.statusText);
     throw new Error(`[${r.status}] ${errText}`);
   }
-  const data = await r.json();
-  const primaryTeam = data.primary_team || team;
-  if (data.primary_response) {
-    let reply = data.primary_response;
-    if (data.related_teams && data.related_teams.length > 0) {
-      reply += '\n\n' + '\u2500'.repeat(20);
-      data.related_teams.forEach(t => {
-        reply += '\n\n[연관팀: ' + t.team + ']\n' + t.response;
-      });
+  const reader = r.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  outer: while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() ?? '';
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const data = line.slice(6).trim();
+      if (data === '[DONE]') break outer;
+      try {
+        const json = JSON.parse(data);
+        if (json.type === 'routing') { onRoutingInfo?.(json); }
+        else if (json.type === 'related') { onRelated?.(json); }
+        else if (json.type === 'error') { throw new Error(json.message); }
+      } catch (e) {
+        if (e instanceof SyntaxError) { onChunk?.(data); }
+        else throw e;
+      }
     }
-    return { reply, primaryTeam };
   }
-  return { reply: data.result || data.text || data.message || JSON.stringify(data, null, 2), primaryTeam };
 }
 
 async function sendCmd(){
@@ -1152,27 +1175,52 @@ async function sendCmd(){
   setHarnessStatus('실행 중','#10b981');
 
   const typing=addTyping(selectedTeam);
+  runHarnessAnimation(selectedTeam); // 병렬 실행 (await 없음)
 
-  // Railway 백엔드 호출 + 하네스 애니메이션 병렬 실행
-  // 팀별 Sonnet/Opus 분기는 Railway 서버에서 처리 (API Key 서버 보관)
-  const [cmdResult] = await Promise.all([
-    callRailwayCmd(selectedTeam, text).catch(err => {
-      // 상세 에러 + 상태코드 + 오프라인 안내
-      const isOffline = err.message.includes('Failed to fetch') || err.message.includes('timeout');
-      const errReply = isOffline
-        ? `⚠️ Railway 서버에 연결할 수 없습니다.\n\n확인 사항:\n1. Railway 서버 실행 여부 확인\n2. ${RAILWAY_URL}/health 접속 테스트\n3. 네트워크 연결 상태 확인`
-        : `⚠️ 에이전트 오류\n\n${err.message}`;
-      return { reply: errReply, primaryTeam: selectedTeam };
-    }),
-    runHarnessAnimation(selectedTeam)
-  ]);
+  let routedTeam=selectedTeam;
+  let fullReply='';
+  let bubbleEl=null;
 
-  const { reply, primaryTeam: routedTeam } = cmdResult;
-  if (!reply.startsWith('⚠️')) trackTokens(routedTeam, text, reply);
+  try {
+    await callRailwayStream(selectedTeam, text, {
+      onRoutingInfo(json) {
+        routedTeam = json.primary_team || selectedTeam;
+        typing.remove();
+        const { bubbleEl: b } = createStreamingBotMsg(routedTeam);
+        bubbleEl = b;
+      },
+      onChunk(chunk) {
+        if (!bubbleEl) {
+          // routing 이벤트 없이 청크 선도착 시 폴백
+          typing.remove();
+          const { bubbleEl: b } = createStreamingBotMsg(routedTeam);
+          bubbleEl = b;
+        }
+        fullReply += chunk;
+        bubbleEl.innerHTML = fullReply.replace(/\n/g,'<br>');
+        bubbleEl.scrollIntoView({ behavior:'smooth', block:'end' });
+      },
+      onRelated(json) {
+        fullReply += '\n\n' + '\u2500'.repeat(20) + '\n\n[연관팀: ' + json.team + ']\n' + json.response;
+        if (bubbleEl) bubbleEl.innerHTML = fullReply.replace(/\n/g,'<br>');
+      }
+    });
+  } catch(err) {
+    const remainTyping=document.getElementById('typing-indicator');
+    if(remainTyping) remainTyping.remove();
+    const isOffline=err.message.includes('Failed to fetch')||err.message.includes('timeout');
+    fullReply=isOffline
+      ?`⚠️ Railway 서버에 연결할 수 없습니다.\n\n확인 사항:\n1. Railway 서버 실행 여부 확인\n2. ${RAILWAY_URL}/health 접속 테스트\n3. 네트워크 연결 상태 확인`
+      :`⚠️ 에이전트 오류\n\n${err.message}`;
+    addMsg('bot', fullReply, selectedTeam);
+  }
 
-  typing.remove();
-  addMsg('bot', reply, selectedTeam);
-  addLog(`💬 ${selectedTeam} 최종 보고 완료`);
+  // typing indicator가 아직 남아있을 경우 제거 (엣지 케이스)
+  const remainTyping=document.getElementById('typing-indicator');
+  if(remainTyping) remainTyping.remove();
+
+  if(fullReply && !fullReply.startsWith('⚠️')) trackTokens(routedTeam, text, fullReply);
+  addLog(`💬 ${routedTeam} 최종 보고 완료`);
   document.getElementById('cmd-send').disabled=false;
   document.getElementById('chat-send2').disabled=false;
 }
