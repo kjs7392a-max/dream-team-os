@@ -43,6 +43,8 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .tt{background:#02201c;color:#2dd4bf;border-color:#0d4a42;}
 .ti{background:#0f1040;color:#818cf8;border-color:#1e1f7a;}
 .to{background:#2d1500;color:#fb923c;border-color:#7c3010;}
+.ts{background:#0f1040;color:#818cf8;border-color:#2a2090;}
+.tq{background:#021e24;color:#22d3ee;border-color:#0e6478;}
 .tgr{background:#1a1f2e;color:#94a3b8;border-color:#2a3548;}
 #railway-status.rl-ok{background:#052e1c!important;color:#34d399!important;border-color:#065f46!important;}
 #railway-status.rl-err{background:#2d0a0a!important;color:#f87171!important;border-color:#7f1d1d!important;}
@@ -76,11 +78,11 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 /* 입력 */
 .cmd-input{width:100%;background:#070b16;border:1px solid #1a2840;border-radius:8px;padding:10px 12px;font-size:12px;color:#e2e8f0;outline:none;resize:none;font-family:inherit;line-height:1.6;transition:border-color .15s;}
 .cmd-input:focus{border-color:#10b981;}
-.cmd-input::placeholder{color:#64748b;}
+.cmd-input::placeholder{color:#94a3b8;}
 .cmd-btn-row{display:flex;gap:7px;margin-top:8px;}
 .cmd-send{background:#10b981;border:none;border-radius:7px;padding:7px 18px;color:#000;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;}
 .cmd-send:hover{background:#34d399;}
-.cmd-send:disabled{background:#1a2840;color:#334155;cursor:not-allowed;}
+.cmd-send:disabled{background:#1a2840;color:#64748b;cursor:not-allowed;}
 .cmd-clear{background:#0a1222;border:1px solid #1a2840;border-radius:7px;padding:7px 14px;color:#cbd5e1;font-size:12px;cursor:pointer;}
 .cmd-clear:hover{color:#f1f5f9;border-color:#2a3548;}
 
@@ -120,17 +122,17 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .msg.bot .msg-bubble{background:#0d1525;border:1px solid #1a2840;color:#e2e8f0;border-radius:2px 10px 10px 10px;}
 .msg-team{font-size:9px;color:#b0c4d8;margin-bottom:3px;}
 .typing{display:flex;gap:4px;align-items:center;padding:4px 0;}
-.typing span{width:5px;height:5px;border-radius:50%;background:#475569;animation:typing 1.2s infinite;}
+.typing span{width:5px;height:5px;border-radius:50%;background:#64748b;animation:typing 1.2s infinite;}
 .typing span:nth-child(2){animation-delay:.2s;}
 .typing span:nth-child(3){animation-delay:.4s;}
 @keyframes typing{0%,60%,100%{opacity:.3;}30%{opacity:1;}}
 .chat-input-wrap{padding:9px 10px;border-top:1px solid #1a2840;display:flex;gap:7px;flex-shrink:0;}
 .chat-input{flex:1;background:#070b16;border:1px solid #1a2840;border-radius:7px;padding:7px 11px;font-size:11px;color:#e2e8f0;outline:none;font-family:inherit;transition:border-color .15s;}
 .chat-input:focus{border-color:#10b981;}
-.chat-input::placeholder{color:#64748b;}
+.chat-input::placeholder{color:#94a3b8;}
 .chat-send{background:#10b981;border:none;border-radius:7px;padding:7px 14px;color:#000;font-size:13px;font-weight:700;cursor:pointer;}
 .chat-send:hover{background:#34d399;}
-.chat-send:disabled{background:#1a2840;color:#334155;}
+.chat-send:disabled{background:#1a2840;color:#64748b;}
 
 /* 채팅 스타일은 cmd-right 섹션에 통합 */
 
@@ -150,7 +152,7 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .ot-body{padding:5px 7px;}
 .ot-member{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid #0f1525;}
 .ot-member:last-child{border:none;}
-.ot-role{font-size:8px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62px;}
+.ot-role{font-size:8px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62px;}
 .ot-rank{font-size:7px;padding:1px 3px;border-radius:3px;flex-shrink:0;margin-left:2px;}
 
 /* 팀 섹터 */
@@ -159,32 +161,40 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .sector-title{font-size:11px;font-weight:600;color:#cbd5e1;margin-bottom:7px;}
 .sector-member{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid #111a2a;font-size:10px;}
 .sector-member:last-child{border:none;}
-.sm-role{color:#64748b;}
+.sm-role{color:#94a3b8;}
 .sm-rank{font-size:9px;padding:1px 5px;border-radius:4px;}
 
 /* 파이프라인 */
 .pg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
-.pc{background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:11px;}
-.pch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.pc{background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:11px;cursor:pointer;transition:border-color 0.15s;}
+.pc:hover{border-color:#2a3f5f;}
+.pch{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .pct{font-size:11px;font-weight:500;color:#cbd5e1;}
 .pcc{font-size:9px;background:#1a3050;color:#60a5fa;padding:1px 6px;border-radius:7px;}
+.pipe-meta{display:flex;gap:6px;align-items:center;margin-bottom:7px;}
+.pipe-team{font-size:9px;color:#94a3b8;background:#111827;border-radius:5px;padding:1px 6px;}
+.pipe-desc{font-size:10px;color:#94a3b8;margin-bottom:7px;line-height:1.5;}
+.pipe-status{font-size:9px;padding:1px 7px;border-radius:8px;font-weight:500;}
+.pipe-status.running{background:#052e1c;color:#34d399;border:1px solid #065f46;}
+.pipe-status.waiting{background:#0f2040;color:#60a5fa;border:1px solid #1e4070;}
+.pipe-status.stopped{background:#2d0a0a;color:#f87171;border:1px solid #7f1d1d;}
 .ags{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
 .at{font-size:9px;padding:2px 7px;border-radius:4px;}
-.arr{font-size:9px;color:#334155;}
+.arr{font-size:9px;color:#64748b;}
 
 /* 모니터 */
 .mc-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;}
 .mc{background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:12px;}
-.mc-l{font-size:11px;color:#475569;margin-bottom:5px;}
+.mc-l{font-size:11px;color:#64748b;margin-bottom:5px;}
 .mc-v{font-size:24px;font-weight:600;}
-.mc-s{font-size:9px;color:#334155;margin-top:2px;}
+.mc-s{font-size:9px;color:#64748b;margin-top:2px;}
 .lrw{display:flex;flex-direction:column;gap:5px;}
 .lr{display:flex;align-items:center;gap:10px;background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:8px 12px;}
 .lr-d{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .lr-n{font-size:11px;color:#94a3b8;width:150px;flex-shrink:0;}
 .lr-bw{flex:1;height:6px;background:#1a2840;border-radius:3px;overflow:hidden;}
 .lr-b{height:100%;border-radius:3px;}
-.lr-v{font-size:11px;color:#64748b;width:30px;text-align:right;}
+.lr-v{font-size:11px;color:#94a3b8;width:30px;text-align:right;}
 .lr-s{font-size:10px;padding:2px 7px;border-radius:7px;flex-shrink:0;}
 
 /* 시스템 */
@@ -193,46 +203,87 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .st{font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:9px;}
 .sr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1a2840;font-size:11px;}
 .sr:last-child{border:none;}
-.sk{color:#475569;}.sv{color:#94a3b8;}.so{color:#10b981;}.sw_{color:#f59e0b;}
+.sk{color:#64748b;}.sv{color:#94a3b8;}.so{color:#10b981;}.sw_{color:#f59e0b;}
 
 /* 간트 */
 .gantt-wrap{overflow-x:auto;}
 .gantt-inner{min-width:620px;}
 .gantt-header{display:flex;padding-left:120px;margin-bottom:4px;border-bottom:1px solid #1a2840;padding-bottom:4px;}
-.gm{flex:1;text-align:center;font-size:10px;color:#475569;}
+.gm{flex:1;text-align:center;font-size:10px;color:#64748b;}
 .gg{background:#0a1222;border-radius:7px;margin-bottom:3px;}
 .ggt{padding:5px 0 2px 10px;font-size:11px;font-weight:600;color:#94a3b8;}
 .gr{display:flex;align-items:center;padding:2px 0 2px 10px;}
-.gl{width:120px;font-size:9px;color:#475569;flex-shrink:0;}
+.gl{width:120px;font-size:9px;color:#64748b;flex-shrink:0;}
 .gt{flex:1;position:relative;height:18px;}
 .gb{position:absolute;height:100%;border-radius:3px;overflow:hidden;}
 .gbf{height:100%;}
 .gbt{position:absolute;top:50%;left:4px;transform:translateY(-50%);font-size:8px;white-space:nowrap;}
+.gantt-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.g-add-btn{background:#0f2040;border:1px solid #3b82f644;color:#60a5fa;border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;}
+.g-add-btn:hover{background:#1a3060;}
+.g-tpl-btn{background:#051a1a;border:1px solid #14b8a644;color:#2dd4bf;border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;}
+.g-tpl-btn:hover{background:#0a2828;}
+.gg-hd{display:flex;justify-content:space-between;align-items:center;padding:5px 10px 2px;}
+.gg-tools{display:flex;gap:5px;opacity:0;transition:opacity 0.15s;}
+.gg:hover .gg-tools{opacity:1;}
+.g-ic-btn{background:none;border:none;font-size:11px;color:#64748b;cursor:pointer;padding:2px 5px;border-radius:4px;}
+.g-ic-btn:hover{color:#94a3b8;background:#1a2840;}
+.g-task-add{font-size:10px;color:#64748b;cursor:pointer;padding:3px 10px 6px 130px;display:block;}
+.g-task-add:hover{color:#60a5fa;}
+.gt-rel{position:relative;}
+.g-today-line{position:absolute;top:0;bottom:0;width:2px;background:#ef4444;z-index:5;pointer-events:none;}
+.g-today-lbl{position:absolute;top:-16px;font-size:8px;color:#ef4444;white-space:nowrap;transform:translateX(-50%);}
+.gantt-empty{text-align:center;padding:48px 0;color:#64748b;font-size:13px;}
+.status-ready{background:#1a1f2e;border-color:#2a354866 !important;}
+.status-inprogress{background:#0f204088;border-color:#3b82f660 !important;}
+.status-done{background:#05301a88;border-color:#34d39960 !important;}
+.status-delayed{background:#1a080888;border-color:#ef444460 !important;}
+/* Modal */
+.gm-bg{position:fixed;inset:0;background:#00000099;z-index:1000;display:flex;align-items:center;justify-content:center;}
+.gm-box{background:#0a1222;border:1px solid #1a2840;border-radius:12px;padding:22px;width:360px;max-height:90vh;overflow-y:auto;}
+.gm-title{font-size:14px;font-weight:600;color:#e2e8f0;margin-bottom:16px;}
+.gm-field{margin-bottom:12px;}
+.gm-label{font-size:11px;color:#94a3b8;margin-bottom:4px;display:block;}
+.gm-input{width:100%;background:#070b16;border:1px solid #1a2840;border-radius:6px;padding:7px 10px;font-size:12px;color:#e2e8f0;outline:none;box-sizing:border-box;}
+.gm-input:focus{border-color:#3b82f6;}
+.gm-select{width:100%;background:#070b16;border:1px solid #1a2840;border-radius:6px;padding:7px 10px;font-size:12px;color:#e2e8f0;outline:none;}
+.gm-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
+.gm-btn-cancel{background:#1a2840;border:none;border-radius:6px;padding:7px 14px;font-size:12px;color:#94a3b8;cursor:pointer;}
+.gm-btn-save{background:#3b82f6;border:none;border-radius:6px;padding:7px 14px;font-size:12px;color:#fff;cursor:pointer;}
+.gm-btn-del{background:#1a0808;border:1px solid #ef444444;border-radius:6px;padding:7px 14px;font-size:12px;color:#ef4444;cursor:pointer;margin-right:auto;}
+.gm-color-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+.gm-color-swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
+.gm-color-swatch.sel{border-color:#fff;}
+/* Template modal */
+.tpl-item{background:#060d1a;border:1px solid #1a2840;border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;}
+.tpl-item:hover{border-color:#3b82f644;background:#0a1a30;}
+.tpl-name{font-size:12px;color:#cbd5e1;font-weight:600;margin-bottom:4px;}
+.tpl-desc{font-size:10px;color:#64748b;}
 
 /* 사용량/프로세스 */
 .ub-r{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.ub-l{font-size:11px;color:#64748b;width:110px;flex-shrink:0;}
+.ub-l{font-size:11px;color:#94a3b8;width:110px;flex-shrink:0;}
 .ub-t{flex:1;height:8px;background:#1a2840;border-radius:4px;overflow:hidden;}
 .ub-f{height:100%;border-radius:4px;}
-.ub-v{font-size:11px;color:#64748b;width:35px;text-align:right;}
+.ub-v{font-size:11px;color:#94a3b8;width:35px;text-align:right;}
 .pl{display:flex;flex-direction:column;gap:6px;}
 .pr{background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:9px;}
 .pr-s{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .pr-n{font-size:12px;color:#cbd5e1;flex:1;}
-.pr-i{font-size:10px;color:#475569;}
+.pr-i{font-size:10px;color:#64748b;}
 .pr-b{display:flex;gap:4px;}
 .mcp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;}
 .mcp-item{background:#060d1a;border:1px solid #1a2840;border-radius:7px;padding:8px 10px;font-size:11px;color:#60a5fa;}
-.mcp-item span{display:block;font-size:9px;color:#334155;margin-top:2px;}
-.memory-pre{font-size:11px;color:#64748b;line-height:1.9;background:#060d1a;padding:14px;border-radius:9px;white-space:pre-wrap;}
+.mcp-item span{display:block;font-size:9px;color:#64748b;margin-top:2px;}
+.memory-pre{font-size:11px;color:#94a3b8;line-height:1.9;background:#060d1a;padding:14px;border-radius:9px;white-space:pre-wrap;}
 /* 토큰 관리 */
 .token-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;}
 .token-card{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:14px;}
 .token-card.warn{border-color:#f59e0b66;}
 .token-card.danger{border-color:#ef444466;}
-.tc-label{font-size:11px;color:#475569;margin-bottom:5px;}
+.tc-label{font-size:11px;color:#64748b;margin-bottom:5px;}
 .tc-value{font-size:24px;font-weight:600;}
-.tc-sub{font-size:10px;color:#334155;margin-top:3px;}
+.tc-sub{font-size:10px;color:#64748b;margin-top:3px;}
 .tc-bar{height:6px;background:#1a2840;border-radius:3px;overflow:hidden;margin-top:8px;}
 .tc-fill{height:100%;border-radius:3px;transition:width 0.5s;}
 .limit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
@@ -240,27 +291,120 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .limit-title{font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .limit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a2840;}
 .limit-row:last-child{border:none;}
-.limit-label{font-size:11px;color:#64748b;}
+.limit-label{font-size:11px;color:#94a3b8;}
 .limit-input{background:#070b16;border:1px solid #1a2840;border-radius:6px;padding:4px 8px;font-size:11px;color:#e2e8f0;width:90px;text-align:right;outline:none;}
 .limit-input:focus{border-color:#3b82f6;}
-.limit-unit{font-size:10px;color:#334155;margin-left:4px;}
+.limit-unit{font-size:10px;color:#64748b;margin-left:4px;}
 .limit-toggle{width:36px;height:20px;background:#1a2840;border-radius:10px;position:relative;cursor:pointer;border:none;}
 .limit-toggle.on{background:#10b98155;}
-.limit-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#475569;top:3px;left:3px;transition:all 0.2s;}
+.limit-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#64748b;top:3px;left:3px;transition:all 0.2s;}
 .limit-toggle.on::after{background:#10b981;left:19px;}
 .save-btn{background:#3b82f6;border:none;border-radius:8px;padding:8px 20px;color:#fff;font-size:12px;cursor:pointer;font-weight:500;}
 .save-btn:hover{background:#2563eb;}
 .alert-row{display:flex;align-items:center;gap:10px;background:#0a1222;border:1px solid #1a2840;border-radius:8px;padding:10px 14px;margin-bottom:6px;}
 .alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .alert-text{font-size:11px;flex:1;}
-.alert-time{font-size:10px;color:#334155;}
+.alert-time{font-size:10px;color:#64748b;}
 .team-token-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a2840;}
 .team-token-row:last-child{border:none;}
 .ttr-name{font-size:11px;color:#94a3b8;width:120px;flex-shrink:0;}
 .ttr-bar{flex:1;height:8px;background:#1a2840;border-radius:4px;overflow:hidden;}
 .ttr-fill{height:100%;border-radius:4px;}
-.ttr-val{font-size:11px;color:#64748b;width:60px;text-align:right;}
-.ttr-limit{font-size:10px;color:#334155;width:70px;text-align:right;}
+.ttr-val{font-size:11px;color:#94a3b8;width:60px;text-align:right;}
+.ttr-limit{font-size:10px;color:#64748b;width:70px;text-align:right;}
+
+/* 인텔리전스 뷰 */
+.intel-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.intel-filters{display:flex;gap:5px;}
+.if-btn{font-size:10px;padding:4px 12px;border-radius:6px;border:1px solid #1a2840;background:#070b16;color:#94a3b8;cursor:pointer;transition:all .15s;}
+.if-btn.active{background:#0f2040;border-color:#3b82f6;color:#60a5fa;font-weight:600;}
+.if-btn:hover:not(.active){border-color:#2a3548;color:#cbd5e1;}
+.intel-count{font-size:10px;color:#5a7090;}
+.intel-refresh{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.ir-btn{font-size:10px;padding:4px 12px;border-radius:6px;border:1px solid #1a2840;background:#070b16;color:#94a3b8;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.ir-btn:hover{border-color:#10b981;color:#34d399;}
+.ir-btn.loading{opacity:0.6;cursor:not-allowed;}
+.intel-upd{font-size:9px;color:#5a7090;}
+.intel-summary{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:14px;margin-bottom:14px;font-size:11px;color:#cbd5e1;line-height:1.8;max-height:160px;overflow-y:auto;}
+.intel-sum-hd{font-size:10px;font-weight:600;color:#f87171;margin-bottom:8px;}
+.intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+.ic{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:12px 14px;transition:border-color .2s;}
+.ic:hover{border-color:#2a3548;}
+.ic-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.ic-score{font-size:11px;font-weight:700;min-width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ic-title{font-size:11px;font-weight:600;color:#e2e8f0;line-height:1.5;flex:1;}
+.ic-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.ic-tag{font-size:9px;padding:1px 6px;border-radius:4px;border:1px solid;}
+.ic-meta{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.ic-meta-item{font-size:9px;color:#8b9db8;}
+.ic-meta-label{color:#5a7090;margin-right:3px;}
+.ic-pts{margin-top:8px;border-top:1px solid #1a2840;padding-top:7px;}
+.ic-pt{font-size:9px;color:#94a3b8;line-height:1.7;padding-left:10px;position:relative;}
+.ic-pt::before{content:'·';position:absolute;left:2px;color:#64748b;}
+.intel-empty{text-align:center;padding:48px;color:#64748b;font-size:13px;}
+/* 프로세스 관리 */
+.proc-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.pr-edit-btn{background:none;border:none;color:#64748b;cursor:pointer;font-size:11px;padding:2px 6px;border-radius:4px;flex-shrink:0;}
+.pr-edit-btn:hover{color:#94a3b8;background:#1a2840;}
+/* 시스템 정보 편집 */
+.sys-section{background:#0a1222;border:1px solid #1a2840;border-radius:10px;padding:12px;margin-bottom:8px;}
+.sys-section-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sys-title-input{background:none;border:none;font-size:12px;font-weight:600;color:#94a3b8;outline:none;flex:1;}
+.sys-title-input:focus{background:#070b16;border-radius:4px;padding:1px 6px;}
+.sys-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid #0a1828;}
+.sys-row:last-of-type{border:none;}
+.sys-key-input{background:none;border:none;font-size:11px;color:#94a3b8;outline:none;flex:1;min-width:0;}
+.sys-val-input{background:none;border:none;font-size:11px;color:#e2e8f0;outline:none;flex:1;min-width:0;text-align:right;}
+.sys-key-input:focus,.sys-val-input:focus{background:#070b16;border-radius:4px;padding:1px 5px;}
+.sys-del-row{background:none;border:none;color:#64748b;cursor:pointer;font-size:10px;padding:1px 4px;flex-shrink:0;}
+.sys-del-row:hover{color:#ef4444;}
+/* MCP */
+.mcp-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.mcp-item-wrap{position:relative;}
+.mcp-dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0;}
+/* 메모리 에디터 */
+.mem-toolbar{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+.mem-editor{width:100%;min-height:320px;background:#060d1a;border:1px solid #1a2840;border-radius:9px;padding:14px;font-size:11px;color:#94a3b8;line-height:1.9;font-family:monospace;outline:none;resize:vertical;box-sizing:border-box;}
+.mem-editor:focus{border-color:#3b82f6;}
+.mem-chars{font-size:10px;color:#64748b;}
+/* 카탈로그 */
+.cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.cat-card{background:#0a1222;border:1px solid #1a2840;border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color 0.15s,transform 0.1s;display:flex;}
+.cat-card:hover{border-color:#2a4060;transform:translateY(-1px);}
+.cat-cb{width:4px;flex-shrink:0;}
+.cat-body{flex:1;padding:12px 12px 10px;}
+.cat-hd{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.cat-icon{font-size:17px;line-height:1;}
+.cat-name{font-size:12px;font-weight:600;color:#cbd5e1;flex:1;}
+.cat-model{font-size:8px;padding:1px 5px;border-radius:4px;flex-shrink:0;}
+.cat-desc{font-size:10px;color:#64748b;line-height:1.6;margin-bottom:8px;}
+.cat-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px;}
+.cat-tag{font-size:9px;padding:1px 6px;border-radius:4px;background:#0f1828;color:#64748b;border:1px solid #1a2840;}
+.cat-members{display:flex;flex-wrap:wrap;gap:4px;}
+.cat-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px;padding-top:8px;border-top:1px solid #0f1828;}
+.cat-calls{font-size:9px;color:#64748b;}
+.cat-calls.active{color:#34d399;}
+/* 카탈로그 상세 모달 */
+.catm-bg{position:fixed;inset:0;background:#00000099;z-index:1000;display:flex;align-items:center;justify-content:center;}
+.catm-box{background:#0a1222;border:1px solid #1a2840;border-radius:14px;width:440px;max-height:88vh;overflow-y:auto;}
+.catm-hd{padding:18px 20px 14px;border-bottom:1px solid #0f1828;display:flex;align-items:center;gap:10px;}
+.catm-icon{font-size:22px;}
+.catm-info{flex:1;}
+.catm-title{font-size:15px;font-weight:700;color:#e2e8f0;}
+.catm-sub{font-size:10px;color:#64748b;margin-top:3px;line-height:1.6;}
+.catm-close{background:none;border:none;color:#64748b;font-size:18px;cursor:pointer;padding:4px 8px;}
+.catm-close:hover{color:#94a3b8;}
+.catm-body{padding:16px 20px 20px;}
+.catm-sec{font-size:10px;font-weight:600;color:#64748b;letter-spacing:0.08em;text-transform:uppercase;margin:14px 0 8px;}
+.catm-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.catm-stat{background:#060d1a;border:1px solid #1a2840;border-radius:8px;padding:10px;text-align:center;}
+.catm-stat-v{font-size:16px;font-weight:700;color:#60a5fa;margin-bottom:2px;}
+.catm-stat-l{font-size:9px;color:#64748b;}
+.catm-member{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #0a1222;}
+.catm-member:last-child{border:none;}
+.catm-rank{font-size:9px;padding:2px 6px;border-radius:4px;min-width:30px;text-align:center;flex-shrink:0;}
+.catm-mname{font-size:11px;color:#94a3b8;flex:1;}
+.catm-mmodel{font-size:9px;padding:1px 5px;border-radius:4px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -273,6 +417,7 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
   </div>
   <div class="nav">
     <div class="ni active" onclick="sw('cmd',this)"><span class="ni-i">🎯</span>지시 센터</div>
+    <div class="ni" onclick="sw('intel',this)"><span class="ni-i">🔍</span>인텔리전스</div>
     <div class="sep"></div>
     <div class="ni" onclick="sw('org',this)"><span class="ni-i">🏢</span>조직도</div>
     <div class="ni" onclick="sw('pipeline',this)"><span class="ni-i">⊞</span>시스템 개요</div>
@@ -325,6 +470,7 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
               <div class="team-btn" data-team="데이터·AI팀">🤖 AI</div>
               <div class="team-btn" data-team="인증·법무팀">⚖️ 법무</div>
               <div class="team-btn" data-team="재무팀">💰 재무</div>
+              <div class="team-btn" data-team="연구논문팀">📚 논문</div>
             </div>
           </div>
 
@@ -357,10 +503,10 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
           <div class="harness-panel">
             <div class="harness-header">
               <span>⚡ 하네스 파이프라인</span>
-              <span class="harness-status" id="harness-status" style="background:#1a2840;color:#475569;">대기 중</span>
+              <span class="harness-status" id="harness-status" style="background:#1a2840;color:#64748b;">대기 중</span>
             </div>
             <div class="harness-body" id="harness-body">
-              <div style="text-align:center;padding:16px 10px;color:#334155;font-size:11px;">
+              <div style="text-align:center;padding:16px 10px;color:#64748b;font-size:11px;">
                 지시를 입력하면 하네스가 팀별로 자동 실행됩니다
               </div>
             </div>
@@ -372,7 +518,7 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
           <div class="chat-panel">
             <div class="chat-header">
               <span id="chat-team-label">🌲 전체 드림팀 — 대화 기록</span>
-              <button onclick="clearChat()" style="font-size:10px;background:#1a2840;border:none;color:#64748b;padding:3px 8px;border-radius:5px;cursor:pointer;">초기화</button>
+              <button onclick="clearChat()" style="font-size:10px;background:#1a2840;border:none;color:#94a3b8;padding:3px 8px;border-radius:5px;cursor:pointer;">초기화</button>
             </div>
             <div class="chat-body" id="chat-wrap">
               <div class="msg bot">
@@ -393,6 +539,26 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       </div>
     </div>
 
+    <!-- 인텔리전스 -->
+    <div class="view" id="view-intel">
+      <div class="intel-toolbar">
+        <div class="intel-filters">
+          <button class="if-btn active" onclick="intelFilter('all',this)">전체</button>
+          <button class="if-btn" onclick="intelFilter('high',this)">관련도 높음</button>
+          <button class="if-btn" onclick="intelFilter('urgent',this)">마감임박</button>
+        </div>
+        <span class="intel-count" id="intel-count"></span>
+        <div class="intel-refresh">
+          <span class="intel-upd" id="intel-upd">—</span>
+          <button class="ir-btn" id="intel-refresh-btn" onclick="triggerIntelCrawl()">⟳ 새로고침</button>
+        </div>
+      </div>
+      <div id="intel-briefing-wrap"></div>
+      <div class="intel-grid" id="intel-grid">
+        <div class="intel-empty">인텔리전스 메뉴를 클릭하면 불러옵니다</div>
+      </div>
+    </div>
+
     <!-- 조직도 -->
     <div class="view" id="view-org">
       <div class="sec-title">🏢 조직도 — Dr4rest 드림팀</div>
@@ -405,7 +571,7 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <div class="org-line"></div>
         <div class="org-strategy">
           <div style="font-size:12px;font-weight:600;color:#818cf8;">🎯 사업전략팀<span class="ob">수석만 Opus 4.6</span></div>
-          <div style="font-size:9px;color:#334155;margin-top:3px;">수석 의사결정가 · GO/NO-GO · 팀장~사원(Sonnet)</div>
+          <div style="font-size:9px;color:#64748b;margin-top:3px;">수석 의사결정가 · GO/NO-GO · 팀장~사원(Sonnet)</div>
         </div>
         <div class="org-line"></div>
         <div class="org-hline"></div>
@@ -419,20 +585,82 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <span style="font-size:10px;color:#a78bfa;">■ 주임</span>
         <span style="font-size:10px;color:#94a3b8;">■ 사원</span>
         <span class="ob">수석만 Opus 4.6 = 최종판단시 한정</span>
-        <span style="font-size:9px;color:#334155;">· 총 9개 팀 · 45명</span>
+        <span style="font-size:9px;color:#64748b;">· 총 9개 팀 · 45명</span>
       </div>
       <div class="sectors" id="team-sectors"></div>
     </div>
 
     <!-- 파이프라인 -->
     <div class="view" id="view-pipeline">
-      <div class="sec-title">⊞ 시스템 개요 — 파이프라인</div>
+      <div class="gantt-toolbar">
+        <span class="sec-title" style="margin:0;">⊞ 시스템 개요 — 파이프라인</span>
+        <button class="g-add-btn" onclick="openPipeModal()">+ 파이프라인 추가</button>
+      </div>
+      <div id="pipe-empty" class="gantt-empty" style="display:none;">파이프라인이 없습니다.<br><span style="font-size:11px;">상단 버튼으로 추가하세요.</span></div>
       <div class="pg" id="pipe-list"></div>
+    </div>
+
+    <!-- 파이프라인 모달 -->
+    <div class="modal-overlay" id="pipe-modal" style="display:none;" onclick="if(event.target===this)closePipeModal()">
+      <div class="modal-box">
+        <div class="modal-title" id="pipe-modal-title">파이프라인 추가</div>
+        <input type="hidden" id="pipe-edit-idx" value="">
+        <div class="modal-field">
+          <label class="modal-label">파이프라인명 *</label>
+          <input class="modal-input" id="pipe-name" placeholder="예) 멘탈케어 앱 파이프라인">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">설명</label>
+          <input class="modal-input" id="pipe-desc" placeholder="예) 사용자 입력 → PRO 평가 → 위험도 분류">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">담당팀</label>
+          <select class="modal-input" id="pipe-team">
+            <option value="">— 선택 —</option>
+            <option>인텔리전스팀</option>
+            <option>멘탈케어앱팀</option>
+            <option>센서·IoT팀</option>
+            <option>대응·연계팀</option>
+            <option>병원솔루션팀</option>
+            <option>데이터·AI팀</option>
+            <option>인증·법무팀</option>
+            <option>재무팀</option>
+            <option>사업전략팀</option>
+            <option>연구논문팀</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">단계 (쉼표로 구분)</label>
+          <input class="modal-input" id="pipe-steps" placeholder="예) 센서 수집, AI 분석, 알림 발송">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">상태</label>
+          <select class="modal-input" id="pipe-status">
+            <option value="running">실행중</option>
+            <option value="waiting">대기중</option>
+            <option value="stopped">중단</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn-cancel" onclick="closePipeModal()">취소</button>
+          <button class="modal-btn-del" id="pipe-del-btn" style="display:none;" onclick="deletePipe()">삭제</button>
+          <button class="modal-btn-save" onclick="savePipe()">저장</button>
+        </div>
+      </div>
     </div>
 
     <!-- 간트 -->
     <div class="view" id="view-agents">
-      <div class="sec-title">📅 에이전트 맵 — 간트차트</div>
+      <div class="gantt-toolbar">
+        <span class="sec-title" style="margin:0;">📅 프로젝트 일정 — 간트차트</span>
+        <div style="display:flex;gap:7px;">
+          <button class="g-tpl-btn" onclick="openGanttTpl()">📋 템플릿</button>
+          <button class="g-add-btn" onclick="openAddProject()">+ 프로젝트 추가</button>
+        </div>
+      </div>
+      <div id="gantt-empty" class="gantt-empty" style="display:none;">
+        프로젝트가 없습니다.<br><span style="font-size:11px;">상단 버튼으로 추가하거나 템플릿을 불러오세요.</span>
+      </div>
       <div class="gantt-wrap"><div class="gantt-inner" id="gantt-content"></div></div>
     </div>
 
@@ -445,136 +673,113 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <div class="mc"><div class="mc-l">오늘 완료</div><div class="mc-v" style="color:#a78bfa;" id="md">87</div><div class="mc-s">태스크</div></div>
         <div class="mc"><div class="mc-l">평균 응답속도</div><div class="mc-v" style="color:#fbbf24;" id="ms">1.8s</div><div class="mc-s">전체 평균</div></div>
       </div>
+      <div style="font-size:11px;font-weight:600;color:#94a3b8;letter-spacing:0.6px;text-transform:uppercase;margin:14px 0 8px;">📱 온마음케어 실시간</div>
+      <div class="mc-g">
+        <div class="mc"><div class="mc-l">행동지수 평균</div><div class="mc-v" style="color:#10b981;" id="om-activity">—</div><div class="mc-s">risk.breakdown.activity</div></div>
+        <div class="mc"><div class="mc-l">전체 리스크 평균</div><div class="mc-v" style="color:#f87171;" id="om-risk-level">—</div><div class="mc-s">risk.level (0~5)</div></div>
+        <div class="mc"><div class="mc-l">고위험 인원</div><div class="mc-v" style="color:#fb923c;" id="om-high-risk">—</div><div class="mc-s">레벨 3 이상 (주의↑)</div></div>
+        <div class="mc"><div class="mc-l">모니터링 인원</div><div class="mc-v" style="color:#60a5fa;" id="om-users">—</div><div class="mc-s">리스크 데이터 보유</div></div>
+      </div>
       <div class="lrw" id="monitor-rows"></div>
     </div>
 
     <!-- 카탈로그 -->
     <div class="view" id="view-catalog">
       <div class="sec-title">▦ 팀 카탈로그</div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;" id="catalog-grid"></div>
+      <div class="cat-grid" id="catalog-grid"></div>
     </div>
 
     <!-- 시스템 -->
+    <!-- 시스템 정보 -->
     <div class="view" id="view-system">
-      <div class="sec-title">◧ 시스템 정보</div>
-      <div class="sg">
-        <div class="sy"><div class="st">사업 현황</div>
-          <div class="sr"><span class="sk">SH공사 온마음케어</span><span class="sw_">4월 시작</span></div>
-          <div class="sr"><span class="sk">독거노인 생존감지 시스템</span><span class="sw_">5월 예정</span></div>
-          <div class="sr"><span class="sk">정신병원 격리실 모니터링</span><span class="sw_">5월 예정</span></div>
-          <div class="sr"><span class="sk">낙상감지 시스템 (4인실)</span><span class="sw_">5월 예정</span></div>
-          <div class="sr"><span class="sk">병원 ERP</span><span class="sw_">5월 예정</span></div>
-          <div class="sr"><span class="sk">B2C 멘탈케어 앱</span><span class="sv">기획 중</span></div>
-        </div>
-        <div class="sy"><div class="st">AI 모델 운용 원칙</div>
-          <div class="sr"><span class="sk">사업전략팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
-          <div class="sr"><span class="sk">인증·법무팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
-          <div class="sr"><span class="sk">데이터·AI팀 수석</span><span style="color:#fbbf24;font-size:10px;">Opus 4.6 (최종판단시)</span></div>
-          <div class="sr"><span class="sk">위 3팀 팀장~사원</span><span class="sv">Sonnet 4.6</span></div>
-          <div class="sr"><span class="sk">나머지 6개팀 전원</span><span class="sv">Sonnet 4.6</span></div>
-        </div>
-        <div class="sy"><div class="st">기술 스택</div>
-          <div class="sr"><span class="sk">센서</span><span class="sv">레이저·바이탈·모션</span></div>
-          <div class="sr"><span class="sk">앱</span><span class="sv">온마음케어 iOS/Android</span></div>
-          <div class="sr"><span class="sk">AI 알고리즘</span><span class="sv">행동위험지수</span></div>
-          <div class="sr"><span class="sk">PRO 방법론</span><span class="so">적용 중 ✓</span></div>
-          <div class="sr"><span class="sk">Superpowers</span><span class="so">설치됨 ✓</span></div>
-          <div class="sr"><span class="sk">드림팀 OS</span><span class="sw_">구축 중</span></div>
-        </div>
-        <div class="sy"><div class="st">인증·규제 현황</div>
-          <div class="sr"><span class="sk">KCC 인증</span><span class="sw_">준비 중</span></div>
-          <div class="sr"><span class="sk">KC 인증</span><span class="sw_">준비 중</span></div>
-          <div class="sr"><span class="sk">의료기기 등급</span><span class="sw_">검토 중</span></div>
-          <div class="sr"><span class="sk">개인정보보호법</span><span class="sw_">설계 반영</span></div>
-          <div class="sr"><span class="sk">의료법 검토</span><span class="sw_">진행 중</span></div>
-        </div>
+      <div class="gantt-toolbar">
+        <span class="sec-title" style="margin:0;">◧ 시스템 정보</span>
+        <button class="g-add-btn" onclick="addSysSection()">+ 섹션 추가</button>
       </div>
+      <div id="sys-empty" class="gantt-empty" style="display:none;">섹션이 없습니다.<br><span style="font-size:11px;">상단 버튼으로 섹션을 추가하세요.</span></div>
+      <div id="sys-grid" class="sg"></div>
     </div>
 
     <!-- 사용량 -->
     <div class="view" id="view-usage">
       <div class="sec-title">▲ 사용량 현황</div>
       <div class="mc-g">
-        <div class="mc"><div class="mc-l">이번 달 토큰</div><div class="mc-v" style="color:#60a5fa;">218K</div><div class="mc-s">Claude Pro 한도 내</div></div>
-        <div class="mc"><div class="mc-l">API 호출 횟수</div><div class="mc-v" style="color:#a78bfa;">512</div><div class="mc-s">오늘 기준</div></div>
-        <div class="mc"><div class="mc-l">Opus 호출</div><div class="mc-v" style="color:#fbbf24;">3회</div><div class="mc-s">수석 최종판단만</div></div>
-        <div class="mc"><div class="mc-l">비용 절감</div><div class="mc-v" style="color:#10b981;">94%</div><div class="mc-s">수동 대비</div></div>
+        <div class="mc"><div class="mc-l">오늘 총 토큰</div><div class="mc-v" style="color:#60a5fa;" id="usg-tokens">—</div><div class="mc-s">오늘 사용량</div></div>
+        <div class="mc"><div class="mc-l">오늘 호출 횟수</div><div class="mc-v" style="color:#a78bfa;" id="usg-calls">—</div><div class="mc-s">전체 팀 합산</div></div>
+        <div class="mc"><div class="mc-l">Opus 사용 토큰</div><div class="mc-v" style="color:#fbbf24;" id="usg-opus">—</div><div class="mc-s">수석 최종판단용</div></div>
+        <div class="mc"><div class="mc-l">오늘 예상 비용</div><div class="mc-v" style="color:#10b981;" id="usg-cost">—</div><div class="mc-s">Anthropic 기준</div></div>
       </div>
       <div class="sy"><div class="st">팀별 사용량</div><div id="usage-bars"></div></div>
     </div>
 
     <!-- 프로세스 -->
     <div class="view" id="view-process">
-      <div class="sec-title">⊡ 프로세스 관리</div>
+      <div class="proc-toolbar">
+        <span class="sec-title" style="margin:0;">⊡ 프로세스 관리</span>
+        <button class="g-add-btn" onclick="openAddProc()">+ 프로세스 추가</button>
+      </div>
+      <div id="proc-empty" class="gantt-empty" style="display:none;">프로세스가 없습니다.<br><span style="font-size:11px;">상단 버튼으로 추가하세요.</span></div>
       <div class="pl" id="proc-list"></div>
     </div>
 
     <!-- MCP -->
     <div class="view" id="view-mcp">
-      <div class="sec-title">⊕ MCP 서비스</div>
-      <div class="sy"><div class="st">연결된 서비스</div>
-        <div class="mcp-grid" id="mcp-grid"></div>
+      <div class="mcp-toolbar">
+        <span class="sec-title" style="margin:0;">⊕ MCP 서비스</span>
+        <button class="g-add-btn" onclick="openAddMcp()">+ MCP 추가</button>
       </div>
+      <div id="mcp-empty" class="gantt-empty" style="display:none;">등록된 MCP 서비스가 없습니다.<br><span style="font-size:11px;">상단 버튼으로 추가하세요.</span></div>
+      <div class="mcp-grid" id="mcp-grid"></div>
     </div>
 
     <!-- 메모리 -->
     <div class="view" id="view-memory">
-      <div class="sec-title">≡ 메모리 시스템</div>
-      <div class="sy"><div class="st">CLAUDE.md — Dr4rest 핵심 컨텍스트</div>
-        <div class="memory-pre">## 회사명: Dr4rest
-전문 멘탈케어 기업 · B2G / B2B / B2C
-취약계층·독거노인 우울증·정신감정 모니터링
-레이저·바이탈·모션 센서 기반 생존감지 시스템
-골든타임 내 관계기관·연계병원 자동 대응
-
-## 사업 영역
-[B2G/B2C] 온마음케어 앱 + 생존감지 하드웨어
-  - PRO 방법론 기반 행동위험지수 산출
-  - 취약계층 조기발견 → 관계기관 연계
-[B2B] 정신병원 솔루션
-  - 격리실: 바이탈 센서 실시간 모니터링
-  - 일반실(4인): 낙상감지 조기대응
-  - 병원 ERP 통합 시스템
-
-## AI 모델 운용 원칙
-Opus 4.6: 사업전략·인증법무·데이터AI팀 수석만 → 최종판단시에만 호출
-Sonnet 4.6: 위 3팀 팀장~사원 + 나머지 6개팀 전원
-
-## 금지어 (공식문서)
-회사 도메인 직접 노출 금지
-→ "행동위험지수" "PRO방법론" "디지털바이오마커" 사용</div>
+      <div class="gantt-toolbar">
+        <span class="sec-title" style="margin:0;">≡ 메모리 시스템</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="mem-chars" id="mem-chars">0자</span>
+          <button class="gm-btn-cancel" style="font-size:11px;padding:5px 10px;" onclick="clearMemory()">초기화</button>
+          <button class="gm-btn-save" style="font-size:11px;padding:5px 12px;" onclick="saveMemory()">저장</button>
+        </div>
       </div>
+      <textarea class="mem-editor" id="mem-editor" placeholder="컨텍스트, 메모, 지시사항 등을 자유롭게 입력하세요...&#10;&#10;예시:&#10;## 회사명: Dr4rest&#10;전문 멘탈케어 기업 · B2G / B2B / B2C&#10;&#10;## 주요 원칙&#10;..." oninput="updateMemChars()"></textarea>
     </div>
 
     </div>
 
     <!-- 토큰 관리 -->
     <div class="view" id="view-token">
-      <div class="sec-title">🔢 토큰 관리 — 사용량 모니터링 & 제한 설정</div>
+      <div class="sec-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>🔢 토큰 관리 — 사용량 모니터링 & 제한 설정</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="tk-last-upd" style="font-size:11px;color:#64748b;">오늘 호출 없음</span>
+          <button class="save-btn" onclick="resetTokens()" style="background:#1a0808;border-color:#ef444444;color:#ef4444;">오늘 초기화</button>
+        </div>
+      </div>
       <div class="token-grid">
         <div class="token-card">
           <div class="tc-label">오늘 총 사용량</div>
-          <div class="tc-value" style="color:#60a5fa;" id="tk-today">218,450</div>
+          <div class="tc-value" style="color:#60a5fa;" id="tk-today">0</div>
           <div class="tc-sub">한도 500,000 토큰</div>
-          <div class="tc-bar"><div class="tc-fill" id="tk-today-bar" style="background:#3b82f6;width:43%;"></div></div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-today-bar" style="background:#3b82f6;width:0%;"></div></div>
         </div>
         <div class="token-card" id="tk-opus-card">
-          <div class="tc-label">Opus 4.6 사용</div>
-          <div class="tc-value" style="color:#fbbf24;" id="tk-opus">12,300</div>
+          <div class="tc-label">Opus 4.5 사용</div>
+          <div class="tc-value" style="color:#fbbf24;" id="tk-opus">0</div>
           <div class="tc-sub">한도 50,000 · 수석 3명만</div>
-          <div class="tc-bar"><div class="tc-fill" id="tk-opus-bar" style="background:#f59e0b;width:24%;"></div></div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-opus-bar" style="background:#f59e0b;width:0%;"></div></div>
         </div>
         <div class="token-card">
           <div class="tc-label">Sonnet 4.6 사용</div>
-          <div class="tc-value" style="color:#34d399;" id="tk-sonnet">206,150</div>
+          <div class="tc-value" style="color:#34d399;" id="tk-sonnet">0</div>
           <div class="tc-sub">나머지 42명</div>
-          <div class="tc-bar"><div class="tc-fill" id="tk-sonnet-bar" style="background:#10b981;width:41%;"></div></div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-sonnet-bar" style="background:#10b981;width:0%;"></div></div>
         </div>
         <div class="token-card">
-          <div class="tc-label">이번 달 예상 비용</div>
-          <div class="tc-value" style="color:#a78bfa;" id="tk-cost">₩47,200</div>
-          <div class="tc-sub">Claude Pro 플랜 기준</div>
-          <div class="tc-bar"><div class="tc-fill" id="tk-cost-bar" style="background:#8b5cf6;width:32%;"></div></div>
+          <div class="tc-label">오늘 예상 비용</div>
+          <div class="tc-value" style="color:#a78bfa;" id="tk-cost">₩0</div>
+          <div class="tc-sub">Anthropic 공식 요금 기준</div>
+          <div class="tc-bar"><div class="tc-fill" id="tk-cost-bar" style="background:#8b5cf6;width:0%;"></div></div>
         </div>
       </div>
 
@@ -593,9 +798,9 @@ Sonnet 4.6: 위 3팀 팀장~사원 + 나머지 6개팀 전원
         <div class="limit-card">
           <div class="limit-title">🔔 토큰 알림 로그</div>
           <div id="alert-log" style="display:flex;flex-direction:column;gap:6px;">
-            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#64748b;font-size:11px;">시스템 정상 가동 중</span><span class="alert-time" id="start-time" style="font-size:10px;color:#334155;"></span></div>
-            <div class="alert-row"><div class="alert-dot" style="background:#f59e0b;"></div><span class="alert-text" style="color:#fbbf24;font-size:11px;">데이터·AI팀 수석 Opus 호출 (3회)</span><span class="alert-time" style="font-size:10px;color:#334155;">07:23</span></div>
-            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#64748b;font-size:11px;">인텔리전스팀 브리핑 완료 (12,400 토큰)</span><span class="alert-time" style="font-size:10px;color:#334155;">07:05</span></div>
+            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#94a3b8;font-size:11px;">시스템 정상 가동 중</span><span class="alert-time" id="start-time" style="font-size:10px;color:#64748b;"></span></div>
+            <div class="alert-row"><div class="alert-dot" style="background:#f59e0b;"></div><span class="alert-text" style="color:#fbbf24;font-size:11px;">데이터·AI팀 수석 Opus 호출 (3회)</span><span class="alert-time" style="font-size:10px;color:#64748b;">07:23</span></div>
+            <div class="alert-row"><div class="alert-dot" style="background:#10b981;"></div><span class="alert-text" style="color:#94a3b8;font-size:11px;">인텔리전스팀 브리핑 완료 (12,400 토큰)</span><span class="alert-time" style="font-size:10px;color:#64748b;">07:05</span></div>
           </div>
         </div>
       </div>
@@ -609,9 +814,135 @@ Sonnet 4.6: 위 3팀 팀장~사원 + 나머지 6개팀 전원
   </div>
 </div>
 
+<!-- 간트 프로젝트/태스크 모달 -->
+<div class="gm-bg" id="gantt-modal" style="display:none;" onclick="if(event.target===this)closeGanttModal()">
+  <div class="gm-box">
+    <div class="gm-title" id="gm-title">프로젝트 추가</div>
+    <div class="gm-field">
+      <label class="gm-label">이름</label>
+      <input class="gm-input" id="gm-name" placeholder="예: 온마음케어 납품">
+    </div>
+    <div id="gm-color-field" class="gm-field">
+      <label class="gm-label">색상</label>
+      <div class="gm-color-row" id="gm-colors"></div>
+    </div>
+    <div class="gm-field">
+      <label class="gm-label">담당팀</label>
+      <select class="gm-select" id="gm-team">
+        <option value="">팀 선택</option>
+        <option>멘탈케어앱팀</option><option>센서·IoT팀</option><option>대응·연계팀</option>
+        <option>병원솔루션팀</option><option>데이터·AI팀</option><option>인증·법무팀</option>
+        <option>재무팀</option><option>사업전략팀</option><option>인텔리전스팀</option>
+        <option>연구논문팀</option><option>전체 드림팀</option>
+      </select>
+    </div>
+    <div id="gm-task-fields">
+      <div class="gm-field" style="display:flex;gap:8px;">
+        <div style="flex:1;"><label class="gm-label">시작일</label><input class="gm-input" id="gm-start" type="date"></div>
+        <div style="flex:1;"><label class="gm-label">종료일</label><input class="gm-input" id="gm-end" type="date"></div>
+      </div>
+      <div class="gm-field">
+        <label class="gm-label">상태</label>
+        <select class="gm-select" id="gm-status">
+          <option value="ready">준비중</option>
+          <option value="inprogress">진행중</option>
+          <option value="done">완료</option>
+          <option value="delayed">지연</option>
+        </select>
+      </div>
+      <div class="gm-field">
+        <label class="gm-label">진행률 <span id="gm-prog-val">0</span>%</label>
+        <input type="range" id="gm-prog" min="0" max="100" value="0" style="width:100%;" oninput="document.getElementById('gm-prog-val').textContent=this.value">
+      </div>
+    </div>
+    <div class="gm-btns">
+      <button class="gm-btn-del" id="gm-del-btn" onclick="deleteGanttItem()" style="display:none;">삭제</button>
+      <button class="gm-btn-cancel" onclick="closeGanttModal()">취소</button>
+      <button class="gm-btn-save" onclick="saveGanttModal()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 간트 템플릿 모달 -->
+<div class="gm-bg" id="gantt-tpl-modal" style="display:none;" onclick="if(event.target===this)closeGanttTpl()">
+  <div class="gm-box">
+    <div class="gm-title">📋 템플릿 불러오기</div>
+    <div id="tpl-list"></div>
+    <div class="gm-btns"><button class="gm-btn-cancel" onclick="closeGanttTpl()">닫기</button></div>
+  </div>
+</div>
+
+<!-- 카탈로그 상세 모달 -->
+<div class="catm-bg" id="cat-modal" style="display:none;" onclick="if(event.target===this)closeCatModal()">
+  <div class="catm-box">
+    <div class="catm-hd" id="catm-hd">
+      <div class="catm-icon" id="catm-icon"></div>
+      <div class="catm-info">
+        <div class="catm-title" id="catm-title"></div>
+        <div class="catm-sub" id="catm-desc"></div>
+      </div>
+      <button class="catm-close" onclick="closeCatModal()">✕</button>
+    </div>
+    <div class="catm-body">
+      <div class="catm-sec">오늘 활동</div>
+      <div class="catm-stat-row">
+        <div class="catm-stat"><div class="catm-stat-v" id="catm-calls">—</div><div class="catm-stat-l">호출 횟수</div></div>
+        <div class="catm-stat"><div class="catm-stat-v" id="catm-tokens">—</div><div class="catm-stat-l">사용 토큰</div></div>
+        <div class="catm-stat"><div class="catm-stat-v" id="catm-last" style="font-size:12px;">—</div><div class="catm-stat-l">마지막 호출</div></div>
+      </div>
+      <div class="catm-sec">팀원</div>
+      <div id="catm-members"></div>
+      <div class="catm-sec">담당 도메인</div>
+      <div id="catm-tags" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 프로세스 모달 -->
+<div class="gm-bg" id="proc-modal" style="display:none;" onclick="if(event.target===this)closeProcModal()">
+  <div class="gm-box">
+    <div class="gm-title" id="pm-title">프로세스 추가</div>
+    <div class="gm-field"><label class="gm-label">이름</label><input class="gm-input" id="pm-name" placeholder="예: 온마음케어 납품"></div>
+    <div class="gm-field"><label class="gm-label">설명</label><input class="gm-input" id="pm-info" placeholder="예: 4월 완료 · PRO 모듈 완성"></div>
+    <div class="gm-field">
+      <label class="gm-label">상태</label>
+      <select class="gm-select" id="pm-status">
+        <option>준비 중</option><option>대기 중</option><option>진행 중</option><option>실행 중</option><option>완료</option>
+      </select>
+    </div>
+    <div class="gm-field"><label class="gm-label">색상</label><div class="gm-color-row" id="pm-colors"></div></div>
+    <div class="gm-btns">
+      <button class="gm-btn-del" id="pm-del" onclick="deleteProcItem()" style="display:none;">삭제</button>
+      <button class="gm-btn-cancel" onclick="closeProcModal()">취소</button>
+      <button class="gm-btn-save" onclick="saveProcModal()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- MCP 모달 -->
+<div class="gm-bg" id="mcp-modal" style="display:none;" onclick="if(event.target===this)closeMcpModal()">
+  <div class="gm-box">
+    <div class="gm-title" id="mm-title">MCP 서비스 추가</div>
+    <div class="gm-field"><label class="gm-label">서비스명</label><input class="gm-input" id="mm-name" placeholder="예: supabase, github, slack-notify"></div>
+    <div class="gm-field">
+      <label class="gm-label">유형</label>
+      <select class="gm-select" id="mm-type"><option>npx</option><option>http</option><option>mcp</option><option>other</option></select>
+    </div>
+    <div class="gm-field">
+      <label class="gm-label">상태</label>
+      <select class="gm-select" id="mm-status"><option>준비중</option><option>연결됨</option><option>오류</option></select>
+    </div>
+    <div class="gm-btns">
+      <button class="gm-btn-del" id="mm-del" onclick="deleteMcpItem()" style="display:none;">삭제</button>
+      <button class="gm-btn-cancel" onclick="closeMcpModal()">취소</button>
+      <button class="gm-btn-save" onclick="saveMcpModal()">저장</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const TITLES={cmd:'🎯 지시 센터 — Dr4rest 드림팀',org:'🏢 조직도 — Dr4rest 드림팀',pipeline:'⊞ 시스템 개요 — 파이프라인',agents:'📅 에이전트 맵 — 간트차트',monitor:'◉ 실시간 모니터',catalog:'▦ 팀 카탈로그',system:'◧ 시스템 정보',usage:'▲ 사용량 현황',process:'⊡ 프로세스 관리',mcp:'⊕ MCP 서비스',memory:'≡ 메모리 시스템',token:'🔢 토큰 관리 — 사용량 & 제한 설정'};
-function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');el.classList.add('active');document.getElementById('tbt').textContent=TITLES[id]||'';}
+const TITLES={cmd:'🎯 지시 센터 — Dr4rest 드림팀',intel:'🔍 인텔리전스 — 정부사업 공고 브리핑',org:'🏢 조직도 — Dr4rest 드림팀',pipeline:'⊞ 시스템 개요 — 파이프라인',agents:'📅 에이전트 맵 — 간트차트',monitor:'◉ 실시간 모니터',catalog:'▦ 팀 카탈로그',system:'◧ 시스템 정보',usage:'▲ 사용량 현황',process:'⊡ 프로세스 관리',mcp:'⊕ MCP 서비스',memory:'≡ 메모리 시스템',token:'🔢 토큰 관리 — 사용량 & 제한 설정'};
+function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');el.classList.add('active');document.getElementById('tbt').textContent=TITLES[id]||'';if(id==='intel')loadIntel();if(id==='token')loadTokenView();if(id==='agents')renderGantt();if(id==='catalog')renderCatalog();if(id==='usage')renderUsageView();if(id==='process')renderProcs();if(id==='system')renderSysInfo();if(id==='mcp')renderMcps();if(id==='memory')initMemoryEditor();if(id==='pipeline')renderPipelines();}
 
 let selectedTeam='전체 드림팀';
 document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.team-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTeam=btn.dataset.team;document.getElementById('chat-team-label').textContent=btn.textContent+' — 대화 기록';});});
@@ -619,8 +950,8 @@ document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click
 function quickCmd(text){document.getElementById('cmd-input').value=text;sendCmd();}
 function clearChat(){const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
 
-const TCOLORS={'전체 드림팀':'#34d399','사업전략팀':'#818cf8','인텔리전스팀':'#f87171','멘탈케어앱팀':'#34d399','센서·IoT팀':'#2dd4bf','대응·연계팀':'#fb923c','병원솔루션팀':'#f472b6','데이터·AI팀':'#818cf8','인증·법무팀':'#a78bfa','재무팀':'#fbbf24'};
-const TICONS={'전체 드림팀':'🌲','사업전략팀':'🎯','인텔리전스팀':'🔍','멘탈케어앱팀':'📱','센서·IoT팀':'📡','대응·연계팀':'🚨','병원솔루션팀':'🏥','데이터·AI팀':'🤖','인증·법무팀':'⚖️','재무팀':'💰'};
+const TCOLORS={'전체 드림팀':'#34d399','사업전략팀':'#818cf8','인텔리전스팀':'#f87171','멘탈케어앱팀':'#34d399','센서·IoT팀':'#2dd4bf','대응·연계팀':'#fb923c','병원솔루션팀':'#f472b6','데이터·AI팀':'#818cf8','인증·법무팀':'#a78bfa','재무팀':'#fbbf24','연구논문팀':'#22d3ee'};
+const TICONS={'전체 드림팀':'🌲','사업전략팀':'🎯','인텔리전스팀':'🔍','멘탈케어앱팀':'📱','센서·IoT팀':'📡','대응·연계팀':'🚨','병원솔루션팀':'🏥','데이터·AI팀':'🤖','인증·법무팀':'⚖️','재무팀':'💰','연구논문팀':'📚'};
 
 function addMsg(role,text,team){
   const wrap=document.getElementById('chat-wrap');
@@ -716,7 +1047,7 @@ function renderHarnessNodes(nodes, activeIdx = -1, doneIdxs = []) {
     const div = document.createElement('div');
     let cls = 'idle';
     let badge = '대기';
-    let badgeStyle = 'background:#1a2840;color:#475569;';
+    let badgeStyle = 'background:#1a2840;color:#64748b;';
     if (doneIdxs.includes(i)) { cls = 'done'; badge = '완료 ✓'; badgeStyle = `background:#10b98122;color:#10b981;border:1px solid #10b98144;`; }
     if (i === activeIdx) { cls = 'running'; badge = '실행 중'; badgeStyle = `background:${n.color}22;color:${n.color};border:1px solid ${n.color}44;`; }
     div.className = `h-node ${cls}`;
@@ -792,6 +1123,7 @@ async function callRailwayCmd(team, content) {
     throw new Error(`[${r.status}] ${errText}`);
   }
   const data = await r.json();
+  const primaryTeam = data.primary_team || team;
   if (data.primary_response) {
     let reply = data.primary_response;
     if (data.related_teams && data.related_teams.length > 0) {
@@ -800,9 +1132,9 @@ async function callRailwayCmd(team, content) {
         reply += '\n\n[연관팀: ' + t.team + ']\n' + t.response;
       });
     }
-    return reply;
+    return { reply, primaryTeam };
   }
-  return data.result || data.text || data.message || JSON.stringify(data, null, 2);
+  return { reply: data.result || data.text || data.message || JSON.stringify(data, null, 2), primaryTeam };
 }
 
 async function sendCmd(){
@@ -823,16 +1155,20 @@ async function sendCmd(){
 
   // Railway 백엔드 호출 + 하네스 애니메이션 병렬 실행
   // 팀별 Sonnet/Opus 분기는 Railway 서버에서 처리 (API Key 서버 보관)
-  const [reply] = await Promise.all([
+  const [cmdResult] = await Promise.all([
     callRailwayCmd(selectedTeam, text).catch(err => {
       // 상세 에러 + 상태코드 + 오프라인 안내
       const isOffline = err.message.includes('Failed to fetch') || err.message.includes('timeout');
-      return isOffline
+      const errReply = isOffline
         ? `⚠️ Railway 서버에 연결할 수 없습니다.\n\n확인 사항:\n1. Railway 서버 실행 여부 확인\n2. ${RAILWAY_URL}/health 접속 테스트\n3. 네트워크 연결 상태 확인`
         : `⚠️ 에이전트 오류\n\n${err.message}`;
+      return { reply: errReply, primaryTeam: selectedTeam };
     }),
     runHarnessAnimation(selectedTeam)
   ]);
+
+  const { reply, primaryTeam: routedTeam } = cmdResult;
+  if (!reply.startsWith('⚠️')) trackTokens(routedTeam, text, reply);
 
   typing.remove();
   addMsg('bot', reply, selectedTeam);
@@ -841,20 +1177,22 @@ async function sendCmd(){
   document.getElementById('chat-send2').disabled=false;
 }
 
-// 페이지 로드 시 Railway 상태 자동 확인
-window.addEventListener('load', () => setTimeout(checkRailwayHealth, 800));
+// 페이지 로드 시 Railway 상태 자동 확인 + 카탈로그 초기 렌더링
+window.addEventListener('load', () => { setTimeout(checkRailwayHealth, 800); renderCatalog(); renderProcs(); renderSysInfo(); renderMcps(); renderPipelines(); });
 document.getElementById('cmd-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCmd();}});
 
 const RC={'수석':'#fbbf24','팀장':'#60a5fa','선임':'#34d399','주임':'#a78bfa','사원':'#94a3b8'};
 const TEAMS=[
-  {icon:'🔍',name:'인텔리전스팀',c:'#ef4444',cls:'tr',opus:false,desc:'정부·지자체 공고 자동수집, AI 필터링, 아침 브리핑',members:[{r:'수석',n:'데이터 분석가'},{r:'팀장',n:'공고수집 팀장'},{r:'선임',n:'조건필터링 선임'},{r:'주임',n:'적합도평가 주임'},{r:'사원',n:'브리핑발송 사원'}]},
-  {icon:'📱',name:'멘탈케어앱팀',c:'#10b981',cls:'tg',opus:false,desc:'온마음케어 앱, PRO 평가, 행동위험지수 UI',members:[{r:'수석',n:'수석 앱 아키텍트'},{r:'팀장',n:'모바일 개발 팀장'},{r:'선임',n:'PRO 모듈 선임'},{r:'주임',n:'UI/UX 주임'},{r:'사원',n:'QA 사원'}]},
-  {icon:'📡',name:'센서·IoT팀',c:'#2dd4bf',cls:'tt',opus:false,desc:'레이저·바이탈·모션 센서, ESP32, mmWave, 하드웨어',members:[{r:'수석',n:'수석 IoT 엔지니어'},{r:'팀장',n:'센서개발 팀장'},{r:'선임',n:'바이탈감지 선임'},{r:'주임',n:'모션분석 주임'},{r:'사원',n:'하드웨어 사원'}]},
-  {icon:'🚨',name:'대응·연계팀',c:'#f97316',cls:'to',opus:false,desc:'골든타임 로직, 관계기관·연계병원 자동 대응',members:[{r:'수석',n:'수석 대응기획가'},{r:'팀장',n:'연계시스템 팀장'},{r:'선임',n:'골든타임 선임'},{r:'주임',n:'기관연계 주임'},{r:'사원',n:'알림발송 사원'}]},
-  {icon:'🏥',name:'병원솔루션팀',c:'#f472b6',cls:'tk',opus:false,desc:'격리실 바이탈 모니터링, 4인실 낙상감지, ERP',members:[{r:'수석',n:'수석 병원솔루션 설계사'},{r:'팀장',n:'병원시스템 팀장'},{r:'선임',n:'격리실모니터 선임'},{r:'주임',n:'낙상감지 주임'},{r:'사원',n:'ERP 개발 사원'}]},
-  {icon:'🤖',name:'데이터·AI팀',c:'#818cf8',cls:'ti',opus:true,desc:'행동위험지수 AI, 우울증 조기발견 모델, 디지털바이오마커, RAG 파이프라인',members:[{r:'수석',n:'수석 AI 연구원'},{r:'팀장',n:'모델개발 팀장'},{r:'선임',n:'위험지수 알고리즘 선임'},{r:'주임',n:'RAG 파이프라인 주임'},{r:'사원',n:'데이터수집 사원'}]},
-  {icon:'⚖️',name:'인증·법무팀',c:'#a78bfa',cls:'tp',opus:true,desc:'KCC·KC 의료기기 인증, 계약·규제 대응, 리스크 평가',members:[{r:'수석',n:'수석 인증전문가'},{r:'팀장',n:'의료기기인증 팀장'},{r:'선임',n:'계약검토 선임'},{r:'주임',n:'리스크평가 주임'},{r:'사원',n:'규제대응 사원'}]},
-  {icon:'💰',name:'재무팀',c:'#f59e0b',cls:'ta',opus:false,desc:'국책사업 예산계획, BEP 분석, 구독형 재무설계',members:[{r:'수석',n:'수석 재무분석가'},{r:'팀장',n:'예산계획 팀장'},{r:'선임',n:'BEP분석 선임'},{r:'주임',n:'수익모델 주임'},{r:'사원',n:'재무보고 사원'}]},
+  {icon:'🔍',name:'인텔리전스팀',c:'#ef4444',cls:'tr',opus:false,desc:'정부·지자체 공고 자동수집, AI 필터링, 아침 브리핑',keywords:['나라장터','복지부','NIA','공고수집','AI필터링','브리핑'],members:[{r:'수석',n:'데이터 분석가'},{r:'팀장',n:'공고수집 팀장'},{r:'선임',n:'조건필터링 선임'},{r:'주임',n:'적합도평가 주임'},{r:'사원',n:'브리핑발송 사원'}]},
+  {icon:'📱',name:'멘탈케어앱팀',c:'#10b981',cls:'tg',opus:false,desc:'온마음케어 앱, PRO 평가, 행동위험지수 UI',keywords:['온마음케어','PRO평가','행동위험지수','React Native','UI/UX','B2G'],members:[{r:'수석',n:'수석 앱 아키텍트'},{r:'팀장',n:'모바일 개발 팀장'},{r:'선임',n:'PRO 모듈 선임'},{r:'주임',n:'UI/UX 주임'},{r:'사원',n:'QA 사원'}]},
+  {icon:'📡',name:'센서·IoT팀',c:'#2dd4bf',cls:'tt',opus:false,desc:'레이저·바이탈·모션 센서, ESP32, mmWave, 하드웨어',keywords:['ESP32','mmWave','바이탈센서','모션감지','레이저','하드웨어'],members:[{r:'수석',n:'수석 IoT 엔지니어'},{r:'팀장',n:'센서개발 팀장'},{r:'선임',n:'바이탈감지 선임'},{r:'주임',n:'모션분석 주임'},{r:'사원',n:'하드웨어 사원'}]},
+  {icon:'🚨',name:'대응·연계팀',c:'#f97316',cls:'to',opus:false,desc:'골든타임 로직, 관계기관·연계병원 자동 대응',keywords:['골든타임','119연계','관계기관','자동알림','병원연계','응급'],members:[{r:'수석',n:'수석 대응기획가'},{r:'팀장',n:'연계시스템 팀장'},{r:'선임',n:'골든타임 선임'},{r:'주임',n:'기관연계 주임'},{r:'사원',n:'알림발송 사원'}]},
+  {icon:'🏥',name:'병원솔루션팀',c:'#f472b6',cls:'tk',opus:false,desc:'격리실 바이탈 모니터링, 4인실 낙상감지, ERP',keywords:['격리실','낙상감지','병원ERP','바이탈모니터','B2B','의료기기'],members:[{r:'수석',n:'수석 병원솔루션 설계사'},{r:'팀장',n:'병원시스템 팀장'},{r:'선임',n:'격리실모니터 선임'},{r:'주임',n:'낙상감지 주임'},{r:'사원',n:'ERP 개발 사원'}]},
+  {icon:'🤖',name:'데이터·AI팀',c:'#818cf8',cls:'ti',opus:true,desc:'행동위험지수 AI, 우울증 조기발견 모델, 디지털바이오마커, RAG 파이프라인',keywords:['딥러닝','RAG','위험지수AI','우울증예측','바이오마커','Opus'],members:[{r:'수석',n:'수석 AI 연구원'},{r:'팀장',n:'모델개발 팀장'},{r:'선임',n:'위험지수 알고리즘 선임'},{r:'주임',n:'RAG 파이프라인 주임'},{r:'사원',n:'데이터수집 사원'}]},
+  {icon:'⚖️',name:'인증·법무팀',c:'#a78bfa',cls:'tp',opus:true,desc:'KCC·KC 의료기기 인증, 계약·규제 대응, 리스크 평가',keywords:['KCC인증','KC인증','의료기기법','계약검토','리스크평가','Opus'],members:[{r:'수석',n:'수석 인증전문가'},{r:'팀장',n:'의료기기인증 팀장'},{r:'선임',n:'계약검토 선임'},{r:'주임',n:'리스크평가 주임'},{r:'사원',n:'규제대응 사원'}]},
+  {icon:'💰',name:'재무팀',c:'#f59e0b',cls:'ta',opus:false,desc:'국책사업 예산계획, BEP 분석, 구독형 재무설계',keywords:['국책사업','BEP분석','구독수익','예산계획','투자유치','재무'],members:[{r:'수석',n:'수석 재무분석가'},{r:'팀장',n:'예산계획 팀장'},{r:'선임',n:'BEP분석 선임'},{r:'주임',n:'수익모델 주임'},{r:'사원',n:'재무보고 사원'}]},
+  {icon:'🎯',name:'사업전략팀',c:'#6366f1',cls:'ts',opus:true,desc:'최종 GO/NO-GO 판단, B2G·B2B 파트너십, SH공사 납품 전략',keywords:['GO/NO-GO','B2G','SH공사','파트너십','사업기획','Opus'],members:[{r:'수석',n:'수석 사업전략가'},{r:'팀장',n:'파트너십 팀장'},{r:'선임',n:'B2G전략 선임'},{r:'주임',n:'사업기획 주임'},{r:'사원',n:'시장조사 사원'}]},
+  {icon:'📚',name:'연구논문팀',c:'#22d3ee',cls:'tq',opus:false,desc:'PubMed·arXiv·CrossRef 논문 검색, 학술 근거 수집, 보고서 작성',keywords:['PubMed','arXiv','논문검색','학술보고서','CrossRef','근거기반'],members:[{r:'수석',n:'수석 의학연구원'},{r:'팀장',n:'문헌검색 팀장'},{r:'선임',n:'논문분석 선임'},{r:'주임',n:'데이터추출 주임'},{r:'사원',n:'보고서작성 사원'}]},
 ];
 
 // 조직도
@@ -868,65 +1206,712 @@ if(ot)TEAMS.forEach(t=>{const d=document.createElement('div');d.className='ot';d
 const ts=document.getElementById('team-sectors');
 if(ts)TEAMS.forEach(t=>{ts.innerHTML+=`<div class="sector" style="border-top-color:${t.c};"><div class="sector-title">${t.icon} ${t.name}${t.opus?`<span class="ob">수석만 Opus</span>`:''}</div>${t.members.map(m=>`<div class="sector-member"><span class="sm-role">${m.n}</span><span class="sm-rank" style="background:${RC[m.r]}22;color:${RC[m.r]};border:1px solid ${RC[m.r]}44;">${m.r}${t.opus&&m.r==='수석'?' 🔶':''}</span></div>`).join('')}</div>`;});
 
-// 파이프라인
-const pipes=[
-  {title:'🔍 정부사업 인텔리전스',cls:'tr',count:5,steps:['공고 수집','조건 필터링','적합도 평가','브리핑 작성','카톡 알림']},
-  {title:'📱 멘탈케어 앱',cls:'tg',count:6,steps:['사용자 입력','PRO 평가','행동위험지수','위험도 분류','담당자 알림','관계기관 연계']},
-  {title:'🏠 생존감지',cls:'tt',count:6,steps:['레이저 센서','바이탈 측정','모션 감지','이상 판단','골든타임 발동','연계병원 대응']},
-  {title:'🏥 격리실 모니터링',cls:'to',count:5,steps:['센서 수집','바이탈 체크','이상징후 감지','간호사 알림','즉각 대응']},
-  {title:'🛏️ 낙상감지 (4인실)',cls:'to',count:5,steps:['모션 센서','낙상 판단 AI','위험도 분류','골든타임 발동','의료진 연계']},
-  {title:'🏢 병원 ERP — 재무·총무·원무·약국 자동화',cls:'tk',count:8,steps:['재무팀 자동화','총무팀 자동화','원무팀 자동화','약국 자동화','부서간 연동','데이터 통합','실시간 대시보드','보고서 자동생성']},
-  {title:'💵 재무팀 자동화',cls:'tk',count:5,steps:['수납·청구 자동화','보험청구 처리','미수금 관리','예산 집행 관리','재무 보고서 자동생성']},
-  {title:'🏛️ 총무팀 자동화',cls:'tk',count:5,steps:['인사·급여 처리','물품·재고 관리','시설 유지보수 관리','계약 관리','업무지시 자동화']},
-  {title:'🏥 원무팀 자동화',cls:'tk',count:6,steps:['환자 접수·등록','입퇴원 관리','병동·병실 배정','진료비 계산','보험 적용 처리','퇴원 정산 자동화']},
-  {title:'💊 약국 자동화',cls:'tk',count:5,steps:['처방전 수신','재고 자동 확인','조제 지시 발행','불출 기록 관리','약품 재고 자동발주']},
-  {title:'⚖️ 인증·법무 <span class="ob">수석만Opus</span>',cls:'tp',count:5,steps:['의료기기 분류','KCC·KC 인증','계약서 검토','리스크 평가','최종 규제 판단']},
-  {title:'🎯 B2G 통합 <span class="ob">수석만Opus</span>',cls:'ti',count:8,steps:['공고 수집','전략 수립','프로토타입','센서 검증','인증 검토','예산 분석','GO/NO-GO','제안서 발송']},
-];
-const pl=document.getElementById('pipe-list');
-pipes.forEach(p=>{pl.innerHTML+=`<div class="pc"><div class="pch"><span class="pct">${p.title}</span><span class="pcc">${p.count}</span></div><div class="ags">${p.steps.map((s,i)=>`<span class="at ${p.cls}">${s}</span>${i<p.steps.length-1?'<span class="arr">→</span>':''}`).join('')}</div></div>`;});
+// ── 파이프라인 CRUD ──────────────────────────────────────────────
+const PIPE_KEY = 'dt_pipes';
+const PIPE_STATUS_LABEL = {running:'실행중', waiting:'대기중', stopped:'중단'};
+const PIPE_TEAM_CLS = {'인텔리전스팀':'tr','멘탈케어앱팀':'tg','센서·IoT팀':'tt','대응·연계팀':'to','병원솔루션팀':'tk','데이터·AI팀':'ti','인증·법무팀':'tp','재무팀':'ta','사업전략팀':'ts','연구논문팀':'tq'};
+
+function pipesLoad(){try{return JSON.parse(localStorage.getItem(PIPE_KEY)||'[]');}catch{return[];}}
+function pipesSave(d){localStorage.setItem(PIPE_KEY,JSON.stringify(d));}
+
+function renderPipelines(){
+  const pl=document.getElementById('pipe-list');
+  const empty=document.getElementById('pipe-empty');
+  if(!pl)return;
+  const data=pipesLoad();
+  if(!data.length){pl.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  pl.innerHTML=data.map((p,i)=>{
+    const cls=PIPE_TEAM_CLS[p.team]||'tgr';
+    const steps=(p.steps||[]);
+    const stepsHtml=steps.map((s,si)=>`<span class="at ${cls}">${s}</span>${si<steps.length-1?'<span class="arr">→</span>':''}`).join('');
+    return `<div class="pc" onclick="openPipeModal(${i})">
+      <div class="pch">
+        <span class="pct">${p.name}</span>
+        <span class="pcc">${steps.length}단계</span>
+      </div>
+      <div class="pipe-meta">
+        ${p.team?`<span class="pipe-team">${p.team}</span>`:''}
+        <span class="pipe-status ${p.status||'waiting'}">${PIPE_STATUS_LABEL[p.status]||'대기중'}</span>
+      </div>
+      ${p.desc?`<div class="pipe-desc">${p.desc}</div>`:''}
+      <div class="ags">${stepsHtml||'<span style="font-size:10px;color:#64748b;">단계 없음</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+function openPipeModal(idx){
+  const isEdit = typeof idx === 'number';
+  document.getElementById('pipe-modal-title').textContent = isEdit ? '파이프라인 편집' : '파이프라인 추가';
+  document.getElementById('pipe-edit-idx').value = isEdit ? idx : '';
+  document.getElementById('pipe-del-btn').style.display = isEdit ? 'inline-block' : 'none';
+  const p = isEdit ? (pipesLoad()[idx]||{}) : {};
+  document.getElementById('pipe-name').value = p.name||'';
+  document.getElementById('pipe-desc').value = p.desc||'';
+  document.getElementById('pipe-team').value = p.team||'';
+  document.getElementById('pipe-steps').value = (p.steps||[]).join(', ');
+  document.getElementById('pipe-status').value = p.status||'running';
+  document.getElementById('pipe-modal').style.display='flex';
+  setTimeout(()=>document.getElementById('pipe-name').focus(),80);
+}
+function closePipeModal(){document.getElementById('pipe-modal').style.display='none';}
+
+function savePipe(){
+  const name=document.getElementById('pipe-name').value.trim();
+  if(!name){alert('파이프라인명을 입력하세요.');return;}
+  const stepsRaw=document.getElementById('pipe-steps').value.trim();
+  const steps=stepsRaw?stepsRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
+  const entry={
+    name,
+    desc:document.getElementById('pipe-desc').value.trim(),
+    team:document.getElementById('pipe-team').value,
+    steps,
+    status:document.getElementById('pipe-status').value,
+  };
+  const data=pipesLoad();
+  const idxVal=document.getElementById('pipe-edit-idx').value;
+  if(idxVal!==''){data[parseInt(idxVal)]=entry;}else{data.push(entry);}
+  pipesSave(data);closePipeModal();renderPipelines();
+}
+
+function deletePipe(){
+  const idxVal=document.getElementById('pipe-edit-idx').value;
+  if(idxVal==='')return;
+  const data=pipesLoad();
+  data.splice(parseInt(idxVal),1);
+  pipesSave(data);closePipeModal();renderPipelines();
+}
 
 // 모니터
 const agts=[{n:'생존감지 센서 수집',c:'#14b8a6',v:95},{n:'행동위험지수 산출',c:'#818cf8',v:82},{n:'멘탈케어 앱 모니터',c:'#10b981',v:78},{n:'격리실 바이탈 체크',c:'#f472b6',v:91},{n:'낙상감지 AI',c:'#fb923c',v:65},{n:'골든타임 대응로직',c:'#f97316',v:88},{n:'정부공고 수집',c:'#ef4444',v:72},{n:'KCC 인증 진행',c:'#a78bfa',v:45}];
 const mr=document.getElementById('monitor-rows');
-agts.forEach(a=>{const on=a.v>60;mr.innerHTML+=`<div class="lr"><div class="lr-d" style="background:${on?a.c:'#334155'};"></div><div class="lr-n">${a.n}</div><div class="lr-bw"><div class="lr-b" style="width:${a.v}%;background:${a.c}55;border-right:2px solid ${a.c};"></div></div><div class="lr-v">${a.v}%</div><span class="lr-s" style="background:${on?a.c+'22':'#1a2840'};color:${on?a.c:'#475569'};">${on?'실행 중':'대기'}</span></div>`;});
+agts.forEach(a=>{const on=a.v>60;mr.innerHTML+=`<div class="lr"><div class="lr-d" style="background:${on?a.c:'#64748b'};"></div><div class="lr-n">${a.n}</div><div class="lr-bw"><div class="lr-b" style="width:${a.v}%;background:${a.c}55;border-right:2px solid ${a.c};"></div></div><div class="lr-v">${a.v}%</div><span class="lr-s" style="background:${on?a.c+'22':'#1a2840'};color:${on?a.c:'#64748b'};">${on?'실행 중':'대기'}</span></div>`;});
 let tk=0;setInterval(()=>{tk++;const ma=document.getElementById('ma'),mt=document.getElementById('mt'),md=document.getElementById('md'),ms=document.getElementById('ms');if(ma)ma.textContent=31+Math.round(Math.sin(tk*.3)*3);if(mt)mt.textContent=18+Math.round(Math.sin(tk*.5)*4);if(md)md.textContent=87+tk;if(ms)ms.textContent=(1.8+Math.sin(tk*.4)*.4).toFixed(1)+'s';},1500);
 
-// 카탈로그
-const cg=document.getElementById('catalog-grid');
-if(cg)TEAMS.forEach(t=>{cg.innerHTML+=`<div style="background:#0a1222;border:1px solid #1a2840;border-radius:9px;padding:12px;cursor:pointer;" onmouseover="this.style.borderColor='#2a4060'" onmouseout="this.style.borderColor='#1a2840'"><div style="font-size:18px;margin-bottom:7px;">${t.icon}</div><div style="font-size:12px;font-weight:600;color:#cbd5e1;margin-bottom:3px;">${t.name}${t.opus?`<span class="ob">수석만 Opus</span>`:''}</div><div style="font-size:10px;color:#475569;line-height:1.5;margin-bottom:8px;">${t.desc}</div><div style="display:flex;gap:4px;flex-wrap:wrap;">${t.members.slice(0,2).map(m=>`<span class="at ${t.cls}">${m.n}</span>`).join('')}</div></div>`;});
+// ── 카탈로그 ─────────────────────────────────────────────────────
+function renderCatalog(){
+  const cg = document.getElementById('catalog-grid');
+  if(!cg) return;
+  const store = getTokenStore(); // 토큰 LocalStorage 재사용
 
-// 간트
-const gantt=[
-  {t:'📱 멘탈케어앱',tasks:[{n:'PRO 모듈 개발',c:'#10b981',s:0,e:1,p:100},{n:'행동위험지수 UI',c:'#34d399',s:0,e:1,p:100},{n:'앱 출시',c:'#6ee7b7',s:0,e:1,p:100}]},
-  {t:'📡 센서·IoT',tasks:[{n:'바이탈 센서 설계',c:'#14b8a6',s:0,e:2,p:60},{n:'모션감지 개발',c:'#2dd4bf',s:1,e:3,p:20},{n:'하드웨어 통합',c:'#99f6e4',s:3,e:5,p:0}]},
-  {t:'🚨 대응·연계',tasks:[{n:'골든타임 로직',c:'#f97316',s:1,e:3,p:30},{n:'기관 API 연동',c:'#fb923c',s:3,e:5,p:0}]},
-  {t:'🏥 병원솔루션',tasks:[{n:'격리실 모니터링',c:'#f472b6',s:1,e:4,p:20},{n:'낙상감지',c:'#f9a8d4',s:2,e:5,p:0},{n:'ERP',c:'#fbcfe8',s:2,e:6,p:0}]},
-  {t:'🤖 데이터·AI',tasks:[{n:'위험지수 모델',c:'#818cf8',s:0,e:3,p:50},{n:'조기발견 AI',c:'#a5b4fc',s:2,e:5,p:0}]},
-  {t:'⚖️ 인증·법무',tasks:[{n:'KCC·KC 준비',c:'#a78bfa',s:0,e:4,p:30},{n:'의료기기 신고',c:'#c4b5fd',s:4,e:6,p:0}]},
-  {t:'🎯 사업전략',tasks:[{n:'SH공사 납품',c:'#6366f1',s:0,e:2,p:80},{n:'B2B 계약',c:'#818cf8',s:2,e:4,p:0},{n:'B2C 출시',c:'#a5b4fc',s:5,e:7,p:0}]},
+  cg.innerHTML = TEAMS.map((t, idx) => {
+    const td = store.teams[t.name] || {input:0, output:0, calls:0};
+    const tokens = td.input + td.output;
+    const callsText = td.calls > 0 ? `${td.calls}회 호출` : '대기중';
+    const callsActive = td.calls > 0;
+    const modelLabel = t.opus ? 'Opus' : 'Sonnet';
+    const modelBg = t.opus ? '#1c1400' : '#0f2040';
+    const modelColor = t.opus ? '#fbbf24' : '#60a5fa';
+    const tags = (t.keywords||[]).slice(0,4).map(k =>
+      `<span class="cat-tag">${k}</span>`
+    ).join('');
+    const members = t.members.map(m =>
+      `<span class="at ${t.cls}" style="font-size:9px;">${m.r} · ${m.n}</span>`
+    ).join('');
+
+    return `<div class="cat-card" onclick="openCatModal(${idx})">
+      <div class="cat-cb" style="background:${t.c};"></div>
+      <div class="cat-body">
+        <div class="cat-hd">
+          <div class="cat-icon">${t.icon}</div>
+          <div class="cat-name">${t.name}</div>
+          <span class="cat-model" style="background:${modelBg};color:${modelColor};">${modelLabel}</span>
+        </div>
+        <div class="cat-desc">${t.desc}</div>
+        <div class="cat-tags">${tags}</div>
+        <div class="cat-members">${members}</div>
+        <div class="cat-foot">
+          <span class="cat-calls${callsActive?' active':''}">${callsText}</span>
+          <span style="font-size:9px;color:#64748b;">${tokens > 0 ? (tokens/1000).toFixed(1)+'K 토큰' : ''}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openCatModal(idx){
+  const t = TEAMS[idx];
+  if(!t) return;
+  const store = getTokenStore();
+  const td = store.teams[t.name] || {input:0, output:0, calls:0};
+  const tokens = td.input + td.output;
+
+  // 헤더
+  document.getElementById('catm-icon').textContent = t.icon;
+  document.getElementById('catm-title').textContent = t.name;
+  document.getElementById('catm-title').style.color = t.c;
+  document.getElementById('catm-desc').textContent = t.desc;
+  document.getElementById('catm-hd').style.borderBottomColor = t.c + '33';
+
+  // 통계
+  document.getElementById('catm-calls').textContent = td.calls > 0 ? td.calls+'회' : '—';
+  document.getElementById('catm-calls').style.color = td.calls > 0 ? '#34d399' : '#64748b';
+  document.getElementById('catm-tokens').textContent = tokens > 0 ? (tokens/1000).toFixed(1)+'K' : '—';
+  document.getElementById('catm-last').textContent = td.calls > 0 ? '오늘' : '—';
+
+  // 멤버
+  const opusColor = {bg:'#1c1400', c:'#fbbf24'};
+  const sonnetColor = {bg:'#0f2040', c:'#60a5fa'};
+  document.getElementById('catm-members').innerHTML = t.members.map(m => {
+    const useOpus = t.opus && m.r === '수석';
+    const mc = useOpus ? opusColor : sonnetColor;
+    const rankColor = RC[m.r] || '#94a3b8';
+    return `<div class="catm-member">
+      <span class="catm-rank" style="background:${rankColor}22;color:${rankColor};border:1px solid ${rankColor}44;">${m.r}</span>
+      <span class="catm-mname">${m.n}</span>
+      <span class="catm-mmodel" style="background:${mc.bg};color:${mc.c};">${useOpus?'Opus':'Sonnet'}</span>
+    </div>`;
+  }).join('');
+
+  // 키워드
+  document.getElementById('catm-tags').innerHTML = (t.keywords||[]).map(k =>
+    `<span style="font-size:10px;padding:2px 8px;border-radius:5px;background:#0f1828;color:#94a3b8;border:1px solid #1a2840;">${k}</span>`
+  ).join('');
+
+  document.getElementById('cat-modal').style.display = 'flex';
+}
+
+function closeCatModal(){ document.getElementById('cat-modal').style.display='none'; }
+
+// ── 간트차트 ────────────────────────────────────────────────────
+const _GK = 'dt_gantt';
+const _G_COLORS = ['#10b981','#3b82f6','#f472b6','#f97316','#a78bfa','#2dd4bf','#fbbf24','#ef4444','#818cf8','#6366f1'];
+const _G_STATUS_COLOR = {ready:'#64748b',inprogress:'#3b82f6',done:'#10b981',delayed:'#ef4444'};
+const _G_STATUS_LABEL = {ready:'준비중',inprogress:'진행중',done:'완료',delayed:'지연'};
+
+const _G_TEMPLATES = [
+  {
+    id:'tpl1', name:'온마음케어 (SH공사 B2G)', color:'#10b981', team:'멘탈케어앱팀',
+    desc:'4월 시작 · 앱 완성 → SH공사 납품 → B2G 계약',
+    tasks:[
+      {name:'앱 기능 완성',start:'2026-04-01',end:'2026-04-30',team:'멘탈케어앱팀',status:'inprogress',progress:70},
+      {name:'SH공사 납품',start:'2026-05-01',end:'2026-05-31',team:'사업전략팀',status:'ready',progress:0},
+      {name:'B2G 계약 체결',start:'2026-05-15',end:'2026-06-30',team:'인증·법무팀',status:'ready',progress:0},
+    ]
+  },
+  {
+    id:'tpl2', name:'병원 솔루션 패키지', color:'#f472b6', team:'병원솔루션팀',
+    desc:'5월 시작 · 격리실 모니터링 + 낙상감지 + 병원 ERP',
+    tasks:[
+      {name:'격리실 모니터링',start:'2026-05-01',end:'2026-07-31',team:'병원솔루션팀',status:'ready',progress:0},
+      {name:'낙상감지 시스템',start:'2026-05-01',end:'2026-08-31',team:'센서·IoT팀',status:'ready',progress:0},
+      {name:'병원 ERP 연동',start:'2026-06-01',end:'2026-09-30',team:'병원솔루션팀',status:'ready',progress:0},
+    ]
+  },
+  {
+    id:'tpl3', name:'독거노인 센서 시스템', color:'#2dd4bf', team:'센서·IoT팀',
+    desc:'설계 완료 · 프로토타입 → 현장 테스트 (일정 미정)',
+    tasks:[
+      {name:'센서 설계 완료',start:'2026-04-12',end:'2026-04-12',team:'센서·IoT팀',status:'done',progress:100},
+      {name:'프로토타입 제작',start:'2026-06-01',end:'2026-08-31',team:'센서·IoT팀',status:'ready',progress:0},
+      {name:'현장 테스트',start:'2026-09-01',end:'2026-11-30',team:'센서·IoT팀',status:'ready',progress:0},
+    ]
+  },
 ];
-const months=['4월','5월','6월','7월','8월','9월','10월','11월'],C=8;
-const gc=document.getElementById('gantt-content');
-let gh=`<div class="gantt-header">${months.map(m=>`<div class="gm">${m}</div>`).join('')}</div>`;
-gantt.forEach(g=>{gh+=`<div class="gg"><div class="ggt">${g.t}</div>`;g.tasks.forEach(t=>{const l=(t.s/C*100).toFixed(1),w=((t.e-t.s)/C*100).toFixed(1);gh+=`<div class="gr"><div class="gl">${t.n}</div><div class="gt"><div class="gb" style="left:${l}%;width:${w}%;background:${t.c}20;border:1px solid ${t.c}60;"><div class="gbf" style="width:${t.p}%;background:${t.c}60;"></div><div class="gbt" style="color:${t.c};">${t.n}${t.p>0?' '+t.p+'%':''}</div></div></div></div>`;});gh+=`</div>`;});
-gh+=`<div style="display:flex;gap:14px;padding:8px 0;"><span style="font-size:10px;color:#10b981;">■ 완료</span><span style="font-size:10px;color:#f59e0b;">■ 진행중</span><span style="font-size:10px;color:#334155;">■ 예정</span></div>`;
-gc.innerHTML=gh;
 
-// 사용량
-const ubs=[{n:'데이터·AI팀',v:92,c:'#818cf8'},{n:'센서·IoT팀',v:85,c:'#14b8a6'},{n:'멘탈케어앱팀',v:78,c:'#10b981'},{n:'병원솔루션팀',v:72,c:'#f472b6'},{n:'대응·연계팀',v:65,c:'#f97316'},{n:'인증·법무팀',v:55,c:'#a78bfa'},{n:'재무팀',v:42,c:'#f59e0b'},{n:'인텔리전스팀',v:88,c:'#ef4444'}];
-const ub=document.getElementById('usage-bars');
-ubs.forEach(b=>{ub.innerHTML+=`<div class="ub-r"><div class="ub-l">${b.n}</div><div class="ub-t"><div class="ub-f" style="width:${b.v}%;background:${b.c}88;border-right:2px solid ${b.c};"></div></div><div class="ub-v">${b.v}%</div></div>`;});
+function ganttLoad(){ try{ return JSON.parse(localStorage.getItem(_GK)||'{"projects":[]}'); }catch{ return {projects:[]}; } }
+function ganttSave(d){ try{ localStorage.setItem(_GK, JSON.stringify(d)); }catch{} }
+function ganttId(){ return 'g'+Date.now()+Math.random().toString(36).slice(2,6); }
 
-// 프로세스
-const procs=[{n:'온마음케어 SH공사 납품',s:'실행 중',c:'#10b981',i:'4월 완료 · PRO 모듈·행동위험지수·앱 출시 완료',tags:['tg','tt'],tl:['앱 완료','센서 연동']},{n:'생존감지 시스템 프로토타입',s:'진행 중',c:'#14b8a6',i:'레이저·모션 센서 + 골든타임 로직',tags:['tt','to'],tl:['센서 설계','대응 로직']},{n:'정신병원 격리실 모니터링',s:'대기 중',c:'#f59e0b',i:'5월 시작 · mmWave 바이탈 체크',tags:['tk','tt'],tl:['병원 설계','센서 개발']},{n:'4인실 낙상감지 시스템',s:'대기 중',c:'#f59e0b',i:'5월 시작 · 모션 AI 판단 로직',tags:['tk','ti'],tl:['낙상 AI','대응 연계']},{n:'병원 ERP 구축',s:'준비 중',c:'#3b82f6',i:'5월 시작 · 원무·인사·수납 통합',tags:['tk','ta'],tl:['ERP 설계','예산 검토']},{n:'KCC·KC 의료기기 인증',s:'진행 중',c:'#a78bfa',i:'상시 · 센서 인증 병행',tags:['tp','tp'],tl:['인증 준비','규제 대응']},{n:'정부사업 인텔리전스',s:'실행 중',c:'#ef4444',i:'매일 07:00 · 복지부·NIA·지자체',tags:['tr','ti'],tl:['공고 수집','GO/NO-GO']}];
-const procl=document.getElementById('proc-list');
-procs.forEach(p=>{procl.innerHTML+=`<div class="pr"><div class="pr-s" style="background:${p.c};"></div><div><div class="pr-n">${p.n}</div><div class="pr-i">${p.i}</div></div><div class="pr-b">${p.tl.map((t,i)=>`<span class="at ${p.tags[i]}">${t}</span>`).join('')}</div><span class="at ${p.s==='실행 중'?'tg':p.s==='진행 중'?'tb2':'tgr'}">${p.s}</span></div>`;});
+// date helpers
+function parseD(s){ const p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+function fmtD(d){ return d.toISOString().slice(0,10); }
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function startOfMonth(d){ return new Date(d.getFullYear(),d.getMonth(),1); }
+function diffDays(a,b){ return Math.round((b-a)/86400000); }
 
-// MCP
-const mcps=['supabase','kakao-notify','나라장터','복지부-api','google-calendar','slack-notify','github','notion','vercel','email-sender','hospital-api','sensor-gateway'];
-const mg=document.getElementById('mcp-grid');
-mcps.forEach(m=>{mg.innerHTML+=`<div class="mcp-item">${m}<span>npx</span></div>`;});
+function renderGantt(){
+  const data = ganttLoad();
+  const gc = document.getElementById('gantt-content');
+  const emptyEl = document.getElementById('gantt-empty');
+  if(!data.projects.length){
+    emptyEl.style.display=''; gc.innerHTML=''; return;
+  }
+  emptyEl.style.display='none';
+
+  // date range: earliest start to latest end, expanded to month bounds, min 6 months
+  const today = new Date(); today.setHours(0,0,0,0);
+  let rangeStart = startOfMonth(today);
+  let rangeEnd = startOfMonth(addDays(today, 180));
+
+  data.projects.forEach(p => p.tasks.forEach(t => {
+    if(t.start){ const d = parseD(t.start); if(d < rangeStart) rangeStart = startOfMonth(d); }
+    if(t.end){   const d = parseD(t.end);   if(d > rangeEnd)   rangeEnd   = startOfMonth(addDays(d,32)); }
+  }));
+
+  const totalDays = diffDays(rangeStart, rangeEnd) || 180;
+  const todayPct = Math.max(0, Math.min(100, diffDays(rangeStart, today) / totalDays * 100));
+
+  // month headers
+  const months = [];
+  let cur = new Date(rangeStart);
+  while(cur < rangeEnd){
+    months.push({label: `${cur.getMonth()+1}월`, pct: diffDays(rangeStart, cur) / totalDays * 100});
+    cur = new Date(cur.getFullYear(), cur.getMonth()+1, 1);
+  }
+
+  let html = `<div class="gantt-header" style="padding-left:140px;position:relative;margin-bottom:4px;border-bottom:1px solid #1a2840;padding-bottom:4px;">`;
+  months.forEach(m => { html += `<div class="gm" style="position:absolute;left:calc(140px + ${m.pct}%);font-size:10px;color:#64748b;">${m.label}</div>`; });
+  html += `</div>`;
+
+  // today line wrapper (spans all rows)
+  const LABEL_W = 140;
+
+  data.projects.forEach((proj, pi) => {
+    const sc = _G_STATUS_COLOR;
+    html += `<div class="gg" style="margin-bottom:6px;">
+      <div class="gg-hd">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:${proj.color};flex-shrink:0;"></div>
+          <span style="font-size:12px;font-weight:600;color:#cbd5e1;">${proj.name}</span>
+          ${proj.team ? `<span style="font-size:10px;color:#64748b;">${proj.team}</span>` : ''}
+        </div>
+        <div class="gg-tools">
+          <button class="g-ic-btn" onclick="openEditProject(${pi})" title="프로젝트 수정">✏️</button>
+          <button class="g-ic-btn" onclick="openAddTask(${pi})" title="태스크 추가">＋</button>
+        </div>
+      </div>`;
+
+    proj.tasks.forEach((task, ti) => {
+      const ts = task.start ? parseD(task.start) : null;
+      const te = task.end   ? parseD(task.end)   : null;
+      let barHtml = '';
+      if(ts && te && te >= ts){
+        const l = Math.max(0, diffDays(rangeStart, ts) / totalDays * 100);
+        const w = Math.max(0.3, diffDays(ts, te) / totalDays * 100);
+        const c = proj.color;
+        const sClass = `status-${task.status||'ready'}`;
+        barHtml = `<div class="gb ${sClass}" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%;border:1px solid ${c}60;cursor:pointer;" onclick="openEditTask(${pi},${ti})">
+          <div class="gbf" style="width:${task.progress||0}%;background:${c}60;"></div>
+          <div class="gbt" style="color:${c};">${task.name}${task.progress>0?' '+task.progress+'%':''}</div>
+        </div>`;
+      }
+      const statusCol = sc[task.status||'ready'];
+      html += `<div class="gr">
+        <div class="gl" style="width:${LABEL_W}px;display:flex;align-items:center;gap:5px;">
+          <span style="width:7px;height:7px;border-radius:2px;background:${statusCol};flex-shrink:0;display:inline-block;"></span>
+          <span style="font-size:9px;color:#94a3b8;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="${task.name}">${task.name}</span>
+        </div>
+        <div class="gt gt-rel" style="position:relative;">
+          <div class="g-today-line" style="left:${todayPct.toFixed(2)}%;"></div>
+          ${barHtml}
+        </div>
+      </div>`;
+    });
+
+    html += `<div class="g-task-add" onclick="openAddTask(${pi})">＋ 태스크 추가</div>`;
+    html += `</div>`;
+  });
+
+  // legend
+  html += `<div style="display:flex;gap:14px;padding:8px 0 2px;">
+    ${Object.entries(_G_STATUS_LABEL).map(([k,v])=>`<span style="font-size:10px;color:${_G_STATUS_COLOR[k]};">■ ${v}</span>`).join('')}
+    <span style="font-size:10px;color:#ef4444;margin-left:6px;">│ 오늘</span>
+  </div>`;
+
+  gc.innerHTML = html;
+}
+
+// ── 모달 상태 ────────────────────────────────────────────────────
+let _gmMode = null; // 'addProject'|'editProject'|'addTask'|'editTask'
+let _gmProjIdx = null;
+let _gmTaskIdx = null;
+let _gmColor = _G_COLORS[0];
+
+function _initColorSwatches(sel){
+  _gmColor = sel || _G_COLORS[0];
+  const el = document.getElementById('gm-colors');
+  if(!el) return;
+  el.innerHTML = _G_COLORS.map(c =>
+    `<div class="gm-color-swatch${c===_gmColor?' sel':''}" style="background:${c};" onclick="selectGanttColor('${c}')"></div>`
+  ).join('');
+}
+
+function selectGanttColor(c){
+  _gmColor = c;
+  document.querySelectorAll('.gm-color-swatch').forEach(el => {
+    el.classList.toggle('sel', el.style.background === c || el.style.backgroundColor === c);
+  });
+}
+
+function _openModal(title, showColor, showTask, showDel){
+  document.getElementById('gm-title').textContent = title;
+  document.getElementById('gm-color-field').style.display = showColor ? '' : 'none';
+  document.getElementById('gm-task-fields').style.display = showTask ? '' : 'none';
+  document.getElementById('gm-del-btn').style.display = showDel ? '' : 'none';
+  document.getElementById('gantt-modal').style.display = 'flex';
+}
+
+function openAddProject(){
+  _gmMode='addProject'; _gmProjIdx=null; _gmTaskIdx=null;
+  document.getElementById('gm-name').value='';
+  document.getElementById('gm-team').value='';
+  _initColorSwatches();
+  _openModal('프로젝트 추가', true, false, false);
+}
+
+function openEditProject(pi){
+  const p = ganttLoad().projects[pi];
+  if(!p) return;
+  _gmMode='editProject'; _gmProjIdx=pi; _gmTaskIdx=null;
+  document.getElementById('gm-name').value = p.name;
+  document.getElementById('gm-team').value = p.team||'';
+  _initColorSwatches(p.color);
+  _openModal('프로젝트 수정', true, false, true);
+}
+
+function openAddTask(pi){
+  _gmMode='addTask'; _gmProjIdx=pi; _gmTaskIdx=null;
+  document.getElementById('gm-name').value='';
+  const today = fmtD(new Date());
+  document.getElementById('gm-start').value=today;
+  document.getElementById('gm-end').value=today;
+  document.getElementById('gm-team').value='';
+  document.getElementById('gm-status').value='ready';
+  document.getElementById('gm-prog').value=0;
+  document.getElementById('gm-prog-val').textContent='0';
+  _initColorSwatches();
+  document.getElementById('gm-color-field').style.display='none';
+  _openModal('태스크 추가', false, true, false);
+}
+
+function openEditTask(pi, ti){
+  const t = ganttLoad().projects[pi]?.tasks[ti];
+  if(!t) return;
+  _gmMode='editTask'; _gmProjIdx=pi; _gmTaskIdx=ti;
+  document.getElementById('gm-name').value = t.name;
+  document.getElementById('gm-start').value = t.start||'';
+  document.getElementById('gm-end').value = t.end||'';
+  document.getElementById('gm-team').value = t.team||'';
+  document.getElementById('gm-status').value = t.status||'ready';
+  document.getElementById('gm-prog').value = t.progress||0;
+  document.getElementById('gm-prog-val').textContent = t.progress||0;
+  _openModal('태스크 수정', false, true, true);
+}
+
+function closeGanttModal(){ document.getElementById('gantt-modal').style.display='none'; }
+
+function saveGanttModal(){
+  const name = document.getElementById('gm-name').value.trim();
+  if(!name){ alert('이름을 입력하세요.'); return; }
+  const data = ganttLoad();
+
+  if(_gmMode==='addProject'){
+    data.projects.push({id:ganttId(), name, color:_gmColor, team:document.getElementById('gm-team').value, tasks:[]});
+  } else if(_gmMode==='editProject'){
+    const p = data.projects[_gmProjIdx];
+    p.name = name; p.color = _gmColor; p.team = document.getElementById('gm-team').value;
+  } else if(_gmMode==='addTask'){
+    const task = {
+      id:ganttId(), name,
+      start:document.getElementById('gm-start').value,
+      end:document.getElementById('gm-end').value,
+      team:document.getElementById('gm-team').value,
+      status:document.getElementById('gm-status').value,
+      progress:parseInt(document.getElementById('gm-prog').value)||0,
+    };
+    data.projects[_gmProjIdx].tasks.push(task);
+  } else if(_gmMode==='editTask'){
+    const task = data.projects[_gmProjIdx].tasks[_gmTaskIdx];
+    task.name = name;
+    task.start = document.getElementById('gm-start').value;
+    task.end = document.getElementById('gm-end').value;
+    task.team = document.getElementById('gm-team').value;
+    task.status = document.getElementById('gm-status').value;
+    task.progress = parseInt(document.getElementById('gm-prog').value)||0;
+  }
+
+  ganttSave(data);
+  closeGanttModal();
+  renderGantt();
+}
+
+function deleteGanttItem(){
+  if(!confirm('삭제하시겠습니까?')) return;
+  const data = ganttLoad();
+  if(_gmMode==='editProject'){
+    data.projects.splice(_gmProjIdx, 1);
+  } else if(_gmMode==='editTask'){
+    data.projects[_gmProjIdx].tasks.splice(_gmTaskIdx, 1);
+  }
+  ganttSave(data);
+  closeGanttModal();
+  renderGantt();
+}
+
+// 템플릿 모달
+function openGanttTpl(){
+  const existing = ganttLoad().projects.map(p=>p.name);
+  const list = document.getElementById('tpl-list');
+  list.innerHTML = _G_TEMPLATES.map(t => {
+    const loaded = existing.includes(t.name);
+    return `<div class="tpl-item${loaded?' ':''}">
+      <div class="tpl-name" style="color:${t.color};">${t.name}${loaded?' <span style="font-size:9px;color:#64748b;">(이미 추가됨)</span>':''}</div>
+      <div class="tpl-desc">${t.desc}</div>
+      <div style="margin-top:8px;text-align:right;">
+        <button class="gm-btn-save" style="font-size:11px;padding:5px 12px;" onclick="loadGanttTpl('${t.id}')">불러오기</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('gantt-tpl-modal').style.display='flex';
+}
+
+function closeGanttTpl(){ document.getElementById('gantt-tpl-modal').style.display='none'; }
+
+function loadGanttTpl(tplId){
+  const tpl = _G_TEMPLATES.find(t=>t.id===tplId);
+  if(!tpl) return;
+  const data = ganttLoad();
+  data.projects.push({
+    id: ganttId(),
+    name: tpl.name,
+    color: tpl.color,
+    team: tpl.team,
+    tasks: tpl.tasks.map(t => ({...t, id:ganttId()})),
+  });
+  ganttSave(data);
+  closeGanttTpl();
+  renderGantt();
+}
+
+// ── 사용량 현황 ────────────────────────────────────────────────
+function renderUsageView(){
+  const s = getTokenStore();
+  const totalOpus   = s.opus   || 0;
+  const totalSonnet = s.sonnet || 0;
+  const totalAll    = totalOpus + totalSonnet;
+  const cost = Math.round(totalSonnet * 12.6 / 1000 + totalOpus * 63 / 1000);
+
+  function setV(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
+  setV('usg-tokens', totalAll > 0 ? (totalAll/1000).toFixed(1)+'K' : '—');
+  setV('usg-calls',  s.calls  > 0 ? s.calls+'회' : '—');
+  setV('usg-opus',   totalOpus > 0 ? (totalOpus/1000).toFixed(1)+'K' : '—');
+  setV('usg-cost',   cost > 0 ? '₩'+cost.toLocaleString() : '—');
+
+  const ub = document.getElementById('usage-bars');
+  if(!ub) return;
+  const limTeam = 80000;
+  const sorted = [...TOKEN_TEAMS].sort((a,b)=>{
+    const au=(s.teams[a.name]?.input||0)+(s.teams[a.name]?.output||0);
+    const bu=(s.teams[b.name]?.input||0)+(s.teams[b.name]?.output||0);
+    return bu-au;
+  });
+  ub.innerHTML = sorted.map(t=>{
+    const td = s.teams[t.name]||{input:0,output:0};
+    const used = td.input+td.output;
+    const pct = used > 0 ? Math.min(used/limTeam*100,100) : 0;
+    return `<div class="ub-r">
+      <div class="ub-l" style="color:${t.c};">${t.name}</div>
+      <div class="ub-t"><div class="ub-f" style="width:${pct.toFixed(1)}%;background:${t.c}88;${pct>0?'border-right:2px solid '+t.c+';':''}"></div></div>
+      <div class="ub-v">${used>0?(used/1000).toFixed(1)+'K':'—'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── 프로세스 관리 ───────────────────────────────────────────────
+const _PK = 'dt_procs';
+const _PROC_COLORS = ['#10b981','#3b82f6','#f59e0b','#ef4444','#a78bfa','#f97316','#2dd4bf','#f472b6'];
+
+function procsLoad(){try{return JSON.parse(localStorage.getItem(_PK)||'[]');}catch{return[];}}
+function procsSave(d){try{localStorage.setItem(_PK,JSON.stringify(d));}catch{}}
+
+function renderProcs(){
+  const data = procsLoad();
+  const el = document.getElementById('proc-list');
+  const empty = document.getElementById('proc-empty');
+  if(!el) return;
+  if(!data.length){empty.style.display='';el.innerHTML='';return;}
+  empty.style.display='none';
+  const sc={'실행 중':'tg','진행 중':'tb2','완료':'tg'};
+  el.innerHTML = data.map((p,i)=>`<div class="pr">
+    <div class="pr-s" style="background:${p.color};"></div>
+    <div style="flex:1;min-width:0;">
+      <div class="pr-n">${p.name}</div>
+      ${p.info?`<div class="pr-i">${p.info}</div>`:''}
+    </div>
+    <span class="at ${sc[p.status]||'tgr'}" style="flex-shrink:0;">${p.status}</span>
+    <button class="pr-edit-btn" onclick="openEditProc(${i})">✏️</button>
+  </div>`).join('');
+}
+
+let _pmIdx=null, _pmColor=_PROC_COLORS[0];
+
+function _initProcColors(sel){
+  _pmColor=sel||_PROC_COLORS[0];
+  const el=document.getElementById('pm-colors');
+  if(!el)return;
+  el.innerHTML=_PROC_COLORS.map(c=>`<div class="gm-color-swatch${c===_pmColor?' sel':''}" style="background:${c};" onclick="selectProcColor('${c}')"></div>`).join('');
+}
+function selectProcColor(c){
+  _pmColor=c;
+  document.querySelectorAll('#pm-colors .gm-color-swatch').forEach(el=>el.classList.toggle('sel',el.style.background===c||el.style.backgroundColor===c));
+}
+function openAddProc(){
+  _pmIdx=null;_pmColor=_PROC_COLORS[0];
+  document.getElementById('pm-name').value='';
+  document.getElementById('pm-info').value='';
+  document.getElementById('pm-status').value='준비 중';
+  _initProcColors();
+  document.getElementById('pm-del').style.display='none';
+  document.getElementById('pm-title').textContent='프로세스 추가';
+  document.getElementById('proc-modal').style.display='flex';
+}
+function openEditProc(i){
+  const p=procsLoad()[i];if(!p)return;
+  _pmIdx=i;_pmColor=p.color;
+  document.getElementById('pm-name').value=p.name;
+  document.getElementById('pm-info').value=p.info||'';
+  document.getElementById('pm-status').value=p.status;
+  _initProcColors(p.color);
+  document.getElementById('pm-del').style.display='';
+  document.getElementById('pm-title').textContent='프로세스 수정';
+  document.getElementById('proc-modal').style.display='flex';
+}
+function closeProcModal(){document.getElementById('proc-modal').style.display='none';}
+function saveProcModal(){
+  const name=document.getElementById('pm-name').value.trim();
+  if(!name){alert('이름을 입력하세요.');return;}
+  const data=procsLoad();
+  const item={id:_pmIdx!==null?data[_pmIdx].id:'p'+Date.now(), name, info:document.getElementById('pm-info').value.trim(), status:document.getElementById('pm-status').value, color:_pmColor};
+  if(_pmIdx===null) data.push(item); else data[_pmIdx]=item;
+  procsSave(data);closeProcModal();renderProcs();
+}
+function deleteProcItem(){
+  if(!confirm('삭제하시겠습니까?'))return;
+  const data=procsLoad();data.splice(_pmIdx,1);
+  procsSave(data);closeProcModal();renderProcs();
+}
+
+// ── 시스템 정보 ─────────────────────────────────────────────────
+const _SK='dt_sysinfo';
+
+function sysLoad(){try{return JSON.parse(localStorage.getItem(_SK)||'{"sections":[]}');}catch{return{sections:[]};}}
+function sysSave(d){try{localStorage.setItem(_SK,JSON.stringify(d));}catch{}}
+function _esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function renderSysInfo(){
+  const data=sysLoad();
+  const grid=document.getElementById('sys-grid');
+  const empty=document.getElementById('sys-empty');
+  if(!grid)return;
+  if(!data.sections.length){empty.style.display='';grid.innerHTML='';return;}
+  empty.style.display='none';
+  grid.innerHTML=data.sections.map((sec,si)=>`<div class="sys-section">
+    <div class="sys-section-hd">
+      <input class="sys-title-input" value="${_esc(sec.title)}" onchange="sysUpdateTitle(${si},this.value)" placeholder="섹션 제목">
+      <div style="display:flex;gap:4px;">
+        <button class="g-ic-btn" onclick="sysAddRow(${si})" title="항목 추가" style="font-size:13px;">＋</button>
+        <button class="g-ic-btn" onclick="sysDelSection(${si})" style="color:#ef444488;" title="섹션 삭제">✕</button>
+      </div>
+    </div>
+    ${sec.items.map((item,ii)=>`<div class="sys-row">
+      <input class="sys-key-input" value="${_esc(item.key)}" onchange="sysUpdateItem(${si},${ii},'key',this.value)" placeholder="항목명">
+      <input class="sys-val-input" value="${_esc(item.val)}" onchange="sysUpdateItem(${si},${ii},'val',this.value)" placeholder="값">
+      <button class="sys-del-row" onclick="sysDelRow(${si},${ii})">✕</button>
+    </div>`).join('')}
+    ${sec.items.length===0?'<div style="font-size:10px;color:#64748b;padding:4px 0;">항목 없음 — ＋ 버튼으로 추가</div>':''}
+  </div>`).join('');
+}
+
+function addSysSection(){
+  const data=sysLoad();
+  data.sections.push({title:'새 섹션',items:[]});
+  sysSave(data);renderSysInfo();
+}
+function sysUpdateTitle(si,val){const d=sysLoad();d.sections[si].title=val;sysSave(d);}
+function sysAddRow(si){const d=sysLoad();d.sections[si].items.push({key:'',val:''});sysSave(d);renderSysInfo();}
+function sysUpdateItem(si,ii,field,val){const d=sysLoad();d.sections[si].items[ii][field]=val;sysSave(d);}
+function sysDelRow(si,ii){const d=sysLoad();d.sections[si].items.splice(ii,1);sysSave(d);renderSysInfo();}
+function sysDelSection(si){if(!confirm('섹션을 삭제하시겠습니까?'))return;const d=sysLoad();d.sections.splice(si,1);sysSave(d);renderSysInfo();}
+
+// ── MCP 서비스 ──────────────────────────────────────────────────
+const _MK='dt_mcps';
+const _MCP_SC={'준비중':'#f59e0b','연결됨':'#10b981','오류':'#ef4444'};
+
+function mcpsLoad(){try{return JSON.parse(localStorage.getItem(_MK)||'[]');}catch{return[];}}
+function mcpsSave(d){try{localStorage.setItem(_MK,JSON.stringify(d));}catch{}}
+
+function renderMcps(){
+  const data=mcpsLoad();
+  const grid=document.getElementById('mcp-grid');
+  const empty=document.getElementById('mcp-empty');
+  if(!grid)return;
+  if(!data.length){empty.style.display='';grid.innerHTML='';return;}
+  empty.style.display='none';
+  grid.innerHTML=data.map((m,i)=>{
+    const sc=_MCP_SC[m.status]||'#64748b';
+    return `<div class="mcp-item-wrap"><div class="mcp-item" style="cursor:pointer;" onclick="openEditMcp(${i})">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+        <div class="mcp-dot" style="background:${sc};"></div>
+        <span style="font-size:11px;color:#94a3b8;font-weight:500;">${m.name}</span>
+      </div>
+      <span>${m.type||'npx'}</span>
+    </div></div>`;
+  }).join('');
+}
+
+let _mmIdx=null;
+function openAddMcp(){
+  _mmIdx=null;
+  document.getElementById('mm-name').value='';
+  document.getElementById('mm-type').value='npx';
+  document.getElementById('mm-status').value='준비중';
+  document.getElementById('mm-del').style.display='none';
+  document.getElementById('mm-title').textContent='MCP 서비스 추가';
+  document.getElementById('mcp-modal').style.display='flex';
+}
+function openEditMcp(i){
+  const m=mcpsLoad()[i];if(!m)return;
+  _mmIdx=i;
+  document.getElementById('mm-name').value=m.name;
+  document.getElementById('mm-type').value=m.type||'npx';
+  document.getElementById('mm-status').value=m.status||'준비중';
+  document.getElementById('mm-del').style.display='';
+  document.getElementById('mm-title').textContent='MCP 서비스 수정';
+  document.getElementById('mcp-modal').style.display='flex';
+}
+function closeMcpModal(){document.getElementById('mcp-modal').style.display='none';}
+function saveMcpModal(){
+  const name=document.getElementById('mm-name').value.trim();
+  if(!name){alert('서비스명을 입력하세요.');return;}
+  const data=mcpsLoad();
+  const item={id:_mmIdx!==null?data[_mmIdx].id:'m'+Date.now(), name, type:document.getElementById('mm-type').value, status:document.getElementById('mm-status').value};
+  if(_mmIdx===null) data.push(item); else data[_mmIdx]=item;
+  mcpsSave(data);closeMcpModal();renderMcps();
+}
+function deleteMcpItem(){
+  if(!confirm('삭제하시겠습니까?'))return;
+  const data=mcpsLoad();data.splice(_mmIdx,1);
+  mcpsSave(data);closeMcpModal();renderMcps();
+}
+
+// ── 메모리 시스템 ───────────────────────────────────────────────
+const _MEK='dt_memory';
+function memLoad(){return localStorage.getItem(_MEK)||'';}
+function initMemoryEditor(){
+  const ed=document.getElementById('mem-editor');
+  if(!ed)return;
+  ed.value=memLoad();
+  updateMemChars();
+}
+function updateMemChars(){
+  const ed=document.getElementById('mem-editor');
+  const ch=document.getElementById('mem-chars');
+  if(ed&&ch) ch.textContent=(ed.value||'').length.toLocaleString()+'자';
+}
+function saveMemory(){
+  const ed=document.getElementById('mem-editor');
+  if(!ed)return;
+  localStorage.setItem(_MEK,ed.value);
+  const btn=document.querySelector('[onclick="saveMemory()"]');
+  if(btn){const o=btn.textContent;btn.textContent='저장됨 ✓';setTimeout(()=>btn.textContent=o,1500);}
+}
+function clearMemory(){
+  if(!confirm('메모리를 초기화하시겠습니까?'))return;
+  document.getElementById('mem-editor').value='';
+  localStorage.removeItem(_MEK);
+  updateMemChars();
+}
 
 // 토큰 관리
 const TOKEN_TEAMS=[
@@ -939,6 +1924,7 @@ const TOKEN_TEAMS=[
   {name:'인증·법무팀',c:'#a78bfa',used:17300,limit:80000,model:'Sonnet+Opus'},
   {name:'재무팀',c:'#f59e0b',used:8900,limit:80000,model:'Sonnet'},
   {name:'사업전략팀',c:'#6366f1',used:6950,limit:80000,model:'Sonnet+Opus'},
+  {name:'연구논문팀',c:'#22d3ee',used:0,limit:80000,model:'Sonnet'},
 ];
 const ttl=document.getElementById('team-token-list');
 if(ttl){
@@ -948,9 +1934,9 @@ if(ttl){
     ttl.innerHTML+=`<div class="team-token-row">
       <div class="ttr-name" style="color:${t.c};">${t.name}</div>
       <div class="ttr-bar"><div class="ttr-fill" style="width:${pct}%;background:${warn?'#ef4444':t.c}88;border-right:2px solid ${warn?'#ef4444':t.c};"></div></div>
-      <div class="ttr-val" style="color:${warn?'#ef4444':'#64748b'};">${(t.used/1000).toFixed(1)}K</div>
+      <div class="ttr-val" style="color:${warn?'#ef4444':'#94a3b8'};">${(t.used/1000).toFixed(1)}K</div>
       <div class="ttr-limit">/ ${(t.limit/1000).toFixed(0)}K</div>
-      <div style="font-size:9px;padding:1px 6px;border-radius:5px;background:${t.model.includes('Opus')?'#1c1400':'#1a2840'};color:${t.model.includes('Opus')?'#fbbf24':'#475569'};margin-left:6px;">${t.model}</div>
+      <div style="font-size:9px;padding:1px 6px;border-radius:5px;background:${t.model.includes('Opus')?'#1c1400':'#1a2840'};color:${t.model.includes('Opus')?'#fbbf24':'#64748b'};margin-left:6px;">${t.model}</div>
     </div>`;
   });
 }
@@ -963,29 +1949,377 @@ function saveLimits(){
   const now=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
   const div=document.createElement('div');
   div.className='alert-row';
-  div.innerHTML=`<div class="alert-dot" style="background:#3b82f6;"></div><span class="alert-text" style="color:#60a5fa;font-size:11px;">한도 설정 저장 — 전체:${Number(daily).toLocaleString()} / Opus:${Number(opus).toLocaleString()} 토큰</span><span class="alert-time" style="font-size:10px;color:#334155;">${now}</span>`;
+  div.innerHTML=`<div class="alert-dot" style="background:#3b82f6;"></div><span class="alert-text" style="color:#60a5fa;font-size:11px;">한도 설정 저장 — 전체:${Number(daily).toLocaleString()} / Opus:${Number(opus).toLocaleString()} 토큰</span><span class="alert-time" style="font-size:10px;color:#64748b;">${now}</span>`;
   log.prepend(div);
+  loadTokenView();
 }
 document.getElementById('start-time').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
 
-// 토큰 실시간 애니메이션
-let tkTick=0;
-setInterval(()=>{
-  tkTick++;
-  const base=218450+tkTick*12;
-  document.getElementById('tk-today').textContent=base.toLocaleString();
-  document.getElementById('tk-today-bar').style.width=Math.min(base/500000*100,100).toFixed(1)+'%';
-  const opusBase=12300+tkTick*2;
-  document.getElementById('tk-opus').textContent=opusBase.toLocaleString();
-  document.getElementById('tk-opus-bar').style.width=Math.min(opusBase/50000*100,100).toFixed(1)+'%';
-  const sonnetBase=base-opusBase;
-  document.getElementById('tk-sonnet').textContent=sonnetBase.toLocaleString();
-  const cost=Math.round(base*0.22/1000);
-  document.getElementById('tk-cost').textContent='₩'+cost.toLocaleString();
-  if(base/500000>=0.8){
-    document.getElementById('tk-today-bar').style.background='#ef4444';
+// ── 토큰 추적 (LocalStorage) ────────────────────────────────────
+const _TK_KEY = 'dt_tokens';
+
+// 1 토큰 ≈ 1.8자 (한국어 혼용 기준 보수적 추정)
+function tokenEstimate(text){ return text ? Math.ceil(text.length / 1.8) : 0; }
+
+function getTokenStore(){
+  const today = new Date().toISOString().slice(0,10);
+  try {
+    const raw = localStorage.getItem(_TK_KEY);
+    if(!raw) return {date:today, teams:{}, opus:0, sonnet:0, calls:0};
+    const s = JSON.parse(raw);
+    // 날짜 바뀌면 리셋
+    if(s.date !== today) return {date:today, teams:{}, opus:0, sonnet:0, calls:0};
+    return s;
+  } catch { return {date:today, teams:{}, opus:0, sonnet:0, calls:0}; }
+}
+
+function saveTokenStore(s){ try{ localStorage.setItem(_TK_KEY, JSON.stringify(s)); }catch{} }
+
+// 팀명 → 모델 판별 (TOKEN_TEAMS 참조)
+function teamUsesOpus(teamName){
+  const t = TOKEN_TEAMS.find(t => t.name === teamName || teamName.includes(t.name.slice(0,3)));
+  return t ? t.model.includes('Opus') : false;
+}
+
+function trackTokens(team, inputText, outputText){
+  const s = getTokenStore();
+  const inp = tokenEstimate(inputText);
+  const out = tokenEstimate(outputText);
+  const total = inp + out;
+  if(!s.teams[team]) s.teams[team] = {input:0, output:0, calls:0};
+  s.teams[team].input += inp;
+  s.teams[team].output += out;
+  s.teams[team].calls++;
+  if(teamUsesOpus(team)){ s.opus = (s.opus||0) + total; }
+  else { s.sonnet = (s.sonnet||0) + total; }
+  s.calls = (s.calls||0) + 1;
+  saveTokenStore(s);
+  // 토큰 관리 뷰가 열려 있으면 즉시 갱신
+  if(document.getElementById('view-token').classList.contains('active')) loadTokenView();
+  if(document.getElementById('view-catalog').classList.contains('active')) renderCatalog();
+  if(document.getElementById('view-usage').classList.contains('active')) renderUsageView();
+}
+
+function resetTokens(){
+  localStorage.removeItem(_TK_KEY);
+  loadTokenView();
+}
+
+function loadTokenView(){
+  const s = getTokenStore();
+  const limDaily = parseInt(document.getElementById('lim-daily')?.value || 500000);
+  const limOpus  = parseInt(document.getElementById('lim-opus')?.value  || 50000);
+  const limWarn  = parseInt(document.getElementById('lim-warn')?.value  || 80) / 100;
+
+  const totalOpus   = s.opus   || 0;
+  const totalSonnet = s.sonnet || 0;
+  const totalAll    = totalOpus + totalSonnet;
+
+  // Anthropic 요금 (USD→KRW ₩1,400 기준)
+  // Sonnet 4.6: input $3/MTok, output $15/MTok → 평균 ~₩12.6/1K
+  // Opus 4.5:   input $15/MTok, output $75/MTok → 평균 ~₩63/1K
+  const cost = Math.round(totalSonnet * 12.6 / 1000 + totalOpus * 63 / 1000);
+
+  const pctAll  = limDaily > 0 ? Math.min(totalAll  / limDaily  * 100, 100) : 0;
+  const pctOpus = limOpus  > 0 ? Math.min(totalOpus / limOpus   * 100, 100) : 0;
+
+  const dangerAll  = pctAll  / 100 >= limWarn;
+  const dangerOpus = pctOpus / 100 >= limWarn;
+
+  function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent=v; }
+  function setWidth(id, w, color){ const el=document.getElementById(id); if(el){el.style.width=w.toFixed(1)+'%'; if(color) el.style.background=color;} }
+
+  setText('tk-today',  totalAll.toLocaleString());
+  setText('tk-opus',   totalOpus.toLocaleString());
+  setText('tk-sonnet', totalSonnet.toLocaleString());
+  setText('tk-cost',   '₩'+cost.toLocaleString());
+
+  setWidth('tk-today-bar',  pctAll,  dangerAll  ? '#ef4444' : '#3b82f6');
+  setWidth('tk-opus-bar',   pctOpus, dangerOpus ? '#ef4444' : '#f59e0b');
+  const pctSonnet = limDaily > 0 ? Math.min(totalSonnet / limDaily * 100, 100) : 0;
+  setWidth('tk-sonnet-bar', pctSonnet, '#10b981');
+  const costLimit = 100000; // ₩10만원 기준
+  setWidth('tk-cost-bar', Math.min(cost/costLimit*100,100), '#8b5cf6');
+
+  // 카드 warn/danger 클래스
+  const todayCard = document.getElementById('tk-today')?.closest('.token-card');
+  if(todayCard){ todayCard.classList.toggle('warn', dangerAll && pctAll < 100); todayCard.classList.toggle('danger', pctAll >= 100); }
+  const opusCard = document.getElementById('tk-opus-card');
+  if(opusCard){ opusCard.classList.toggle('warn', dangerOpus && pctOpus < 100); opusCard.classList.toggle('danger', pctOpus >= 100); }
+
+  // 팀별 목록 렌더링
+  const ttl = document.getElementById('team-token-list');
+  if(!ttl) return;
+
+  // TOKEN_TEAMS 순서대로, 실제 데이터가 있는 팀 우선 정렬
+  const sorted = [...TOKEN_TEAMS].sort((a,b) => {
+    const au = (s.teams[a.name]?.input||0) + (s.teams[a.name]?.output||0);
+    const bu = (s.teams[b.name]?.input||0) + (s.teams[b.name]?.output||0);
+    return bu - au;
+  });
+
+  const limTeam = parseInt(document.getElementById('lim-team')?.value || 80000);
+  ttl.innerHTML = sorted.map(t => {
+    const td = s.teams[t.name] || {input:0, output:0, calls:0};
+    const used = td.input + td.output;
+    const pct = limTeam > 0 ? Math.round(used / limTeam * 100) : 0;
+    const warn = pct >= limWarn * 100;
+    const callsBadge = td.calls > 0 ? `<span style="font-size:9px;color:#64748b;margin-left:4px;">${td.calls}회</span>` : '';
+    return `<div class="team-token-row">
+      <div class="ttr-name" style="color:${t.c};">${t.name}</div>
+      <div class="ttr-bar"><div class="ttr-fill" style="width:${pct}%;background:${warn?'#ef4444':t.c}88;border-right:2px solid ${warn?'#ef4444':t.c};"></div></div>
+      <div class="ttr-val" style="color:${warn?'#ef4444':'#94a3b8'};">${used>0?(used/1000).toFixed(1)+'K':'—'}</div>
+      <div class="ttr-limit">/ ${(limTeam/1000).toFixed(0)}K</div>
+      <div style="font-size:9px;padding:1px 6px;border-radius:5px;background:${t.model.includes('Opus')?'#1c1400':'#1a2840'};color:${t.model.includes('Opus')?'#fbbf24':'#64748b'};margin-left:6px;">${t.model}</div>
+      ${callsBadge}
+    </div>`;
+  }).join('');
+
+  // 마지막 갱신 시각
+  const upd = document.getElementById('tk-last-upd');
+  if(upd) upd.textContent = s.calls > 0
+    ? `오늘 ${s.calls}회 호출`
+    : '오늘 호출 없음';
+}
+
+// ── 인텔리전스 뷰 ──────────────────────────────────────────────
+let _intelData = [];
+let _intelFilter = 'all';
+
+function scoreColor(s) {
+  if (s >= 80) return {bg:'#05301a',border:'#34d39966',text:'#34d399'};
+  if (s >= 60) return {bg:'#0f2040',border:'#3b82f666',text:'#60a5fa'};
+  if (s >= 40) return {bg:'#2d1f02',border:'#f59e0b66',text:'#fbbf24'};
+  return {bg:'#1a1f2e',border:'#2a354866',text:'#94a3b8'};
+}
+
+function srcLabel(src) {
+  if (!src) return '기타';
+  if (src.includes('g2b') || src.includes('나라장터')) return '나라장터';
+  if (src.includes('복지부') || src.includes('mohw')) return '복지부';
+  if (src.includes('nia') || src.includes('NIA') || src.includes('정보화진흥원')) return 'NIA';
+  return src;
+}
+
+function srcTagStyle(src) {
+  const l = srcLabel(src);
+  if (l === '나라장터') return 'background:#0f2040;color:#60a5fa;border:1px solid #3b82f644;';
+  if (l === '복지부') return 'background:#1a0f2e;color:#a78bfa;border:1px solid #8b5cf644;';
+  if (l === 'NIA') return 'background:#051a1a;color:#2dd4bf;border:1px solid #14b8a644;';
+  return 'background:#1a1f2e;color:#94a3b8;border:1px solid #2a354844;';
+}
+
+function daysLeft(deadline) {
+  if (!deadline) return null;
+  const d = new Date(deadline);
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  const diff = Math.round((d - now) / 86400000);
+  return diff;
+}
+
+function renderIntelCards(data, filter) {
+  const grid = document.getElementById('intel-grid');
+  const countEl = document.getElementById('intel-count');
+  if (!grid) return;
+
+  let items = data;
+  if (filter === 'high') items = data.filter(n => (n.score || 0) >= 70);
+  if (filter === 'urgent') items = data.filter(n => {
+    const dl = daysLeft(n.deadline);
+    return dl !== null && dl >= 0 && dl <= 7;
+  });
+
+  countEl && (countEl.textContent = items.length + '건');
+
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="intel-empty">해당 조건의 공고가 없습니다</div>';
+    return;
   }
-},3000);
+
+  grid.innerHTML = items.map(n => {
+    const sc = n.score || 0;
+    const col = scoreColor(sc);
+    const dl = daysLeft(n.deadline);
+    const dlText = dl === null ? '' : dl < 0 ? '마감' : dl === 0 ? 'D-Day' : `D-${dl}`;
+    const dlColor = dl !== null && dl <= 3 ? '#ef4444' : dl !== null && dl <= 7 ? '#f59e0b' : '#94a3b8';
+    const pts = Array.isArray(n.key_points) ? n.key_points.slice(0, 3) : [];
+    const budgetText = n.budget ? `${n.budget}` : '';
+    const typeText = n.participation_type || '';
+    return `<div class="ic" data-score="${sc}" data-deadline="${n.deadline||''}">
+      <div class="ic-top">
+        <div class="ic-score" style="background:${col.bg};border:1px solid ${col.border};color:${col.text};">${sc}</div>
+        <div class="ic-title">${n.title || '(제목 없음)'}</div>
+      </div>
+      <div class="ic-tags">
+        <span class="ic-tag" style="${srcTagStyle(n.source)}">${srcLabel(n.source)}</span>
+        ${typeText ? `<span class="ic-tag" style="background:#1a2030;color:#94a3b8;border:1px solid #2a354844;">${typeText}</span>` : ''}
+        ${dlText ? `<span class="ic-tag" style="background:#1a0808;color:${dlColor};border:1px solid ${dlColor}44;">${dlText}</span>` : ''}
+      </div>
+      <div class="ic-meta">
+        <div class="ic-meta-item"><span class="ic-meta-label">기관</span>${n.organization || '—'}</div>
+        ${budgetText ? `<div class="ic-meta-item"><span class="ic-meta-label">예산</span>${budgetText}</div>` : ''}
+        ${n.deadline ? `<div class="ic-meta-item"><span class="ic-meta-label">마감</span>${n.deadline}</div>` : ''}
+      </div>
+      ${pts.length > 0 ? `<div class="ic-pts">${pts.map(p=>`<div class="ic-pt">${p}</div>`).join('')}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function intelFilter(f, el) {
+  _intelFilter = f;
+  document.querySelectorAll('.if-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderIntelCards(_intelData, f);
+}
+
+async function loadIntel(forceRefresh) {
+  if (!forceRefresh && _intelData.length > 0) return;
+  const grid = document.getElementById('intel-grid');
+  const updEl = document.getElementById('intel-upd');
+  const briefWrap = document.getElementById('intel-briefing-wrap');
+  if (grid) grid.innerHTML = '<div class="intel-empty">불러오는 중…</div>';
+
+  try {
+    const [noticesRes, briefRes] = await Promise.all([
+      fetch(`${RAILWAY_URL}/api/v1/intelligence/notices?limit=50&min_score=0`, { signal: AbortSignal.timeout(15000) }),
+      fetch(`${RAILWAY_URL}/api/v1/intelligence/briefing`, { signal: AbortSignal.timeout(15000) }),
+    ]);
+
+    if (noticesRes.ok) {
+      const data = await noticesRes.json();
+      _intelData = Array.isArray(data) ? data : (data.notices || data.items || []);
+      renderIntelCards(_intelData, _intelFilter);
+      if (updEl) {
+        const now = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+        updEl.textContent = `마지막 갱신 ${now}`;
+      }
+    } else {
+      if (grid) grid.innerHTML = '<div class="intel-empty">공고 데이터를 불러오지 못했습니다 (서버 오류)</div>';
+    }
+
+    if (briefRes.ok && briefWrap) {
+      const b = await briefRes.json();
+      const summary = b.summary || b.briefing || b.text || '';
+      if (summary) {
+        briefWrap.innerHTML = `<div class="intel-summary"><div class="intel-sum-hd">📋 오늘의 브리핑</div>${summary}</div>`;
+      }
+    }
+  } catch (e) {
+    if (grid) grid.innerHTML = `<div class="intel-empty">연결 실패 — Railway 서버를 확인하세요<br><small style="color:#64748b;">${e.message}</small></div>`;
+  }
+}
+
+async function triggerIntelCrawl() {
+  const btn = document.getElementById('intel-refresh-btn');
+  if (btn) { btn.textContent = '⟳ 크롤링 중…'; btn.disabled = true; }
+  try {
+    await fetch(`${RAILWAY_URL}/api/v1/intelligence/crawl`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      signal: AbortSignal.timeout(30000),
+    });
+  } catch (_) {}
+  _intelData = [];
+  await loadIntel(true);
+  if (btn) { btn.textContent = '⟳ 새로고침'; btn.disabled = false; }
+}
+</script>
+
+<!-- Firebase SDK (온마음케어 Firestore 연동) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function() {
+  const FB_CFG = {
+    apiKey: "AIzaSyBxvqfej3cngIODLZeGalX0tyNNCZ2l0oE",
+    authDomain: "kjs7392as.firebaseapp.com",
+    projectId: "kjs7392as",
+  };
+
+  const LEVEL_LABELS = ["정상","양호","관찰","주의","위험","매우위험"];
+  const LEVEL_COLORS = ["#10b981","#34d399","#60a5fa","#fb923c","#f87171","#ef4444"];
+
+  function initOmMonitor() {
+    if (!window.firebase) return;
+    if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    const db = firebase.firestore();
+
+    db.collection("users").onSnapshot((snap) => {
+      const users = [];
+      snap.forEach((doc) => {
+        const d = doc.data();
+        if (d.risk && typeof d.risk.level === "number") {
+          users.push({
+            level: d.risk.level,
+            activity: (d.risk.breakdown && typeof d.risk.breakdown.activity === "number")
+              ? d.risk.breakdown.activity : null,
+          });
+        }
+      });
+
+      const elActivity  = document.getElementById("om-activity");
+      const elLevel     = document.getElementById("om-risk-level");
+      const elHighRisk  = document.getElementById("om-high-risk");
+      const elUsers     = document.getElementById("om-users");
+
+      if (users.length === 0) {
+        if (elActivity) elActivity.textContent = "—";
+        if (elLevel)    elLevel.textContent    = "—";
+        if (elHighRisk) elHighRisk.textContent = "0";
+        if (elUsers)    elUsers.textContent    = "0";
+        return;
+      }
+
+      const total      = users.length;
+      const avgLevel   = users.reduce((s, u) => s + u.level, 0) / total;
+      const highRisk   = users.filter(u => u.level >= 3).length;
+      const actArr     = users.filter(u => u.activity !== null);
+      const avgAct     = actArr.length > 0
+        ? actArr.reduce((s, u) => s + u.activity, 0) / actArr.length
+        : null;
+
+      if (elActivity) elActivity.textContent = avgAct !== null ? avgAct.toFixed(1) : "—";
+      if (elLevel) {
+        const lvInt = Math.round(avgLevel);
+        elLevel.textContent  = avgLevel.toFixed(1) + " " + (LEVEL_LABELS[lvInt] || "");
+        elLevel.style.color  = LEVEL_COLORS[lvInt] || "#f87171";
+      }
+      if (elHighRisk) elHighRisk.textContent = String(highRisk);
+      if (elUsers)    elUsers.textContent    = String(total);
+
+      // agts 바 업데이트 — 행동위험지수 산출 항목
+      const riskPct = Math.round(avgLevel / 5 * 100);
+      const row = document.querySelector('#monitor-rows .lr-n');
+      if (row) {
+        const rows = document.querySelectorAll('#monitor-rows .lr');
+        rows.forEach((lr) => {
+          const name = lr.querySelector('.lr-n');
+          if (name && name.textContent.includes('행동위험지수')) {
+            const bar   = lr.querySelector('.lr-b');
+            const val   = lr.querySelector('.lr-v');
+            const dot   = lr.querySelector('.lr-d');
+            const stat  = lr.querySelector('.lr-s');
+            const c     = LEVEL_COLORS[Math.round(avgLevel)] || "#818cf8";
+            if (bar)  { bar.style.width = riskPct + "%"; bar.style.background = c + "55"; bar.style.borderRightColor = c; }
+            if (val)  val.textContent = riskPct + "%";
+            if (dot)  dot.style.background = c;
+            if (stat) { stat.style.background = c + "22"; stat.style.color = c; stat.textContent = "실시간"; }
+          }
+        });
+      }
+    }, (err) => {
+      console.warn("[OmMonitor] Firestore 오류:", err.message);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initOmMonitor);
+  } else {
+    initOmMonitor();
+  }
+})();
 </script>
 </body>
 </html>
