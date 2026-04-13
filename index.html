@@ -1124,38 +1124,65 @@ function createStreamingBotMsg(team) {
 // Railway SSE 스트리밍 호출 — /api/v1/command
 // SSE 포맷: data: {"type":"routing",...} | data: 텍스트청크 | data: {"type":"related",...} | data: [DONE]
 async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRelated } = {}) {
-  const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: content, team }),
-    signal: AbortSignal.timeout(90000)
-  });
-  if (!r.ok) {
-    const errText = await r.text().catch(() => r.statusText);
-    throw new Error(`[${r.status}] ${errText}`);
-  }
-  const reader = r.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-  outer: while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop() ?? '';
-    for (const line of lines) {
-      if (!line.startsWith('data: ')) continue;
-      const data = line.slice(6).trim();
-      if (data === '[DONE]') break outer;
-      try {
-        const json = JSON.parse(data);
-        if (json.type === 'routing') { onRoutingInfo?.(json); }
-        else if (json.type === 'related') { onRelated?.(json); }
-        else if (json.type === 'error') { throw new Error(json.message); }
-      } catch (e) {
-        if (e instanceof SyntaxError) { onChunk?.(data); }
-        else throw e;
+  const MAX_RETRIES = 2;
+  const TIMEOUT_MS = 300000; // 5분
+  let _routingReceived = false; // 재시도 시 routing 이벤트 중복 방지
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort('timeout'), TIMEOUT_MS);
+    try {
+      if (attempt > 0) {
+        onChunk?.(`\n\n⚠️ 연결이 끊어졌습니다. 재연결 중... (${attempt}/${MAX_RETRIES})\n\n`);
+        await new Promise(r => setTimeout(r, 1500 * attempt)); // 1.5s, 3s 백오프
       }
+      const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: content, team }),
+        signal: controller.signal
+      });
+      if (!r.ok) {
+        const errText = await r.text().catch(() => r.statusText);
+        throw new Error(`[${r.status}] ${errText}`);
+      }
+      const reader = r.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      outer: while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') break outer;
+          try {
+            const json = JSON.parse(data);
+            if (json.type === 'routing') {
+              if (!_routingReceived) { _routingReceived = true; onRoutingInfo?.(json); }
+            } else if (json.type === 'related') { onRelated?.(json); }
+            else if (json.type === 'error') { throw new Error(json.message); }
+          } catch (e) {
+            if (e instanceof SyntaxError) { onChunk?.(data); }
+            else throw e;
+          }
+        }
+      }
+      return; // 정상 완료
+    } catch (err) {
+      const isRetryable =
+        err?.name === 'AbortError' ||
+        String(err?.message).includes('BodyStreamBuffer') ||
+        String(err?.message).includes('aborted') ||
+        String(err?.message).includes('network') ||
+        String(err?.message).includes('Failed to fetch');
+      if (isRetryable && attempt < MAX_RETRIES) continue;
+      throw err;
+    } finally {
+      clearTimeout(timer);
     }
   }
 }
