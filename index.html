@@ -1430,10 +1430,10 @@ async function sendCmd(){
         typing.remove();
         const { bubbleEl: b } = createStreamingBotMsg(routedTeam);
         bubbleEl = b;
+        bubbleEl.innerHTML = '<span style="opacity:0.45;font-style:italic;font-size:13px;">🔍 웹 검색 중...</span>';
       },
       onChunk(chunk) {
         if (!bubbleEl) {
-          // routing 이벤트 없이 청크 선도착 시 폴백
           typing.remove();
           const { bubbleEl: b } = createStreamingBotMsg(routedTeam);
           bubbleEl = b;
