@@ -945,10 +945,11 @@ const TITLES={cmd:'🎯 지시 센터 — Dr4rest 드림팀',intel:'🔍 인텔�
 function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');el.classList.add('active');document.getElementById('tbt').textContent=TITLES[id]||'';if(id==='intel')loadIntel();if(id==='token')loadTokenView();if(id==='agents')renderGantt();if(id==='catalog')renderCatalog();if(id==='usage')renderUsageView();if(id==='process')renderProcs();if(id==='system')renderSysInfo();if(id==='mcp')renderMcps();if(id==='memory')initMemoryEditor();if(id==='pipeline')renderPipelines();}
 
 let selectedTeam='전체 드림팀';
+const chatHistories={};
 document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.team-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTeam=btn.dataset.team;document.getElementById('chat-team-label').textContent=btn.textContent+' — 대화 기록';});});
 
 function quickCmd(text){document.getElementById('cmd-input').value=text;sendCmd();}
-function clearChat(){const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
+function clearChat(){chatHistories[selectedTeam]=[];const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
 
 const TCOLORS={'전체 드림팀':'#34d399','사업전략팀':'#818cf8','인텔리전스팀':'#f87171','멘탈케어앱팀':'#34d399','센서·IoT팀':'#2dd4bf','대응·연계팀':'#fb923c','병원솔루션팀':'#f472b6','데이터·AI팀':'#818cf8','인증·법무팀':'#a78bfa','재무팀':'#fbbf24','연구논문팀':'#22d3ee'};
 const TICONS={'전체 드림팀':'🌲','사업전략팀':'🎯','인텔리전스팀':'🔍','멘탈케어앱팀':'📱','센서·IoT팀':'📡','대응·연계팀':'🚨','병원솔루션팀':'🏥','데이터·AI팀':'🤖','인증·법무팀':'⚖️','재무팀':'💰','연구논문팀':'📚'};
@@ -1125,7 +1126,7 @@ function createStreamingBotMsg(team) {
 
 // Railway SSE 스트리밍 호출 — /api/v1/command
 // SSE 포맷: data: {"type":"routing",...} | data: 텍스트청크 | data: {"type":"related",...} | data: [DONE]
-async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRelated, onUsage } = {}) {
+async function callRailwayStream(team, content, messages, { onRoutingInfo, onChunk, onRelated, onUsage } = {}) {
   const MAX_RETRIES = 2;
   const TIMEOUT_MS = 300000; // 5분
   let _routingReceived = false; // 재시도 시 routing 이벤트 중복 방지
@@ -1143,7 +1144,7 @@ async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRela
       const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ text: content, team }),
+        body: JSON.stringify({ text: content, team, messages }),
         signal: controller.signal
       });
       if (!r.ok) {
@@ -1211,11 +1212,14 @@ async function sendCmd(){
 
   let routedTeam=selectedTeam;
   let fullReply='';
+  let primaryReply='';
   let bubbleEl=null;
   const _exactUsage = {};
+  const cmdHistory = (chatHistories[selectedTeam] || []).slice(-18);
+  const cmdMessages = [...cmdHistory, { role: 'user', content: text }];
 
   try {
-    await callRailwayStream(selectedTeam, text, {
+    await callRailwayStream(selectedTeam, text, cmdMessages, {
       onRoutingInfo(json) {
         routedTeam = json.primary_team || selectedTeam;
         typing.remove();
@@ -1230,6 +1234,7 @@ async function sendCmd(){
           bubbleEl = b;
         }
         fullReply += chunk;
+        primaryReply += chunk;
         bubbleEl.innerHTML = fullReply.replace(/\n/g,'<br>');
         bubbleEl.scrollIntoView({ behavior:'smooth', block:'end' });
       },
@@ -1256,6 +1261,7 @@ async function sendCmd(){
   if(remainTyping) remainTyping.remove();
 
   if(fullReply && !fullReply.startsWith('⚠️')) {
+    chatHistories[selectedTeam] = [...cmdMessages, { role: 'assistant', content: primaryReply }].slice(-20);
     if (Object.keys(_exactUsage).length > 0) {
       Object.values(_exactUsage).forEach(u => trackTokensExact(u.team, u.input_tokens, u.output_tokens));
     } else {
