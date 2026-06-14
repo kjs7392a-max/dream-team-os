@@ -1083,6 +1083,8 @@ async function runHarnessAnimation(team, onComplete) {
 
 // ── Railway 설정 ──────────────────────────────────────
 const RAILWAY_URL = 'https://dr4rest-backend-production.up.railway.app';
+// 내부 API 키 (Railway 환경변수 INTERNAL_API_KEY 설정 시 동일한 값 입력)
+const INTERNAL_API_KEY = '';
 
 // Railway 헬스체크
 async function checkRailwayHealth() {
@@ -1123,7 +1125,7 @@ function createStreamingBotMsg(team) {
 
 // Railway SSE 스트리밍 호출 — /api/v1/command
 // SSE 포맷: data: {"type":"routing",...} | data: 텍스트청크 | data: {"type":"related",...} | data: [DONE]
-async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRelated } = {}) {
+async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRelated, onUsage } = {}) {
   const MAX_RETRIES = 2;
   const TIMEOUT_MS = 300000; // 5분
   let _routingReceived = false; // 재시도 시 routing 이벤트 중복 방지
@@ -1136,9 +1138,11 @@ async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRela
         onChunk?.(`\n\n⚠️ 연결이 끊어졌습니다. 재연결 중... (${attempt}/${MAX_RETRIES})\n\n`);
         await new Promise(r => setTimeout(r, 1500 * attempt)); // 1.5s, 3s 백오프
       }
+      const headers = { 'Content-Type': 'application/json' };
+      if (INTERNAL_API_KEY) headers['X-API-Key'] = INTERNAL_API_KEY;
       const r = await fetch(`${RAILWAY_URL}/api/v1/command`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ text: content, team }),
         signal: controller.signal
       });
@@ -1164,6 +1168,7 @@ async function callRailwayStream(team, content, { onRoutingInfo, onChunk, onRela
             if (json.type === 'routing') {
               if (!_routingReceived) { _routingReceived = true; onRoutingInfo?.(json); }
             } else if (json.type === 'related') { onRelated?.(json); }
+            else if (json.type === 'usage') { onUsage?.(json); }
             else if (json.type === 'error') { throw new Error(json.message); }
           } catch (e) {
             if (e instanceof SyntaxError) { onChunk?.(data); }
@@ -1207,6 +1212,7 @@ async function sendCmd(){
   let routedTeam=selectedTeam;
   let fullReply='';
   let bubbleEl=null;
+  const _exactUsage = {};
 
   try {
     await callRailwayStream(selectedTeam, text, {
@@ -1230,6 +1236,9 @@ async function sendCmd(){
       onRelated(json) {
         fullReply += '\n\n' + '\u2500'.repeat(20) + '\n\n[연관팀: ' + json.team + ']\n' + json.response;
         if (bubbleEl) bubbleEl.innerHTML = fullReply.replace(/\n/g,'<br>');
+      },
+      onUsage(usage) {
+        _exactUsage[usage.team] = usage;
       }
     });
   } catch(err) {
@@ -1246,7 +1255,13 @@ async function sendCmd(){
   const remainTyping=document.getElementById('typing-indicator');
   if(remainTyping) remainTyping.remove();
 
-  if(fullReply && !fullReply.startsWith('⚠️')) trackTokens(routedTeam, text, fullReply);
+  if(fullReply && !fullReply.startsWith('⚠️')) {
+    if (Object.keys(_exactUsage).length > 0) {
+      Object.values(_exactUsage).forEach(u => trackTokensExact(u.team, u.input_tokens, u.output_tokens));
+    } else {
+      trackTokens(routedTeam, text, fullReply);
+    }
+  }
   addLog(`💬 ${routedTeam} 최종 보고 완료`);
   document.getElementById('cmd-send').disabled=false;
   document.getElementById('chat-send2').disabled=false;
@@ -2033,7 +2048,7 @@ document.getElementById('start-time').textContent=new Date().toLocaleTimeString(
 // ── 토큰 추적 (LocalStorage) ────────────────────────────────────
 const _TK_KEY = 'dt_tokens';
 
-// 1 토큰 ≈ 1.8자 (한국어 혼용 기준 보수적 추정)
+// 1 토큰 ≈ 1.8자 (한국어 혼용 기준 보수적 추정 — 실제 API 수치가 있으면 trackTokensExact 사용)
 function tokenEstimate(text){ return text ? Math.ceil(text.length / 1.8) : 0; }
 
 function getTokenStore(){
@@ -2075,6 +2090,23 @@ function trackTokens(team, inputText, outputText){
   if(document.getElementById('view-usage').classList.contains('active')) renderUsageView();
 }
 
+// 백엔드 실제 토큰 수로 정확하게 추적
+function trackTokensExact(team, inputTokens, outputTokens){
+  const s = getTokenStore();
+  const total = inputTokens + outputTokens;
+  if(!s.teams[team]) s.teams[team] = {input:0, output:0, calls:0};
+  s.teams[team].input += inputTokens;
+  s.teams[team].output += outputTokens;
+  s.teams[team].calls++;
+  if(teamUsesOpus(team)){ s.opus = (s.opus||0) + total; }
+  else { s.sonnet = (s.sonnet||0) + total; }
+  s.calls = (s.calls||0) + 1;
+  saveTokenStore(s);
+  if(document.getElementById('view-token').classList.contains('active')) loadTokenView();
+  if(document.getElementById('view-catalog').classList.contains('active')) renderCatalog();
+  if(document.getElementById('view-usage').classList.contains('active')) renderUsageView();
+}
+
 function resetTokens(){
   localStorage.removeItem(_TK_KEY);
   loadTokenView();
@@ -2092,8 +2124,8 @@ function loadTokenView(){
 
   // Anthropic 요금 (USD→KRW ₩1,400 기준)
   // Sonnet 4.6: input $3/MTok, output $15/MTok → 평균 ~₩12.6/1K
-  // Opus 4.5:   input $15/MTok, output $75/MTok → 평균 ~₩63/1K
-  const cost = Math.round(totalSonnet * 12.6 / 1000 + totalOpus * 63 / 1000);
+  // Opus 4.8:   input $5/MTok, output $25/MTok → 평균 ~₩21/1K
+  const cost = Math.round(totalSonnet * 12.6 / 1000 + totalOpus * 21 / 1000);
 
   const pctAll  = limDaily > 0 ? Math.min(totalAll  / limDaily  * 100, 100) : 0;
   const pctOpus = limOpus  > 0 ? Math.min(totalOpus / limOpus   * 100, 100) : 0;
