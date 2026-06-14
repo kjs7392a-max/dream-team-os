@@ -480,6 +480,24 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
             <div class="cmd-btn-row">
               <button class="cmd-send" id="cmd-send" onclick="sendCmd()">▶ 실행</button>
               <button class="cmd-clear" onclick="clearChat()">초기화</button>
+              <button onclick="openDocModal()" title="문서 붙여넣기" style="background:none;border:1px solid #1e3a5f;color:#94a3b8;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;">📎 문서</button>
+              <button onclick="togglePipePanel()" title="커스텀 파이프라인" style="background:none;border:1px solid #1e3a5f;color:#94a3b8;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;">🔧 파이프라인</button>
+              <button onclick="toggleRag(this)" title="RAG 연동 (회사 문서 참조)" style="background:none;border:1px solid #1e3a5f;color:#94a3b8;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;">📚 RAG</button>
+            </div>
+            <div id="_doc-ind" style="font-size:11px;color:#3b82f6;margin-top:4px;padding:0 2px;"></div>
+            <div id="_pipe-panel" style="display:none;margin-top:8px;background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:10px;">
+              <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;">실행할 팀을 순서대로 선택하세요:</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="사업전략팀"> 사업전략팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="재무팀"> 재무팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="인증·법무팀"> 인증·법무팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="데이터·AI팀"> 데이터·AI팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="인텔리전스팀"> 인텔리전스팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="멘탈케어앱팀"> 멘탈케어앱팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="병원솔루션팀"> 병원솔루션팀</label>
+                <label style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="_pipe-chk" value="연구논문팀"> 연구논문팀</label>
+              </div>
+              <button onclick="runCustomPipeline()" style="background:#3b82f6;border:none;color:#fff;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">▶ 파이프라인 실행</button>
             </div>
           </div>
 
@@ -518,7 +536,10 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
           <div class="chat-panel">
             <div class="chat-header">
               <span id="chat-team-label">🌲 전체 드림팀 — 대화 기록</span>
-              <button onclick="clearChat()" style="font-size:10px;background:#1a2840;border:none;color:#94a3b8;padding:3px 8px;border-radius:5px;cursor:pointer;">초기화</button>
+              <div style="display:flex;gap:5px;">
+                <button onclick="openSaved()" style="font-size:10px;background:#1a2840;border:none;color:#fbbf24;padding:3px 8px;border-radius:5px;cursor:pointer;">📌 저장함</button>
+                <button onclick="clearChat()" style="font-size:10px;background:#1a2840;border:none;color:#94a3b8;padding:3px 8px;border-radius:5px;cursor:pointer;">초기화</button>
+              </div>
             </div>
             <div class="chat-body" id="chat-wrap">
               <div class="msg bot">
@@ -551,6 +572,8 @@ body{background:#070b16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <div class="intel-refresh">
           <span class="intel-upd" id="intel-upd">—</span>
           <button class="ir-btn" id="intel-refresh-btn" onclick="triggerIntelCrawl()">⟳ 새로고침</button>
+          <button class="ir-btn" onclick="openIntelAlert()">🔔 Slack 알림</button>
+          <span id="intel-sched-info" style="font-size:10px;color:#5a7090;"></span>
         </div>
       </div>
       <div id="intel-briefing-wrap"></div>
@@ -946,10 +969,18 @@ function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.rem
 
 let selectedTeam='전체 드림팀';
 const chatHistories={};
-document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.team-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTeam=btn.dataset.team;document.getElementById('chat-team-label').textContent=btn.textContent+' — 대화 기록';});});
+const chatDisplays={};
+let savedResponses=[];
+let pastedDoc='';
+let feedbackData=[];
+let ragEnabled=false;
+const _CHAT_STORE_KEY='dr4rest-chat-v2';
+const _SAVED_KEY='dr4rest-saved-v1';
+const _FB_KEY='dr4rest-feedback-v1';
+document.querySelectorAll('.team-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.team-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTeam=btn.dataset.team;document.getElementById('chat-team-label').textContent=btn.textContent+' — 대화 기록';_renderTeamChat(selectedTeam);});});
 
 function quickCmd(text){document.getElementById('cmd-input').value=text;sendCmd();}
-function clearChat(){chatHistories[selectedTeam]=[];const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
+function clearChat(){chatHistories[selectedTeam]=[];chatDisplays[selectedTeam]=[];chatStoreSave();const w=document.getElementById('chat-wrap');w.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">대화가 초기화됐습니다. 새로운 지시를 입력해주세요! 🚀</div></div></div>`;}
 
 const TCOLORS={'전체 드림팀':'#34d399','사업전략팀':'#818cf8','인텔리전스팀':'#f87171','멘탈케어앱팀':'#34d399','센서·IoT팀':'#2dd4bf','대응·연계팀':'#fb923c','병원솔루션팀':'#f472b6','데이터·AI팀':'#818cf8','인증·법무팀':'#a78bfa','재무팀':'#fbbf24','연구논문팀':'#22d3ee'};
 const TICONS={'전체 드림팀':'🌲','사업전략팀':'🎯','인텔리전스팀':'🔍','멘탈케어앱팀':'📱','센서·IoT팀':'📡','대응·연계팀':'🚨','병원솔루션팀':'🏥','데이터·AI팀':'🤖','인증·법무팀':'⚖️','재무팀':'💰','연구논문팀':'📚'};
@@ -958,7 +989,7 @@ function addMsg(role,text,team){
   const wrap=document.getElementById('chat-wrap');
   const div=document.createElement('div');div.className=`msg ${role}`;
   if(role==='user'){div.innerHTML=`<div class="msg-avatar" style="background:#1e3a5f;">👤</div><div class="msg-bubble">${text}</div>`;}
-  else{const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div></div>`;}
+  else{const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';div.dataset.msgText=text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button></div></div>`;}
   wrap.appendChild(div);div.scrollIntoView({behavior:'smooth',block:'end'});return div;
 }
 function addTyping(team){
@@ -1193,6 +1224,173 @@ async function callRailwayStream(team, content, messages, { onRoutingInfo, onChu
   }
 }
 
+// ── 1. localStorage 영구 저장 ─────────────────────────────
+function chatStoreSave(){try{localStorage.setItem(_CHAT_STORE_KEY,JSON.stringify({h:chatHistories,d:chatDisplays}));}catch{}}
+function chatStoreLoad(){try{return JSON.parse(localStorage.getItem(_CHAT_STORE_KEY)||'{}');}catch{return{};}}
+function savedSave(){try{localStorage.setItem(_SAVED_KEY,JSON.stringify(savedResponses));}catch{}}
+function fbSave(){try{localStorage.setItem(_FB_KEY,JSON.stringify(feedbackData));}catch{}}
+
+function _renderTeamChat(team){
+  const wrap=document.getElementById('chat-wrap');
+  const msgs=chatDisplays[team]||[];
+  if(msgs.length===0){wrap.innerHTML=`<div class="msg bot"><div class="msg-avatar" style="background:#34d39922;border:1px solid #34d39944;">🌲</div><div><div class="msg-team" style="color:#34d399;">전체 드림팀 에이전트</div><div class="msg-bubble">안녕하세요! Dr4rest 드림팀 AI 지시 센터입니다.<br>왼쪽에서 담당 팀을 선택하고 지시를 입력해주세요. 🚀</div></div></div>`;return;}
+  wrap.innerHTML='';
+  msgs.forEach(m=>{
+    const div=document.createElement('div');div.className=`msg ${m.role}`;
+    if(m.role==='user'){div.innerHTML=`<div class="msg-avatar" style="background:#1e3a5f;">👤</div><div class="msg-bubble">${m.text}</div>`;}
+    else{const c=TCOLORS[m.team]||'#60a5fa',ic=TICONS[m.team]||'🤖';div.dataset.msgText=m.text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${m.team} 에이전트</div><div class="msg-bubble">${m.text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button></div></div>`;}
+    wrap.appendChild(div);
+  });
+  wrap.lastElementChild?.scrollIntoView({behavior:'auto',block:'end'});
+}
+
+// ── 2. 응답 저장/핀 ──────────────────────────────────────
+function pinMsg(btn){
+  const msgEl=btn.closest('.msg');
+  const text=msgEl?.dataset?.msgText||'';
+  const team=msgEl?.querySelector('.msg-team')?.textContent?.replace(' 에이전트','')||selectedTeam;
+  if(!text)return;
+  savedResponses.unshift({team,text,ts:new Date().toLocaleString('ko-KR')});
+  savedResponses=savedResponses.slice(0,50);
+  savedSave();
+  showToast('저장됐습니다 📌');
+}
+function showToast(msg){
+  let t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style='position:fixed;bottom:24px;right:24px;background:#1e3a5f;color:#e2e8f0;padding:10px 16px;border-radius:8px;font-size:13px;z-index:9999;border:1px solid #3b82f6;transition:opacity .3s;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';clearTimeout(t._tid);t._tid=setTimeout(()=>{t.style.opacity='0';},2500);
+}
+function openSaved(){
+  let m=document.getElementById('_saved-modal');
+  if(!m){m=document.createElement('div');m.id='_saved-modal';m.style='position:fixed;inset:0;background:#00000099;z-index:9999;display:flex;align-items:center;justify-content:center;';document.body.appendChild(m);}
+  const items=savedResponses.length?savedResponses.map((r,i)=>`<div style="border:1px solid #1e3a5f;border-radius:8px;padding:10px;margin-bottom:8px;"><div style="font-size:11px;color:#64748b;margin-bottom:4px;">${r.team} · ${r.ts} <button onclick="delSaved(${i})" style="float:right;background:none;border:none;color:#ef4444;cursor:pointer;font-size:11px;">삭제</button></div><div style="font-size:12px;color:#cbd5e1;white-space:pre-wrap;max-height:100px;overflow-y:auto;">${r.text.slice(0,400)}${r.text.length>400?'…':''}</div><button onclick="copyToClip(${i})" style="margin-top:6px;background:#1e3a5f;border:none;color:#94a3b8;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">복사</button></div>`).join(''):`<div style="color:#64748b;text-align:center;padding:24px;">저장된 응답이 없습니다</div>`;
+  m.innerHTML=`<div style="background:#0f1f35;border:1px solid #1e3a5f;border-radius:12px;padding:20px;width:580px;max-width:95vw;max-height:80vh;overflow-y:auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="color:#e2e8f0;font-weight:600;">📌 저장된 응답 (${savedResponses.length}/50)</span><button onclick="closeSaved()" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:18px;">✕</button></div>${items}</div>`;
+  m.style.display='flex';
+}
+function closeSaved(){const m=document.getElementById('_saved-modal');if(m)m.style.display='none';}
+function delSaved(i){savedResponses.splice(i,1);savedSave();openSaved();}
+function copyToClip(i){navigator.clipboard?.writeText(savedResponses[i]?.text||'');showToast('클립보드에 복사됐습니다');}
+
+// ── 3. RAG 연동 ──────────────────────────────────────────
+function toggleRag(btn){
+  ragEnabled=!ragEnabled;
+  btn.style.background=ragEnabled?'#7c3aed':'';
+  btn.style.color=ragEnabled?'#fff':'';
+  btn.title=ragEnabled?'RAG 연동 켜짐 (회사 문서 참조)':'RAG 연동 꺼짐';
+  showToast(ragEnabled?'RAG 켜짐 — 회사 문서를 참조합니다':'RAG 꺼짐');
+}
+async function getRagContext(query){
+  if(!ragEnabled)return'';
+  try{
+    const r=await fetch(`${RAILWAY_URL}/api/v1/rag/search`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,top_k:3}),signal:AbortSignal.timeout(8000)});
+    if(!r.ok)return'';
+    const d=await r.json();
+    const docs=(d.results||[]).filter(x=>x.content);
+    if(!docs.length)return'';
+    return`[회사 문서 참조]\n${docs.map((x,i)=>`[${i+1}] ${x.content}`).join('\n\n')}\n\n`;
+  }catch{return'';}
+}
+
+// ── 4. 문서 복붙 ─────────────────────────────────────────
+function openDocModal(){
+  let m=document.getElementById('_doc-modal');
+  if(!m){m=document.createElement('div');m.id='_doc-modal';m.style='position:fixed;inset:0;background:#00000099;z-index:9999;display:flex;align-items:center;justify-content:center;';document.body.appendChild(m);}
+  m.innerHTML=`<div style="background:#0f1f35;border:1px solid #1e3a5f;border-radius:12px;padding:20px;width:580px;max-width:95vw;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="color:#e2e8f0;font-weight:600;">📎 문서 붙여넣기</span><button onclick="closeDocModal()" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:18px;">✕</button></div><textarea id="_doc-ta" style="width:100%;height:220px;background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;color:#e2e8f0;padding:10px;font-size:12px;resize:vertical;box-sizing:border-box;font-family:inherit;" placeholder="계약서, 제안요청서, 보고서, 회의록 등 분석할 내용을 붙여넣으세요.&#10;다음 지시와 함께 팀에게 전달됩니다.">${pastedDoc}</textarea><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><span style="font-size:11px;color:#64748b;" id="_doc-len">${pastedDoc.length}자</span><div style="display:flex;gap:8px;"><button onclick="clearDoc()" style="background:#1e3a5f;border:none;color:#94a3b8;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:12px;">삭제</button><button onclick="confirmDoc()" style="background:#3b82f6;border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:12px;">확인</button></div></div></div>`;
+  m.style.display='flex';
+  const ta=document.getElementById('_doc-ta');
+  ta?.addEventListener('input',()=>{const el=document.getElementById('_doc-len');if(el)el.textContent=ta.value.length+'자';});
+  setTimeout(()=>ta?.focus(),50);
+}
+function closeDocModal(){const m=document.getElementById('_doc-modal');if(m)m.style.display='none';}
+function confirmDoc(){pastedDoc=document.getElementById('_doc-ta')?.value||'';closeDocModal();updateDocInd();}
+function clearDoc(){pastedDoc='';closeDocModal();updateDocInd();}
+function updateDocInd(){
+  let ind=document.getElementById('_doc-ind');
+  if(!ind){ind=document.createElement('div');ind.id='_doc-ind';ind.style='font-size:11px;color:#3b82f6;margin-top:4px;padding:0 2px;';const row=document.querySelector('.cmd-btn-row');if(row)row.after(ind);}
+  ind.textContent=pastedDoc?`📎 문서 첨부됨 (${pastedDoc.length}자) — 다음 지시에 포함됩니다`:'';
+}
+
+// ── 5. 공고 알림 설정 ────────────────────────────────────
+function openIntelAlert(){
+  let m=document.getElementById('_ia-modal');
+  if(!m){m=document.createElement('div');m.id='_ia-modal';m.style='position:fixed;inset:0;background:#00000099;z-index:9999;display:flex;align-items:center;justify-content:center;';document.body.appendChild(m);}
+  m.innerHTML=`<div style="background:#0f1f35;border:1px solid #1e3a5f;border-radius:12px;padding:20px;width:400px;max-width:95vw;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><span style="color:#e2e8f0;font-weight:600;">🔔 Slack 알림 전송</span><button onclick="closeIntelAlert()" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:18px;">✕</button></div><label style="font-size:12px;color:#94a3b8;">최소 점수 임계값: <span id="_ia-val">60</span>점 이상</label><input type="range" id="_ia-slider" min="40" max="95" step="5" value="60" oninput="document.getElementById('_ia-val').textContent=this.value" style="width:100%;margin:8px 0;accent-color:#3b82f6;"><div style="font-size:11px;color:#64748b;margin-bottom:16px;">현재 DB에서 해당 점수 이상의 공고를 Slack으로 전송합니다.</div><button onclick="sendIntelAlert()" style="width:100%;background:#10b981;border:none;color:#fff;padding:10px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Slack 전송</button><div id="_ia-res" style="margin-top:10px;font-size:12px;color:#64748b;text-align:center;"></div></div>`;
+  m.style.display='flex';
+}
+function closeIntelAlert(){const m=document.getElementById('_ia-modal');if(m)m.style.display='none';}
+async function sendIntelAlert(){
+  const score=document.getElementById('_ia-slider')?.value||60;
+  const res=document.getElementById('_ia-res');
+  if(res)res.textContent='전송 중…';
+  try{
+    const r=await fetch(`${RAILWAY_URL}/api/v1/intelligence/notify?min_score=${score}`,{method:'POST',signal:AbortSignal.timeout(15000)});
+    const d=await r.json();
+    if(res)res.textContent=d.sent?`✅ ${d.count}건 Slack 전송 완료`:(d.message||'전송 완료');
+  }catch(e){if(res)res.textContent='오류: '+e.message;}
+}
+
+// ── 6. 커스텀 파이프라인 UI ──────────────────────────────
+function togglePipePanel(){
+  const p=document.getElementById('_pipe-panel');
+  if(p){p.style.display=p.style.display==='none'?'block':'none';}
+}
+async function runCustomPipeline(){
+  const teams=Array.from(document.querySelectorAll('._pipe-chk:checked')).map(c=>c.value);
+  if(!teams.length){showToast('팀을 1개 이상 선택하세요');return;}
+  const input=document.getElementById('cmd-input');
+  const chatInput=document.getElementById('chat-input');
+  const text=(input.value||chatInput.value).trim();
+  if(!text){showToast('지시를 입력하세요');return;}
+  input.value='';chatInput.value='';
+  addMsg('user',text);
+  addLog(`🔧 커스텀 파이프라인: ${teams.join(' → ')}`);
+  for(const team of teams){
+    const typing=addTyping(team);
+    let reply='';
+    const {bubbleEl:b}=createStreamingBotMsg(team);
+    const history=(chatHistories[team]||[]).slice(-18);
+    const msgs=[...history,{role:'user',content:text}];
+    try{
+      await callRailwayStream(team,text,msgs,{
+        onChunk(c){reply+=c;b.innerHTML=reply.replace(/\n/g,'<br>');b.scrollIntoView({behavior:'smooth',block:'end'});}
+      });
+    }catch(e){b.textContent='[오류] '+e.message;}
+    typing.remove();
+    if(reply){
+      chatHistories[team]=[...msgs,{role:'assistant',content:reply}].slice(-20);
+      if(!chatDisplays[team])chatDisplays[team]=[];
+      chatDisplays[team].push({role:'user',text,team});
+      chatDisplays[team].push({role:'bot',text:reply,team});
+      chatDisplays[team]=chatDisplays[team].slice(-40);
+      // 액션 버튼 추가
+      const msgEl=b.closest('.msg');
+      if(msgEl){msgEl.dataset.msgText=reply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button>`;b.parentElement.appendChild(ad);}
+    }
+  }
+  chatStoreSave();
+}
+
+// ── 7. 응답 품질 피드백 ──────────────────────────────────
+function feedback(btn,rating){
+  const msgEl=btn.closest('.msg');
+  const text=msgEl?.dataset?.msgText||'';
+  feedbackData.unshift({rating,text:text.slice(0,100),ts:Date.now()});
+  feedbackData=feedbackData.slice(0,200);
+  fbSave();
+  btn.textContent=rating?'👍✓':'👎✓';
+  msgEl?.querySelectorAll('.msg-fb-btn').forEach(b=>b.disabled=true);
+}
+
+// ── 8. 자동 브리핑 스케줄 UI ─────────────────────────────
+async function loadScheduleInfo(){
+  const el=document.getElementById('intel-sched-info');
+  if(!el)return;
+  try{
+    const r=await fetch(`${RAILWAY_URL}/api/v1/intelligence/schedule`,{signal:AbortSignal.timeout(5000)});
+    if(r.ok){const d=await r.json();el.textContent=d.description||'';}
+  }catch{}
+}
+
 async function sendCmd(){
   const input=document.getElementById('cmd-input');
   const chatInput=document.getElementById('chat-input');
@@ -1201,6 +1399,13 @@ async function sendCmd(){
   input.value='';chatInput.value='';
   document.getElementById('cmd-send').disabled=true;
   document.getElementById('chat-send2').disabled=true;
+  // RAG 컨텍스트 + 문서 첨부 적용
+  const ragCtx=await getRagContext(text);
+  let sendText=text;
+  if(pastedDoc||ragCtx){
+    sendText=(ragCtx?ragCtx:'')+(pastedDoc?`[첨부 문서]\n${pastedDoc}\n\n`:'')+(ragCtx||pastedDoc?`[지시]\n${text}`:text);
+    pastedDoc='';updateDocInd();
+  }
   addMsg('user',text);
 
   const nodes=getHarnessPipeline(selectedTeam);
@@ -1216,7 +1421,7 @@ async function sendCmd(){
   let bubbleEl=null;
   const _exactUsage = {};
   const cmdHistory = (chatHistories[selectedTeam] || []).slice(-18);
-  const cmdMessages = [...cmdHistory, { role: 'user', content: text }];
+  const cmdMessages = [...cmdHistory, { role: 'user', content: sendText }];
 
   try {
     await callRailwayStream(selectedTeam, text, cmdMessages, {
@@ -1262,6 +1467,14 @@ async function sendCmd(){
 
   if(fullReply && !fullReply.startsWith('⚠️')) {
     chatHistories[selectedTeam] = [...cmdMessages, { role: 'assistant', content: primaryReply }].slice(-20);
+    // 디스플레이 저장 (Feature 1)
+    if(!chatDisplays[selectedTeam])chatDisplays[selectedTeam]=[];
+    chatDisplays[selectedTeam].push({role:'user',text,team:selectedTeam});
+    chatDisplays[selectedTeam].push({role:'bot',text:fullReply,team:routedTeam});
+    chatDisplays[selectedTeam]=chatDisplays[selectedTeam].slice(-40);
+    chatStoreSave();
+    // 액션 버튼 추가 (Feature 2, 7)
+    if(bubbleEl){const msgEl=bubbleEl.closest('.msg');if(msgEl){msgEl.dataset.msgText=fullReply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button>`;bubbleEl.parentElement.appendChild(ad);}}
     if (Object.keys(_exactUsage).length > 0) {
       Object.values(_exactUsage).forEach(u => trackTokensExact(u.team, u.input_tokens, u.output_tokens));
     } else {
@@ -1274,7 +1487,21 @@ async function sendCmd(){
 }
 
 // 페이지 로드 시 Railway 상태 자동 확인 + 카탈로그 초기 렌더링
-window.addEventListener('load', () => { setTimeout(checkRailwayHealth, 800); renderCatalog(); renderProcs(); renderSysInfo(); renderMcps(); renderPipelines(); });
+window.addEventListener('load', () => {
+  // localStorage 복원
+  const _cs=chatStoreLoad();
+  if(_cs.h)Object.assign(chatHistories,_cs.h);
+  if(_cs.d)Object.assign(chatDisplays,_cs.d);
+  const _sv=(() => {try{return JSON.parse(localStorage.getItem(_SAVED_KEY)||'[]');}catch{return[];}})();
+  savedResponses.push(..._sv);
+  const _fb=(() => {try{return JSON.parse(localStorage.getItem(_FB_KEY)||'[]');}catch{return[];}})();
+  feedbackData.push(..._fb);
+  // 현재 팀의 대화 기록 복원
+  if(chatDisplays[selectedTeam]?.length>0)_renderTeamChat(selectedTeam);
+  setTimeout(checkRailwayHealth, 800);
+  renderCatalog(); renderProcs(); renderSysInfo(); renderMcps(); renderPipelines();
+  setTimeout(loadScheduleInfo, 1200);
+});
 document.getElementById('cmd-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCmd();}});
 
 const RC={'수석':'#fbbf24','팀장':'#60a5fa','선임':'#34d399','주임':'#a78bfa','사원':'#94a3b8'};
