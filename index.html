@@ -989,7 +989,7 @@ function addMsg(role,text,team){
   const wrap=document.getElementById('chat-wrap');
   const div=document.createElement('div');div.className=`msg ${role}`;
   if(role==='user'){div.innerHTML=`<div class="msg-avatar" style="background:#1e3a5f;">👤</div><div class="msg-bubble">${text}</div>`;}
-  else{const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';div.dataset.msgText=text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button></div></div>`;}
+  else{const c=TCOLORS[team]||'#60a5fa',ic=TICONS[team]||'🤖';div.dataset.msgText=text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${team} 에이전트</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button><button onclick="downloadMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📥</button></div></div>`;}
   wrap.appendChild(div);div.scrollIntoView({behavior:'smooth',block:'end'});return div;
 }
 function addTyping(team){
@@ -1238,7 +1238,7 @@ function _renderTeamChat(team){
   msgs.forEach(m=>{
     const div=document.createElement('div');div.className=`msg ${m.role}`;
     if(m.role==='user'){div.innerHTML=`<div class="msg-avatar" style="background:#1e3a5f;">👤</div><div class="msg-bubble">${m.text}</div>`;}
-    else{const c=TCOLORS[m.team]||'#60a5fa',ic=TICONS[m.team]||'🤖';div.dataset.msgText=m.text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${m.team} 에이전트</div><div class="msg-bubble">${m.text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button></div></div>`;}
+    else{const c=TCOLORS[m.team]||'#60a5fa',ic=TICONS[m.team]||'🤖';div.dataset.msgText=m.text;div.innerHTML=`<div class="msg-avatar" style="background:${c}22;border:1px solid ${c}44;">${ic}</div><div><div class="msg-team" style="color:${c};">${m.team} 에이전트</div><div class="msg-bubble">${m.text.replace(/\n/g,'<br>')}</div><div class="msg-actions" style="margin-top:5px;display:flex;gap:5px;"><button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button><button onclick="downloadMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📥</button></div></div>`;}
     wrap.appendChild(div);
   });
   wrap.lastElementChild?.scrollIntoView({behavior:'auto',block:'end'});
@@ -1254,6 +1254,18 @@ function pinMsg(btn){
   savedResponses=savedResponses.slice(0,50);
   savedSave();
   showToast('저장됐습니다 📌');
+}
+function downloadMsg(btn){
+  const msgEl=btn.closest('.msg');
+  const text=msgEl?.dataset?.msgText||'';
+  const team=msgEl?.querySelector('.msg-team')?.textContent?.replace(' 에이전트','')||'dr4rest';
+  const ts=new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+  const blob=new Blob([text],{type:'text/markdown;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`dr4rest-${team}-${ts}.md`;
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 function showToast(msg){
   let t=document.getElementById('_toast');
@@ -1364,7 +1376,7 @@ async function runCustomPipeline(){
       chatDisplays[team]=chatDisplays[team].slice(-40);
       // 액션 버튼 추가
       const msgEl=b.closest('.msg');
-      if(msgEl){msgEl.dataset.msgText=reply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button>`;b.parentElement.appendChild(ad);}
+      if(msgEl){msgEl.dataset.msgText=reply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button><button onclick="downloadMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📥</button>`;b.parentElement.appendChild(ad);}
     }
   }
   chatStoreSave();
@@ -1474,7 +1486,7 @@ async function sendCmd(){
     chatDisplays[selectedTeam]=chatDisplays[selectedTeam].slice(-40);
     chatStoreSave();
     // 액션 버튼 추가 (Feature 2, 7)
-    if(bubbleEl){const msgEl=bubbleEl.closest('.msg');if(msgEl){msgEl.dataset.msgText=fullReply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button>`;bubbleEl.parentElement.appendChild(ad);}}
+    if(bubbleEl){const msgEl=bubbleEl.closest('.msg');if(msgEl){msgEl.dataset.msgText=fullReply;const ad=document.createElement('div');ad.style='margin-top:5px;display:flex;gap:5px;';ad.innerHTML=`<button onclick="pinMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📌</button><button class="msg-fb-btn" onclick="feedback(this,1)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👍</button><button class="msg-fb-btn" onclick="feedback(this,0)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">👎</button><button onclick="downloadMsg(this)" style="background:none;border:1px solid #1e3a5f;color:#64748b;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:11px;">📥</button>`;bubbleEl.parentElement.appendChild(ad);}}
     if (Object.keys(_exactUsage).length > 0) {
       Object.values(_exactUsage).forEach(u => trackTokensExact(u.team, u.input_tokens, u.output_tokens));
     } else {
